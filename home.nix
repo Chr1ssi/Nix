@@ -10,7 +10,15 @@
 
 	home.packages = with pkgs; [
 		kitty
+		quickshell
+		fuzzel
+		mako
+		libnotify
+		polkit_gnome
 	];
+
+	home.file.".config/quickshell/nixos-shell/shell.qml".source =
+		./quickshell/shell.qml;
 
 	wayland.windowManager.hyprland = {
 		enable = true;
@@ -32,9 +40,16 @@
 				},
 			})
 
+			hl.on("hyprland.start", function()
+				hl.exec_cmd("qs -c nixos-shell")
+				hl.exec_cmd("mako")
+				hl.exec_cmd("${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1")
+			end)
+
 			hl.bind("SUPER + RETURN", hl.dsp.exec_cmd("kitty"))
 			hl.bind("SUPER + Q", hl.dsp.window.close())
 			hl.bind("SUPER + M", hl.dsp.exit())
+			hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("fuzzel"))
 		'';
 	};
 }
