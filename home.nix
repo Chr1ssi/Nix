@@ -27,13 +27,6 @@
 		portalPackage = null;
 
 		extraConfig = ''
-			hl.monitor = ({
-				output = "",
-				mode = "preferred",
-				position = "auto",
-				scale = 1,
-			})
-
 			hl.config({
 				input = {
 					kb_layout = "de",
@@ -41,6 +34,13 @@
 			})
 
 			hl.on("hyprland.start", function()
+				hl.monitor({
+					output = "Virtual-1",
+					mode = "preferred",
+					position = "auto",
+					scale = 1,
+				})
+
 				hl.exec_cmd("qs -c nixos-shell")
 				hl.exec_cmd("mako")
 				hl.exec_cmd("${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1")
