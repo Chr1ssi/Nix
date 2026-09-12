@@ -47,7 +47,7 @@ ShellRoot {
 
 					Text {
 						anchors.centerIn: parent
-						color: "#cddf4"
+						color: "#cdd6f4"
 						text: root.currentTime
 					}
 
