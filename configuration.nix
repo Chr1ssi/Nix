@@ -62,12 +62,17 @@
   programs.firefox.enable = true;
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
-   environment.systemPackages = with pkgs; [
-     git
-     neovim
-     wget
-     hyprpaper
-   ];
+  environment.systemPackages = with pkgs; [
+    git
+    neovim
+    wget
+    hyprpaper
+  ];
+
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+  };
 
   system.stateVersion = "26.05";
 
