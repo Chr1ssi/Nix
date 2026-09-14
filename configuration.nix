@@ -52,6 +52,35 @@
     extraGroups = [ "wheel" ];
   };
 
+  # Packages
+  environment.systemPackages = with pkgs; [
+    kitty
+    ncurses
+  ];
+
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+    ];
+  };
+
+  services.greetd = {
+    enable = true;
+
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start hyprland-uwsm.desktop'";
+        user = "greeter";
+      };
+    };
+  };
+
   # Nix
   nix.settings.experimental-features = [
     "nix-command"
