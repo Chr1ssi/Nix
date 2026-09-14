@@ -1,31 +1,29 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
-  # Use the GRUB 2 boot loader.
+  # Bootloader
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/vda";
   boot.loader.grub.useOSProber = true;
-  # Use provided UUIDs instead of blkid probing (required for btrfs subvolumes)
   boot.loader.grub.fsIdentifier = "provided";
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
+  # Networking
   networking.hostName = "nixos";
-
-  # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+  services.openssh = {
+  enable = true;
+  openFirewall = true;
+  };
+
+  # Time zone
   time.timeZone = "Europe/Berlin";
 
-  # Select internationalisation properties.
+  # Locale
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -40,48 +38,25 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # Configure keymap in X11
+  # Keyboard
   services.xserver.xkb = {
     layout = "de";
     variant = "";
   };
 
-  # Configure console keymap
   console.keyMap = "de";
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."chris" = {
+  # User
+  users.users.chris = {
     isNormalUser = true;
-    description = "Chris";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    extraGroups = [ "wheel" ];
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  programs.firefox.enable = true;
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = with pkgs; [
-    git
-    neovim
-    wget
-    hyprpaper
+  # Nix
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
   ];
 
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-  };
-
   system.stateVersion = "26.05";
-
-  programs.hyprland.enable = true;
-
-  security.polkit.enable = true;
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
-  };
 }
