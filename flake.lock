@@ -20,6 +20,38 @@
         "type": "github"
       }
     },
+    "mywm-shell-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789683648,
+        "narHash": "sha256-xdwGH1yWplUpwC8Zsvz8bEVk7+p43KDRaj0yRCMPCZw=",
+        "owner": "Chr1ssi",
+        "repo": "mywm-shell",
+        "rev": "dca7734d959e223a7770189783da61373dcd0b26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Chr1ssi",
+        "repo": "mywm-shell",
+        "type": "github"
+      }
+    },
+    "mywm-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789684903,
+        "narHash": "sha256-+uGB7CpxzG4nyvqeBozEeRroZ7rqhK34NlKBpe3uYgk=",
+        "owner": "Chr1ssi",
+        "repo": "mywm",
+        "rev": "b40d29bb9090a9057ba0672b3a3a65b074193b42",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Chr1ssi",
+        "repo": "mywm",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1789149629,
@@ -37,6 +69,8 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "mywm-shell-src": "mywm-shell-src",
+        "mywm-src": "mywm-src",
         "nixpkgs": "nixpkgs"
       }
     }

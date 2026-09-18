@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# All application and configuration paths are supplied by the NixOS session.
+: "${MYWM_BINARY:?Set by mywm-session}"
+: "${MYWM_CONFIG:?Set by mywm-session}"
+: "${MYWM_MONITOR_CONFIG:?Set by mywm-session}"
+: "${MYWM_POLKIT_AGENT:?Set by mywm-session}"
+: "${MYWM_SESSION_ENVIRONMENT:?Set by mywm-session}"
+wm_binary=$MYWM_BINARY
+monitor_config=$MYWM_MONITOR_CONFIG
+
+if [[ -z ${WAYLAND_DISPLAY:-} ]]; then
+    echo 'river-init muss innerhalb von River gestartet werden (river -c ...).' >&2
+    exit 1
+fi
+if ! command -v kanshi >/dev/null 2>&1; then
+    echo 'Kanshi fehlt im Sitzungspfad.' >&2
+    exit 1
+fi
+if [[ ! -x $wm_binary ]]; then
+    echo "mywm fehlt oder ist nicht ausführbar: $wm_binary" >&2
+    exit 1
+fi
+if [[ ! -r $monitor_config ]]; then
+    echo "Monitorkonfiguration nicht lesbar: $monitor_config" >&2
+    exit 1
+fi
+
+for dependency in swaylock swayidle wlopm; do
+    if ! command -v "$dependency" >/dev/null 2>&1; then
+        echo "Fehlende Sitzungskomponente: $dependency" >&2
+        exit 1
+    fi
+done
+
+# A private directory isolates IPC from other River sessions and stale sockets.
+ipc_dir=$(mktemp -d "${XDG_RUNTIME_DIR:?}/mywm-session.XXXXXX")
+export MYWM_SOCKET="$ipc_dir/control.sock"
+children=()
+# Invoked indirectly through the EXIT trap.
+# shellcheck disable=SC2329
+cleanup() {
+    trap - EXIT INT TERM
+    if (( ${#children[@]} )); then
+        kill "${children[@]}" 2>/dev/null || true
+        wait "${children[@]}" 2>/dev/null || true
+    fi
+    rm -f -- "$MYWM_SOCKET"
+    rmdir -- "$ipc_dir"
+}
+trap 'cleanup' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+kanshi -c "$monitor_config" &
+children+=("$!")
+"$wm_binary" &
+children+=("$!")
+
+"$wm_binary" --idle &
+children+=("$!")
+session_children=("${children[@]}")
+"$MYWM_POLKIT_AGENT" &
+children+=("$!")
+# D-Bus activated dialogs need the compositor's display, not the login environment.
+if ! "$MYWM_SESSION_ENVIRONMENT"; then
+    echo 'Warnung: Portal-Umgebung konnte nicht vollständig eingerichtet werden.' >&2
+fi
+"$wm_binary" --wallpaper &
+children+=("$!")
+"$wm_binary" --bar &
+children+=("$!")
+
+# Core processes share the session lifetime; optional UI failures do not stop the WM.
+status=0
+wait -n "${session_children[@]}" || status=$?
+echo "Ein Sitzungsprozess wurde beendet (Status $status); mywm/Kanshi/Idle werden gestoppt." >&2
+exit "$status"
