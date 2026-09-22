@@ -50,6 +50,12 @@ stdenv.mkDerivation rec {
     mkdir -p $out
     cp -r usr/* $out/
 
+    mkdir -p $out/lib/udev/rules.d
+
+    cat > $out/lib/udev/rules.d/70-streamdeck.rules <<'EOF'
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="0fd9", TAG+="uaccess"
+    EOF
+
     runHook postInstall
   '';
 
