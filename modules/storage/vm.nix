@@ -17,6 +17,14 @@
 
         wantedBy = [ "initrd.target" ];
 
+        requires = [
+          "dev-vda2.device"
+        ];
+
+        after = [
+          "dev-vda2.device"
+        ];
+
         before = [
           "sysroot.mount"
         ];
