@@ -17,7 +17,7 @@
         home.packages = with pkgs; [
           heroic
           vesktop
-          mangohub
+          mangohud
         ];
 
         xdg.configFile."vesktop/settings.json".source =
