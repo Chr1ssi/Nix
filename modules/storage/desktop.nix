@@ -68,29 +68,30 @@
         algorithm = "zstd";
         memoryPercent = 50;
       };
-    };
 
-    boot.initrd.systemd.enable = true;
+      boot.initrd.systemd.enable = true;
 
-    boot.initrd.systemd.services.rollback = {
-      description = "Rollback Btrfs root subvolume";
-      wantedBy = [ "initrd.target" ];
-      before = [ "sysroot.mount" ];
+      boot.initrd.systemd.services.rollback = {
+        description = "Rollback Btrfs root subvolume";
+        wantedBy = [ "initrd.target" ];
+        before = [ "sysroot.mount" ];
 
-      unitConfig.DefaultDependencies = "no";
+        unitConfig.DefaultDependencies = "no";
 
-      serviceConfig.Type = "oneshot";
+        serviceConfig.Type = "oneshot";
 
-      script = ''
-        mkdir -p /mnt
+        script = ''
+          mkdir -p /mnt
 
-        mount -t btrfs -o subvolid=5 \
-          /dev/disk/by-label/NIXROOT /mnt
+          mount -t btrfs -o subvolid=5 \
+            /dev/disk/by-label/NIXROOT /mnt
 
-        btrfs subvolume delete /mnt/@root
-        btrfs subvolume create /mnt/@root
+          btrfs subvolume delete /mnt/@root
+          btrfs subvolume create /mnt/@root
 
-        umount /mnt
-      '';
+          umount /mnt
+        '';
+      };
+
     };
 }
