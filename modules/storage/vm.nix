@@ -1,8 +1,50 @@
 { ... }:
 
 {
-  flake.modules.nixos.vm-disko = {
+  flake.modules.nixos.vm-disko = { pkgs, ... }:
+  {
     fileSystems."/persist".neededForBoot = true;
+
+    boot.initrd.systemd = {
+      enable = true;
+
+      extraBin = {
+        btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
+      };
+
+      services.rollback-root = {
+        description = "Rollback Btrfs root subvolume";
+
+        wantedBy = [ "initrd.target" ];
+
+        before = [
+          "sysroot.mount"
+        ];
+
+        unitConfig.DefaultDependencies = false;
+
+        serviceConfig.Type = "oneshot";
+
+        script = ''
+          mkdir -p /btrfs_tmp
+
+          mount -t btrfs -o subvolid=5 /dev/vda2 /btrfs_tmp
+
+          if [ -e /btrfs_tmp/@root ]; then
+            mkdir -p /btrfs_tmp/@old_roots
+
+            timestamp="$(date --date="@$(stat -c %Y /btrfs_tmp/@root)" "+%Y-%m-%d_%H:%M:%S")"
+
+            mv /btrfs_tmp/@root \
+              "/btrfs_tmp/@old_roots/$timestamp"
+          fi
+
+          btrfs subvolume create /btrfs_tmp/@root
+
+          umount /btrfs_tmp
+        '';
+      };
+    };
 
     disko.devices = {
       disk.main = {
