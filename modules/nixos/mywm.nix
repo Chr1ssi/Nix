@@ -82,8 +82,11 @@
       environment.systemPackages = [
         session
         mywm
-        mywmSession
         pkgs.river
+      ];
+
+      services.displayManager.sessionPackages = [
+        mywmSession
       ];
 
       security.pam.services.swaylock = { };
