@@ -60,6 +60,8 @@
         ];
 
         shell = pkgs.fish;
+
+        hashedPasswordFile = "/persist/passwords/chris";
       };
     };
 }
