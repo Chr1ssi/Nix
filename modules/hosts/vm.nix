@@ -18,8 +18,7 @@
         config.flake.modules.nixos.vm-hardware
         config.flake.modules.nixos.vm-disko
 
-        # Noch NICHT:
-        # config.flake.modules.nixos.impermanence
+        config.flake.modules.nixos.impermanence
 
         config.flake.modules.nixos.desktop
         config.flake.modules.nixos.mywm
