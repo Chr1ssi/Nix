@@ -2,6 +2,8 @@
 
 {
   flake.modules.nixos.vm-disko = {
+    fileSystems."/persist".neededForBoot = true;
+
     disko.devices = {
       disk.main = {
         type = "disk";
