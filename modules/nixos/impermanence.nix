@@ -4,7 +4,7 @@
   flake.modules.nixos.impermanence =
     { ... }:
     {
-      services.journald.storage = "persistent";
+      services.journald.settings.Journal.Storage = "persistent";
 
       environment.persistence."/persist" = {
         hideMounts = true;
