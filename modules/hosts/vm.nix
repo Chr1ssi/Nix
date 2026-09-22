@@ -22,6 +22,8 @@
         # config.flake.modules.nixos.impermanence
 
         config.flake.modules.nixos.desktop
+        config.flake.modules.nixos.mywm
+        config.flake.modules.nixos.niri
         config.flake.modules.nixos.development
 
         {
@@ -40,9 +42,11 @@
             users.chris.imports = [
               config.flake.modules.homeManager.chris
               config.flake.modules.homeManager.essentials
-              config.flake.modules.homeManager.development
-              config.flake.modules.homeManager.mywm
               config.flake.modules.homeManager.shell
+              config.flake.modules.homeManager.development
+
+              config.flake.modules.homeManager.mywm
+              config.flake.modules.homeManager.niri
             ];
           };
 
