@@ -6,7 +6,6 @@
 
     let
       helium = pkgs.callPackage ../../packages/helium.nix { };
-      opendeck = pkgs.callPackage ../../packages/opendeck.nix { };
     in
 
     {
@@ -76,7 +75,6 @@
         wl-clipboard
         libnotify
         helium
-        opendeck
       ];
 
       xdg.enable = true;
