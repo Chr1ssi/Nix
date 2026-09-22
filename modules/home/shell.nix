@@ -12,7 +12,6 @@
           ll = "eza -la";
           la = "eza -a";
           cat = "bat";
-          rebuild = "sudo nixos-rebuild switch --flake ~/Projects/Nix#vm";
         };
 
         interactiveShellInit = ''
