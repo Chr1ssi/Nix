@@ -43,6 +43,10 @@
         nvidiaSettings = true;
       };
 
+      services.hardware.openrgb = {
+        enable = true;
+      };
+
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
