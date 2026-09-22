@@ -11,11 +11,12 @@
 
       modules = [
         inputs.home-manager.nixosModules.home-manager
-        inputs.disko.nixosModules.disko
         inputs.impermanence.nixosModules.impermanence
 
         config.flake.modules.nixos.base
         config.flake.modules.nixos.desktop-hardware
+        config.flake.modules.nixos.desktop-storage
+        config.flake.modules.nixos.impermanence
 
         config.flake.modules.nixos.desktop
         config.flake.modules.nixos.mywm
@@ -31,10 +32,10 @@
               enable = true;
               maxGenerations = 10;
             };
-          
+
             efi.canTouchEfiVariables = true;
           };
-          
+
           networking.hostName = "ChrisNixOS";
 
           home-manager = {
