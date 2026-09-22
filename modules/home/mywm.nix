@@ -57,7 +57,9 @@
       xdg.configFile."kanshi/config".text =
         "# Keep River's default output configuration.\n";
 
-      home.file."Pictures/Wallpapers/wallhaven-ogjo5m.jpg".source =
-        ../../wallpapers/wallhaven-ogjo5m.jpg;
+        home.file."Pictures/Wallpapers" = {
+          source = ../../wallpapers;
+          recursive = true;
+        };
     };
 }
