@@ -74,6 +74,7 @@
         networkmanagerapplet
         wl-clipboard
         libnotify
+        helium
       ];
 
       xdg.enable = true;
