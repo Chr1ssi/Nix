@@ -55,7 +55,11 @@
         '';
       };
 
-      mywmSession = pkgs.runCommand "mywm-wayland-session" { } ''
+      mywmSession = pkgs.runCommand "mywm-wayland-session"
+      {
+        passthru.providedSessions = [ "mywm" ];
+      }
+      ''
         mkdir -p $out/share/wayland-sessions
 
         cat > $out/share/wayland-sessions/mywm.desktop <<EOF
