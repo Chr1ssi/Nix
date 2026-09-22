@@ -98,8 +98,9 @@
         fsType = "btrfs";
         options = [
           "subvol=@root"
-          "compress=zstd"
+          "compress=zstd:3"
           "noatime"
+          "discard=async"
         ];
       };
 
@@ -114,12 +115,16 @@
       };
 
       fileSystems."/persist" = {
-        device = "/dev/disk/by-label/NIXROOT";
+        device =
+          "/dev/disk/by-uuid/a40769b6-2e4b-4b95-b1f9-6c7a5242f686";
+
         fsType = "btrfs";
+
         options = [
           "subvol=@persist"
-          "compress=zstd"
+          "compress=zstd:3"
           "noatime"
+          "discard=async"
         ];
 
         neededForBoot = true;
@@ -136,8 +141,9 @@
       };
 
       fileSystems."/boot" = {
-        device = "/dev/disk/by-label/NIXBOOT";
+        device = "/dev/disk/by-uuid/7109-AA6D";
         fsType = "vfat";
+
         options = [
           "fmask=0077"
           "dmask=0077"
