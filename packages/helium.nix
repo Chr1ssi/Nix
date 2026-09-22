@@ -32,15 +32,6 @@
   libxcb,
 }:
 
-autoPatchelfIgnoreMissingDeps = [
-  "libQt6Core.so.6"
-  "libQt6Gui.so.6"
-  "libQt6Widgets.so.6"
-  "libQt5Core.so.5"
-  "libQt5Gui.so.5"
-  "libQt5Widgets.so.5"
-];
-
 stdenv.mkDerivation rec {
   pname = "helium";
   version = "0.17.2.1";
@@ -81,6 +72,15 @@ stdenv.mkDerivation rec {
     libXfixes
     libXrandr
     libxcb
+  ];
+
+  autoPatchelfIgnoreMissingDeps = [
+    "libQt6Core.so.6"
+    "libQt6Gui.so.6"
+    "libQt6Widgets.so.6"
+    "libQt5Core.so.5"
+    "libQt5Gui.so.5"
+    "libQt5Widgets.so.5"
   ];
 
   sourceRoot = "helium-${version}-x86_64_linux";
