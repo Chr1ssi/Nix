@@ -16,24 +16,20 @@
 
         config.flake.modules.nixos.base
         config.flake.modules.nixos.vm-hardware
+        config.flake.modules.nixos.vm-disko
+
+        # Noch NICHT:
+        # config.flake.modules.nixos.impermanence
+
         config.flake.modules.nixos.desktop
         config.flake.modules.nixos.development
-
-        # IMPORTANT:
-        # vm-disko is NOT imported yet because the currently
-        # installed VM still uses its existing filesystem layout.
-        #
-        # Add this for the fresh Disko installation:
-        #
-        # config.flake.modules.nixos.vm-disko
 
         {
           networking.hostName = "vm";
 
-          boot.loader.grub = {
-            enable = true;
-            device = "/dev/vda";
-            useOSProber = true;
+          boot.loader = {
+            systemd-boot.enable = true;
+            efi.canTouchEfiVariables = true;
           };
 
           home-manager = {
