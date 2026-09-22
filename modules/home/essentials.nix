@@ -50,16 +50,6 @@
           builtins.readFile ../../dotfiles/gtk-4.0/gtk.css;
       };
 
-      xdg.mimeApps = {
-        enable = true;
-
-        defaultApplications = {
-          "text/html" = [ "helium.desktop" ];
-          "x-scheme-handler/http" = [ "helium.desktop" ];
-          "x-scheme-handler/https" = [ "helium.desktop" ];
-        };
-      };
-
       home.pointerCursor = {
         enable = true;
         name = "Bibata-Modern-Ice";
@@ -97,9 +87,9 @@
         enable = true;
 
         defaultApplications = {
-          "text/html" = [ "firefox.desktop" ];
-          "x-scheme-handler/http" = [ "firefox.desktop" ];
-          "x-scheme-handler/https" = [ "firefox.desktop" ];
+          "text/html" = [ "helium.desktop" ];
+          "x-scheme-handler/http" = [ "helium.desktop" ];
+          "x-scheme-handler/https" = [ "helium.desktop" ];
           "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
         };
       };
