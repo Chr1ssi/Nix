@@ -1,31 +1,66 @@
-{ config, lib, pkgs, ... }:
+{ ... }:
+
 {
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-  };
-  programs.vscode.enable = true;
-  programs.git.settings.core.editor = "nvim";
-  xdg.configFile."nvim/init.lua".source = ../../dotfiles/nvim/init.lua;
-  xdg.configFile."nvim/lua" = {
-    source = ../../dotfiles/nvim/lua;
-    recursive = true;
-  };
-  xdg.configFile."nvim/stylua.toml".source = ../../dotfiles/nvim/stylua.toml;
-  # LazyVim rewrites these JSON files. Seed them once, without store symlinks.
-  home.activation.seedLazyVim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    run mkdir -p ${lib.escapeShellArg "${config.xdg.configHome}/nvim"} ${lib.escapeShellArg "${config.xdg.stateHome}/nvim"}
-    if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/nvim/lazyvim.json"} ]; then
-      run install -m 644 ${../../dotfiles/nvim/lazyvim.json} ${lib.escapeShellArg "${config.xdg.configHome}/nvim/lazyvim.json"}
-    fi
-    if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/nvim/lazy-lock.json"} ]; then
-      run install -m 644 ${../../dotfiles/nvim/lazy-lock.json} ${lib.escapeShellArg "${config.xdg.stateHome}/nvim/lazy-lock.json"}
-    fi
-  '';
-  home.packages = with pkgs; [
-    ripgrep fd jq gcc gnumake pkg-config rustc cargo rust-analyzer
-    python3 nodejs nil nixfmt tree-sitter unzip
-  ];
+  flake.modules.homeManager.development =
+    { config, lib, pkgs, ... }:
+    {
+      programs.neovim = {
+        enable = true;
+        defaultEditor = true;
+        viAlias = true;
+        vimAlias = true;
+      };
+
+      programs.vscode.enable = true;
+
+      programs.git.settings.core.editor = "nvim";
+
+      xdg.configFile."nvim/init.lua".source =
+        ../../dotfiles/nvim/init.lua;
+
+      xdg.configFile."nvim/lua" = {
+        source = ../../dotfiles/nvim/lua;
+        recursive = true;
+      };
+
+      xdg.configFile."nvim/stylua.toml".source =
+        ../../dotfiles/nvim/stylua.toml;
+
+      home.activation.seedLazyVim =
+        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          run mkdir -p \
+            ${lib.escapeShellArg "${config.xdg.configHome}/nvim"} \
+            ${lib.escapeShellArg "${config.xdg.stateHome}/nvim"}
+
+          if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/nvim/lazyvim.json"} ]; then
+            run install -m 644 \
+              ${../../dotfiles/nvim/lazyvim.json} \
+              ${lib.escapeShellArg "${config.xdg.configHome}/nvim/lazyvim.json"}
+          fi
+
+          if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/nvim/lazy-lock.json"} ]; then
+            run install -m 644 \
+              ${../../dotfiles/nvim/lazy-lock.json} \
+              ${lib.escapeShellArg "${config.xdg.stateHome}/nvim/lazy-lock.json"}
+          fi
+        '';
+
+      home.packages = with pkgs; [
+        ripgrep
+        fd
+        jq
+        gcc
+        gnumake
+        pkg-config
+        rustc
+        cargo
+        rust-analyzer
+        python3
+        nodejs
+        nil
+        nixfmt
+        tree-sitter
+        unzip
+      ];
+    };
 }
