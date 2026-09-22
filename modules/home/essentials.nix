@@ -3,6 +3,11 @@
 {
   flake.modules.homeManager.essentials =
     { pkgs, ... }:
+
+    let
+      helium = pkgs.callPackage ../../packages/helium.nix { };
+    in
+
     {
       programs.git.enable = true;
       programs.firefox.enable = true;
@@ -43,6 +48,16 @@
 
         gtk4.extraCss =
           builtins.readFile ../../dotfiles/gtk-4.0/gtk.css;
+      };
+
+      xdg.mimeApps = {
+        enable = true;
+
+        defaultApplications = {
+          "text/html" = [ "helium.desktop" ];
+          "x-scheme-handler/http" = [ "helium.desktop" ];
+          "x-scheme-handler/https" = [ "helium.desktop" ];
+        };
       };
 
       home.pointerCursor = {
