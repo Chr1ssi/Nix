@@ -44,6 +44,8 @@ Die Konfiguration lässt sich bereits vollständig evaluieren und bauen. Der vol
 
 nix-darwin-Konfiguration für den Apple-Silicon-Mac. Home Manager verwaltet dort die gemeinsame Entwicklungsumgebung und die macOS-spezifischen Anwendungen. NixOS verwendet Fish als Login-Shell; macOS bleibt bei der nativen Zsh unter `/bin/zsh`.
 
+Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager Apps`, damit Spotlight mit vollständigen App-Bundles arbeiten kann. Die nix-darwin-Aktivierung verlinkt diese Apps zusätzlich direkt nach `/Applications`, ohne dort vorhandene fremde Apps zu überschreiben. Der von nix-darwin erzeugte Ordner `/Applications/Nix Apps` wird entfernt, solange er leer ist.
+
 ---
 
 ## Repository-Struktur

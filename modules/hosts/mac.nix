@@ -11,6 +11,7 @@
 
       modules = [
         inputs.home-manager.darwinModules.home-manager
+        config.flake.modules.darwin.applications
 
         {
           networking.hostName = "air";
