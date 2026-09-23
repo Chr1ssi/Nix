@@ -10,7 +10,6 @@
 
     {
       programs.git.enable = true;
-      programs.firefox.enable = true;
 
       programs.kitty = {
         enable = true;
