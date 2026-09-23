@@ -42,6 +42,7 @@
               config.flake.modules.homeManager.essentials
               config.flake.modules.homeManager.shell
               config.flake.modules.homeManager.development
+              config.flake.modules.homeManager.firefox
 
               config.flake.modules.homeManager.mywm
             ];
