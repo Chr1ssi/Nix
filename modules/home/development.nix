@@ -19,7 +19,20 @@
           "toml"
         ];
 
+        userSettings = {
+          languages.Nix.language_servers = [
+            "nixd"
+            "nil"
+          ];
+
+          lsp = {
+            nixd.binary.path = "${pkgs.nixd}/bin/nixd";
+            nil.binary.path = "${pkgs.nil}/bin/nil";
+          };
+        };
+
         extraPackages = with pkgs; [
+          nixd
           nil
           nixfmt
           rust-analyzer
