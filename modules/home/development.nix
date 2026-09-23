@@ -11,7 +11,24 @@
         vimAlias = true;
       };
 
-      programs.vscode.enable = true;
+      programs.zed-editor = {
+        enable = true;
+
+        extensions = [
+          "nix"
+          "toml"
+        ];
+
+        extraPackages = with pkgs; [
+          nil
+          nixfmt
+          rust-analyzer
+          rustc
+          cargo
+          python3
+          nodejs
+        ];
+      };
 
       programs.git.settings.core.editor = "nvim";
 

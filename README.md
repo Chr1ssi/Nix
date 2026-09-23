@@ -320,7 +320,7 @@ Sie enthält unter anderem Werkzeuge für:
 - Node.js
 - Git
 - Neovim / LazyVim
-- VS Code
+- Zed
 - Compiler- und Build-Werkzeuge
 - CLI- und Suchwerkzeuge
 
