@@ -9,7 +9,24 @@
         id = 0;
         isDefault = true;
 
+        extensions.packages =
+          with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+            ublock-origin
+            darkreader
+            bitwarden
+          ];
+
         settings = {
+          # ─────────────────────────────────────────────
+          # Appearance
+          # ─────────────────────────────────────────────
+
+          # Prefer dark mode in Firefox and on websites
+          "ui.systemUsesDarkTheme" = 1;
+          "browser.theme.content-theme" = 0;
+          "browser.theme.toolbar-theme" = 0;
+          "layout.css.prefers-color-scheme.content-override" = 0;
+
           # ─────────────────────────────────────────────
           # UI / Firefox Features
           # ─────────────────────────────────────────────
