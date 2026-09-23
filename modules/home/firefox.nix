@@ -5,16 +5,16 @@
     programs.firefox = {
       enable = true;
 
+      globalExtensions =
+        with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+          ublock-origin
+          darkreader
+          bitwarden
+        ];
+
       profiles.default = {
         id = 0;
         isDefault = true;
-
-        extensions.packages =
-          with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
-            ublock-origin
-            darkreader
-            bitwarden
-          ];
 
         settings = {
           # ─────────────────────────────────────────────
