@@ -147,10 +147,6 @@
           # Extensions
           # ─────────────────────────────────────────────
 
-          # Automatically allow extensions installed declaratively by
-          # Home Manager.
-          "extensions.autoDisableScopes" = 0;
-
           # Keep Mozilla's extension blocklist enabled.
           "extensions.blocklist.enabled" = true;
           "extensions.quarantinedDomains.enabled" = true;
