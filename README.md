@@ -1,8 +1,8 @@
-# NixOS Configuration
+# NixOS and macOS Configuration
 
-Meine deklarative NixOS-Konfiguration für Desktop und VM, aufgebaut mit **Nix Flakes**, **Home Manager** und einem modularen System für Desktop, Gaming, Entwicklung und persistente Daten.
+Meine deklarative Konfiguration für NixOS und macOS, aufgebaut mit **Nix Flakes**, **Home Manager** und **nix-darwin**. Das Repository enthält ein modulares System für Desktop, Gaming, Entwicklung und persistente Daten.
 
-Das Repository dient als zentrale Definition meines Linux-Systems. Systemkonfiguration, Benutzerumgebung, Anwendungen, Dotfiles und eigene Pakete werden möglichst vollständig über Nix verwaltet.
+Das Repository dient als zentrale Definition meiner Linux- und macOS-Systeme. Systemkonfiguration, Benutzerumgebung, Anwendungen, Dotfiles und eigene Pakete werden möglichst vollständig über Nix verwaltet.
 
 Der Desktop basiert auf meinem eigenen Wayland-Setup mit **River**, **mywm** und **Quickshell**.
 
@@ -24,7 +24,7 @@ Die Konfiguration befindet sich weiterhin in aktiver Entwicklung. Der VM-Host di
 
 ## Hosts
 
-Die Flake stellt aktuell zwei NixOS-Konfigurationen bereit.
+Die Flake stellt aktuell zwei NixOS-Konfigurationen und eine nix-darwin-Konfiguration bereit.
 
 ### `vm`
 
@@ -39,6 +39,10 @@ Zielkonfiguration für die physische Workstation.
 Sie enthält zusätzlich die für den realen Desktop benötigten Komponenten wie Gaming, Hardwareintegration und Desktop-Anwendungen.
 
 Die Konfiguration lässt sich bereits vollständig evaluieren und bauen. Der vollständige Betrieb auf der finalen Hardware wird erst mit der eigentlichen Migration von CachyOS auf NixOS abgeschlossen.
+
+### `mac`
+
+nix-darwin-Konfiguration für den Apple-Silicon-Mac. Home Manager verwaltet dort die gemeinsame Entwicklungsumgebung und die macOS-spezifischen Anwendungen. NixOS verwendet Fish als Login-Shell; macOS bleibt bei der nativen Zsh unter `/bin/zsh`.
 
 ---
 
@@ -59,6 +63,9 @@ Die Konfiguration lässt sich bereits vollständig evaluieren und bauen. Der vol
 │   │
 │   └── home/
 │       ├── essentials.nix
+│       ├── essentials-mac.nix
+│       ├── fish.nix
+│       ├── zsh.nix
 │       ├── mywm.nix
 │       ├── development.nix
 │       └── ...
@@ -104,7 +111,7 @@ Dazu gehören unter anderem:
 - mywm-Konfiguration
 - Entwicklungswerkzeuge
 
-Home Manager wird über die NixOS-Konfiguration eingebunden. Ein separater `home-manager switch` ist daher nicht notwendig.
+Home Manager wird über die jeweilige NixOS- bzw. nix-darwin-Konfiguration eingebunden. Ein separater `home-manager switch` ist daher nicht notwendig.
 
 ### `packages`
 
@@ -378,6 +385,14 @@ Analog lässt sich die VM-Konfiguration bauen:
 nix build .#nixosConfigurations.vm.config.system.build.toplevel
 ```
 
+## macOS
+
+Die macOS-Konfiguration lässt sich vor der Aktivierung evaluieren bzw. bauen:
+
+```sh
+nix build .#darwinConfigurations.mac.system
+```
+
 ---
 
 # System aktualisieren
@@ -400,6 +415,12 @@ In der VM:
 
 ```sh
 sudo nixos-rebuild switch --flake .#vm
+```
+
+Auf macOS:
+
+```sh
+darwin-rebuild switch --flake .#mac
 ```
 
 Vor einem Switch kann die Konfiguration ohne Aktivierung geprüft werden:

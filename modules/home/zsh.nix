@@ -1,11 +1,19 @@
 { ... }:
 
 {
-  flake.modules.homeManager.shell =
+  flake.modules.homeManager.zsh =
     { pkgs, ... }:
     {
-      programs.fish = {
+      programs.zsh = {
         enable = true;
+        enableCompletion = true;
+        autosuggestion = {
+          enable = true;
+          strategy = [ "history" ];
+        };
+        syntaxHighlighting = {
+          enable = true;
+        };
 
         shellAliases = {
           ls = "eza";
@@ -14,24 +22,24 @@
           cat = "bat";
         };
 
-        interactiveShellInit = ''
+        initContent = ''
           fastfetch
         '';
       };
 
       programs.starship = {
         enable = true;
-        enableFishIntegration = true;
+        enableZshIntegration = true;
       };
 
       programs.zoxide = {
         enable = true;
-        enableFishIntegration = true;
+        enableZshIntegration = true;
       };
 
       programs.fzf = {
         enable = true;
-        enableFishIntegration = true;
+        enableZshIntegration = true;
       };
 
       programs.bat.enable = true;
@@ -43,8 +51,6 @@
         tree
         file
         which
-        pciutils
-        usbutils
       ];
     };
 }
