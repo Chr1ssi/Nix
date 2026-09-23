@@ -5,6 +5,8 @@
     programs.firefox = {
       enable = true;
 
+      configPath = ".config/mozilla/firefox";
+
       globalExtensions =
         with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
           ublock-origin
