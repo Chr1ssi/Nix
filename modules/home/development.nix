@@ -43,7 +43,14 @@
         ];
       };
 
-      programs.git.settings.core.editor = "nvim";
+      programs.git.settings = {
+        user = {
+          name = "Christoph Keil";
+          email = "mail@christoph-keil.com";
+        };
+
+        core.editor = "nvim";
+      };
 
       xdg.configFile."nvim/init.lua".source =
         ../../dotfiles/nvim/init.lua;
