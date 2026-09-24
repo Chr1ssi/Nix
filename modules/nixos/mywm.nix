@@ -35,7 +35,6 @@
           systemd
           coreutils
           bash
-          dunst
           zenity
         ];
 

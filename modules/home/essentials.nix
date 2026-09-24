@@ -93,7 +93,5 @@
           "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
         };
       };
-
-      services.dunst.enable = true;
     };
 }
