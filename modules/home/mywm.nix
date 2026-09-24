@@ -43,8 +43,8 @@
           };
 
           idle = {
-            lock_after_seconds = 300;
-            monitor_off_after_seconds = 600;
+            lock_after_seconds = 600;
+            monitor_off_after_seconds = 6000;
           };
 
           appearance = {
