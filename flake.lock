@@ -154,11 +154,11 @@
     "mywm-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1789724191,
-        "narHash": "sha256-sA89INkv3FnV273pcOnGVTLy4K2IuFlo/B5ZtCv7U3A=",
+        "lastModified": 1790236794,
+        "narHash": "sha256-li7XM2K+Nrx4/oBiCr2gEGrWKsv0rfDYYtWC92sZrw8=",
         "owner": "Chr1ssi",
         "repo": "mywm",
-        "rev": "f84125565257eb03682eb0ee3dc535388c04952e",
+        "rev": "15bb7b100c0c100a9745496f608f9fae827d57ab",
         "type": "github"
       },
       "original": {

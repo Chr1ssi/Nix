@@ -17,6 +17,22 @@
             "${pkgs.kitty}/bin/kitty"
           ];
 
+          autostart = [
+            [ "${pkgs.networkmanagerapplet}/bin/nm-applet" ]
+          ];
+
+          program_bindings = {
+            browser = {
+              keys = [ "Super+b" ];
+              command = [ "${pkgs.firefox}/bin/firefox" ];
+            };
+
+            file_manager = {
+              keys = [ "Super+e" ];
+              command = [ "${pkgs.nautilus}/bin/nautilus" ];
+            };
+          };
+
           wallpaper_directory =
             "${config.home.homeDirectory}/Pictures/Wallpapers";
 
