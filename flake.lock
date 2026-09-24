@@ -135,35 +135,41 @@
         "type": "github"
       }
     },
-    "mywm-shell-src": {
-      "flake": false,
+    "mywm": {
+      "inputs": {
+        "mywm-shell": "mywm-shell",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1790267887,
-        "narHash": "sha256-H4Ka2merOGBqC8Ip7fxQAwtcDtqJrF+bR5Z0iMHqdLQ=",
+        "lastModified": 1790278052,
+        "narHash": "sha256-GfH+RRxF/nhY1ONztyrG4Pb6Nkyqibhv3C8SnscPlLQ=",
         "owner": "Chr1ssi",
-        "repo": "mywm-shell",
-        "rev": "7a9e35457526a92cd9d1c86139ef9205a86ac306",
+        "repo": "mywm",
+        "rev": "ceefa7b5ce764cfbbc61e9460a1ceca943f234f4",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
-        "repo": "mywm-shell",
+        "ref": "v0.1.0",
+        "repo": "mywm",
         "type": "github"
       }
     },
-    "mywm-src": {
+    "mywm-shell": {
       "flake": false,
       "locked": {
-        "lastModified": 1790267850,
-        "narHash": "sha256-ve9ji7+B6iWMUq/QTgcwlKZpui/c7Ub72vNyGK2gwcQ=",
+        "lastModified": 1790275563,
+        "narHash": "sha256-wyTLlNThJdKx2AGjXs+Yd66BPrYhaqPTLtMMPvO4XTA=",
         "owner": "Chr1ssi",
-        "repo": "mywm",
-        "rev": "2db91b746d690620f6bfb1b8934c80b6c014e6a5",
+        "repo": "mywm-shell",
+        "rev": "f591e195be321794da4e1e34b118b3db3d141e30",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
-        "repo": "mywm",
+        "repo": "mywm-shell",
         "type": "github"
       }
     },
@@ -242,8 +248,7 @@
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
-        "mywm-shell-src": "mywm-shell-src",
-        "mywm-src": "mywm-src",
+        "mywm": "mywm",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs_2"
       }

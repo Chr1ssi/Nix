@@ -73,7 +73,6 @@ Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager
 │       └── ...
 │
 ├── packages/
-│   ├── mywm.nix
 │   ├── helium.nix
 │   ├── opendeck.nix
 │   └── ...
@@ -121,7 +120,6 @@ Eigene Nix-Derivations für Software, die nicht direkt oder nicht in der gewüns
 
 Aktuell gehören dazu unter anderem:
 
-- `mywm`
 - Helium
 - OpenDeck
 
@@ -164,7 +162,8 @@ Die benutzerspezifische Konfiguration befindet sich in:
 modules/home/mywm.nix
 ```
 
-Der Anwendungscode selbst wird nicht in diesem Repository gepflegt, sondern als Flake-Input eingebunden.
+Der Anwendungscode selbst wird nicht in diesem Repository gepflegt. Das Release `v0.1.0`
+wird als Flake-Input eingebunden und liefert das verwendete Nix-Paket.
 
 ### Quickshell
 
@@ -172,7 +171,8 @@ Quickshell stellt die grafische Desktop-Shell bereit.
 
 Dazu gehören Desktop-Komponenten wie Bar, Launcher und weitere UI-Elemente.
 
-Die Shell wird unabhängig vom NixOS-Repository entwickelt und ebenfalls über einen gepinnten Flake-Input eingebunden.
+Die Shell wird unabhängig vom NixOS-Repository entwickelt und von der `mywm`-Flake
+als gepinnter Input eingebunden.
 
 ### Session
 

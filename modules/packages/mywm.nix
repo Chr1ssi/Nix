@@ -3,10 +3,7 @@
 {
   perSystem = { pkgs, ... }:
     let
-      mywm = pkgs.callPackage ../../packages/mywm.nix {
-        src = inputs.mywm-src;
-        shellSrc = inputs.mywm-shell-src;
-      };
+      mywm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
       packages = {
