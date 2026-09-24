@@ -12,6 +12,17 @@
         toml.generate "mywm.toml" {
           workspaces = 9;
           float_dialogs = true;
+          gaming_workspace = 3;
+          game_app_id_prefixes = [
+            "steam_app_"
+            "gamescope"
+          ];
+
+          workspace_outputs = {
+            "DP-3" = [ 1 2 3 ];
+            "HDMI-A-1" = [ 4 5 6 ];
+            "DP-1" = [ 7 8 9 ];
+          };
 
           terminal = [
             "${pkgs.kitty}/bin/kitty"
@@ -47,6 +58,31 @@
             monitor_off_after_seconds = 6000;
           };
 
+          bindings = {
+            reload = [ "Super+Shift+r" ];
+            wallpaper = [ "Super+Shift+w" ];
+            lock = [ "Super+Escape" ];
+            terminal = [ "Super+Return" ];
+            launcher = [ "Super+Space" ];
+            close = [ "Super+q" ];
+            exit = [ "Super+m" ];
+            toggle_floating = [ "Super+v" ];
+            pointer_modifiers = "Super";
+
+            focus_left = [ "Super+h" "Super+Left" ];
+            focus_right = [ "Super+l" "Super+Right" ];
+            move_left = [ "Super+Shift+h" "Super+Shift+Left" ];
+            move_right = [ "Super+Shift+l" "Super+Shift+Right" ];
+
+            workspace_previous = [ "Super+Ctrl+Left" "Super+Ctrl+Up" ];
+            workspace_next = [ "Super+Ctrl+Right" "Super+Ctrl+Down" ];
+            move_to_workspace_previous = [ "Super+Shift+Up" ];
+            move_to_workspace_next = [ "Super+Shift+Down" ];
+
+            workspace_modifiers = "Super";
+            move_to_workspace_modifiers = "Super+Shift";
+          };
+
           appearance = {
             gaps_inner = 4;
             gaps_outer = 4;
@@ -70,8 +106,13 @@
           ];
         };
 
-      xdg.configFile."kanshi/config".text =
-        "# Keep River's default output configuration.\n";
+      xdg.configFile."kanshi/config".text = ''
+        profile desktop {
+          output HDMI-A-1 enable mode 2560x1080@60Hz position 0,0 scale 1 transform normal
+          output DP-3 enable mode 2560x1440@143.97Hz position 0,1080 scale 1 transform normal
+          output DP-1 enable mode 2560x1440@59.95Hz position 2560,0 scale 1 transform 270
+        }
+      '';
 
         home.file."Pictures/Wallpapers" = {
           source = ../../wallpapers;
