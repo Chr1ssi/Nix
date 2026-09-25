@@ -33,8 +33,6 @@
 
           autostart = [
             [ "${pkgs.networkmanagerapplet}/bin/nm-applet" ]
-            [ "${opendeck}/bin/opendeck" ]
-            [ "${pkgs.openrgb}/bin/openrgb" "--startminimized" ]
           ];
 
           program_bindings = {
@@ -120,6 +118,36 @@
             }
           ];
         };
+
+      systemd.user.services = {
+        opendeck = {
+          Unit = {
+            Description = "OpenDeck";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" ];
+          };
+          Service = {
+            ExecStart = "${opendeck}/bin/opendeck";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+
+        openrgb = {
+          Unit = {
+            Description = "OpenRGB tray application";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" ];
+          };
+          Service = {
+            ExecStart = "${pkgs.openrgb}/bin/openrgb --startminimized";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+      };
 
       xdg.configFile."kanshi/config".text = ''
         profile desktop {

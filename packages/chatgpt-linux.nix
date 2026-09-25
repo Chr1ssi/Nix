@@ -5,6 +5,7 @@
   dpkg,
   autoPatchelfHook,
   makeWrapper,
+  wrapGAppsHook3,
 
   alsa-lib,
   at-spi2-atk,
@@ -55,7 +56,13 @@ stdenv.mkDerivation rec {
     dpkg
     autoPatchelfHook
     makeWrapper
+    wrapGAppsHook3
   ];
+
+  # The Electron binary creates a native GTK file chooser. Without the
+  # GSettings environment supplied by wrapGAppsHook it aborts when a project
+  # folder is selected.
+  dontWrapGApps = true;
 
   buildInputs = [
     alsa-lib
@@ -121,10 +128,13 @@ stdenv.mkDerivation rec {
     substituteInPlace "$out/share/applications/chatgpt.desktop" \
       --replace-fail "Exec=chatgpt" "Exec=$out/bin/chatgpt"
 
-    makeWrapper "$out/lib/chatgpt/ChatGPT" "$out/bin/chatgpt" \
-      --prefix PATH : ${lib.makeBinPath [ git xdg-utils ]}
-
     runHook postInstall
+  '';
+
+  preFixup = ''
+    makeWrapper "$out/lib/chatgpt/ChatGPT" "$out/bin/chatgpt" \
+      --prefix PATH : ${lib.makeBinPath [ git xdg-utils ]} \
+      "''${gappsWrapperArgs[@]}"
   '';
 
   meta = {

@@ -25,9 +25,15 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    mywm-shell = {
+      url = "github:Chr1ssi/mywm-shell";
+      flake = false;
+    };
+
     mywm = {
-      url = "github:Chr1ssi/mywm/v0.1.0";
+      url = "github:Chr1ssi/mywm";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.mywm-shell.follows = "mywm-shell";
     };
 
     firefox-addons = {
