@@ -59,6 +59,13 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
+  postFixup = ''
+    # OpenDeck loads AppIndicator with dlopen, so autoPatchelf cannot discover
+    # it and the library must be exposed explicitly at runtime.
+    wrapProgram "$out/bin/opendeck" \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libayatana-appindicator ]}
+  '';
+
   meta = {
     description = "Linux software for the Elgato Stream Deck";
     homepage = "https://github.com/nekename/OpenDeck";
