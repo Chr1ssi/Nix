@@ -56,10 +56,22 @@
 
         settings.default_session = {
           command =
-            "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-user-session";
+            "${pkgs.cage}/bin/cage -s -- ${pkgs.regreet}/bin/regreet";
 
           user = "greeter";
         };
       };
+
+      environment.etc."greetd/regreet.toml".text = ''
+        [background]
+        fit = "Cover"
+
+        [GTK]
+        application_prefer_dark_theme = true
+
+        [commands]
+        reboot = [ "systemctl", "reboot" ]
+        poweroff = [ "systemctl", "poweroff" ]
+      '';
     };
 }

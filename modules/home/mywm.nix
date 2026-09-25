@@ -9,6 +9,21 @@
       helium = pkgs.callPackage ../../packages/helium.nix { };
       opendeck = pkgs.callPackage ../../packages/opendeck.nix { };
       toml = pkgs.formats.toml { };
+      xwaylandPrimary = pkgs.writeShellApplication {
+        name = "xwayland-primary-output";
+        runtimeInputs = [ pkgs.xrandr ];
+        text = ''
+          for _ in {1..50}; do
+            if xrandr --query 2>/dev/null | grep -q '^DP-3 connected'; then
+              exec xrandr --output DP-3 --primary
+            fi
+            sleep 0.2
+          done
+
+          echo 'DP-3 wurde von XWayland nicht rechtzeitig erkannt.' >&2
+          exit 1
+        '';
+      };
     in
     {
       xdg.configFile."mywm/config.toml".source =
@@ -139,7 +154,7 @@
             After = [ "graphical-session.target" "pipewire.service" ];
           };
           Service = {
-            ExecStart = "${pkgs.easyeffects}/bin/easyeffects --service-mode";
+            ExecStart = "${pkgs.easyeffects}/bin/easyeffects --service-mode --hide-window";
             Restart = "on-failure";
             RestartSec = 2;
           };
@@ -153,7 +168,7 @@
             After = [ "graphical-session.target" ];
           };
           Service = {
-            ExecStart = "${opendeck}/bin/opendeck";
+            ExecStart = "${opendeck}/bin/opendeck --hide";
             Restart = "on-failure";
             RestartSec = 2;
           };
@@ -170,6 +185,20 @@
             ExecStart = "${pkgs.openrgb}/bin/openrgb --startminimized";
             Restart = "on-failure";
             RestartSec = 2;
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+
+        xwayland-primary-output = {
+          Unit = {
+            Description = "Mark DP-3 as the primary XWayland output";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" ];
+          };
+          Service = {
+            Type = "oneshot";
+            ExecStart = "${xwaylandPrimary}/bin/xwayland-primary-output";
+            RemainAfterExit = true;
           };
           Install.WantedBy = [ "graphical-session.target" ];
         };

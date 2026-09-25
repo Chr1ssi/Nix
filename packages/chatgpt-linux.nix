@@ -134,6 +134,7 @@ stdenv.mkDerivation rec {
   preFixup = ''
     makeWrapper "$out/lib/chatgpt/ChatGPT" "$out/bin/chatgpt" \
       --prefix PATH : ${lib.makeBinPath [ git xdg-utils ]} \
+      --add-flags "--ozone-platform=wayland" \
       "''${gappsWrapperArgs[@]}"
   '';
 
