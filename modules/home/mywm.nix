@@ -119,7 +119,25 @@
           ];
         };
 
+      # Referencing OpenDeck from a service does not link its desktop file
+      # into the user profile, so install it explicitly for application menus.
+      home.packages = [ opendeck ];
+
       systemd.user.services = {
+        easyeffects = {
+          Unit = {
+            Description = "Easy Effects audio processing";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" "pipewire.service" ];
+          };
+          Service = {
+            ExecStart = "${pkgs.easyeffects}/bin/easyeffects --service-mode";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+
         opendeck = {
           Unit = {
             Description = "OpenDeck";
