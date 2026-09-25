@@ -74,6 +74,11 @@
       services.displayManager.regreet = {
         enable = true;
 
+        iconTheme = {
+          name = "Papirus-Dark";
+          package = pkgs.papirus-icon-theme;
+        };
+
         settings = {
           GTK.application_prefer_dark_theme = true;
           appearance.greeting_msg = "Willkommen zurück!";
