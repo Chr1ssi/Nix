@@ -5,6 +5,9 @@
     { config, pkgs, ... }:
 
     let
+      chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
+      helium = pkgs.callPackage ../../packages/helium.nix { };
+      opendeck = pkgs.callPackage ../../packages/opendeck.nix { };
       toml = pkgs.formats.toml { };
     in
     {
@@ -30,17 +33,29 @@
 
           autostart = [
             [ "${pkgs.networkmanagerapplet}/bin/nm-applet" ]
+            [ "${opendeck}/bin/opendeck" ]
+            [ "${pkgs.openrgb}/bin/openrgb" "--startminimized" ]
           ];
 
           program_bindings = {
             browser = {
               keys = [ "Super+b" ];
-              command = [ "${pkgs.firefox}/bin/firefox" ];
+              command = [ "${helium}/bin/helium" ];
             };
 
             file_manager = {
-              keys = [ "Super+e" ];
+              keys = [ "Super+f" ];
               command = [ "${pkgs.nautilus}/bin/nautilus" ];
+            };
+
+            zed_editor = {
+              keys = [ "Super+e" ];
+              command = [ "${pkgs.zed-editor}/bin/zeditor" ];
+            };
+
+            chatgpt = {
+              keys = [ "Super+c" ];
+              command = [ "${chatgpt}/bin/chatgpt" ];
             };
           };
 

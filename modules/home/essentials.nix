@@ -5,6 +5,7 @@
     { pkgs, ... }:
 
     let
+      chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
     in
 
