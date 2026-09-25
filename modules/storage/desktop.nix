@@ -155,7 +155,11 @@
           "/dev/disk/by-uuid/4916da84-017d-4355-acdb-af132e025038";
 
         fsType = "ext4";
-        options = [ "nofail" ];
+        options = [
+          "nofail"
+          "x-gvfs-show"
+          "x-gvfs-name=bigdata"
+        ];
       };
 
       zramSwap = {
