@@ -7,7 +7,6 @@
     let
       chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
-      opendeck = pkgs.callPackage ../../packages/opendeck.nix { };
       toml = pkgs.formats.toml { };
       screenshot = pkgs.writeShellApplication {
         name = "mywm-screenshot";
@@ -178,7 +177,6 @@
       # Referencing OpenDeck from a service does not link its desktop file
       # into the user profile, so install it explicitly for application menus.
       home.packages = [
-        opendeck
         screenshot
       ];
 
