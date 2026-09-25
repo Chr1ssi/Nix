@@ -205,20 +205,6 @@
           Install.WantedBy = [ "graphical-session.target" ];
         };
 
-        opendeck = {
-          Unit = {
-            Description = "OpenDeck";
-            PartOf = [ "graphical-session.target" ];
-            After = [ "graphical-session.target" ];
-          };
-          Service = {
-            ExecStart = "${opendeck}/bin/opendeck --hide";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-
         openrgb = {
           Unit = {
             Description = "OpenRGB tray application";
