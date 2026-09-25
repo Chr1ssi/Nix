@@ -31,6 +31,11 @@
             limine = {
               enable = true;
               maxGenerations = 10;
+              extraEntries = ''
+                /Windows
+                protocol: efi
+                path: guid(39005b6f-42fb-4d02-b04b-d9c08f7aacb3):/EFI/Microsoft/Boot/bootmgfw.efi
+              '';
             };
 
             efi.canTouchEfiVariables = true;
