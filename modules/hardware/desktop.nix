@@ -10,11 +10,9 @@
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-      # Keep the text greeter on the primary display at its native resolution.
+      # Request the primary display native console resolution without disabling other outputs.
       boot.kernelParams = [
         "video=DP-3:2560x1440"
-        "video=DP-1:d"
-        "video=HDMI-A-1:d"
       ];
 
       # Storage / USB required during early boot.
