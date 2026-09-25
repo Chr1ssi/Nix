@@ -6,7 +6,9 @@
   autoPatchelfHook,
   makeWrapper,
 
+  cacert,
   glib,
+  glib-networking,
   gtk3,
   webkitgtk_4_1,
   libsoup_3,
@@ -65,8 +67,12 @@ stdenv.mkDerivation rec {
     # WebKitGTK 2.52 collapses OpenDeck's flex-contained canvases to their
     # borders on the native Wayland backend. The X11 backend renders the
     # 5x3 key grid at its intended size under XWayland.
+    # WebKit loads the HTTPS plugin catalogues through GIO/libsoup, so expose
+    # both the TLS backend and the CA bundle explicitly on NixOS.
     wrapProgram "$out/bin/opendeck" \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libayatana-appindicator ]} \
+      --prefix GIO_EXTRA_MODULES : ${glib-networking}/lib/gio/modules \
+      --set-default SSL_CERT_FILE ${cacert}/etc/ssl/certs/ca-bundle.crt \
       --set-default GDK_BACKEND x11
   '';
 
