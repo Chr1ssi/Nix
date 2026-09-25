@@ -9,6 +9,37 @@
       helium = pkgs.callPackage ../../packages/helium.nix { };
       opendeck = pkgs.callPackage ../../packages/opendeck.nix { };
       toml = pkgs.formats.toml { };
+      screenshot = pkgs.writeShellApplication {
+        name = "mywm-screenshot";
+        runtimeInputs = with pkgs; [
+          grim
+          libnotify
+          slurp
+          wl-clipboard
+        ];
+        text = ''
+          screenshot_dir="''${XDG_PICTURES_DIR:-$HOME/Pictures}/Screenshots"
+          mkdir -p "$screenshot_dir"
+          screenshot="$screenshot_dir/$(date +'%Y-%m-%d_%H-%M-%S').png"
+
+          case "''${1:-full}" in
+            full)
+              grim "$screenshot"
+              ;;
+            region)
+              selection=$(slurp) || exit 0
+              grim -g "$selection" "$screenshot"
+              ;;
+            *)
+              echo "Verwendung: mywm-screenshot [full|region]" >&2
+              exit 2
+              ;;
+          esac
+
+          wl-copy --type image/png < "$screenshot"
+          notify-send "Screenshot gespeichert" "$screenshot"
+        '';
+      };
       xwaylandPrimary = pkgs.writeShellApplication {
         name = "xwayland-primary-output";
         runtimeInputs = [ pkgs.xrandr ];
@@ -69,6 +100,16 @@
             chatgpt = {
               keys = [ "Super+c" ];
               command = [ "${chatgpt}/bin/chatgpt" ];
+            };
+
+            screenshot_full = {
+              keys = [ "Super+Ctrl+Shift+p" ];
+              command = [ "${screenshot}/bin/mywm-screenshot" "full" ];
+            };
+
+            screenshot_region = {
+              keys = [ "Super+Shift+p" ];
+              command = [ "${screenshot}/bin/mywm-screenshot" "region" ];
             };
           };
 
@@ -136,7 +177,10 @@
 
       # Referencing OpenDeck from a service does not link its desktop file
       # into the user profile, so install it explicitly for application menus.
-      home.packages = [ opendeck ];
+      home.packages = [
+        opendeck
+        screenshot
+      ];
 
       systemd.user.targets.mywm-session.Unit = {
         Description = "mywm compositor session";
