@@ -1,10 +1,49 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   flake.modules.homeManager.niri =
     { pkgs, ... }:
+
+    let
+      chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
+      helium = pkgs.callPackage ../../packages/helium.nix { };
+      mywm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    in
     {
+      home.packages = [ mywm ];
+
       xdg.configFile."niri/config.kdl".text = ''
+        output "HDMI-A-1" {
+          mode "2560x1080@60"
+          scale 1
+          transform "normal"
+          position x=0 y=0
+        }
+
+        output "DP-3" {
+          mode "2560x1440@143.97"
+          scale 1
+          transform "normal"
+          position x=0 y=1080
+        }
+
+        output "DP-1" {
+          mode "2560x1440@59.95"
+          scale 1
+          transform "270"
+          position x=2560 y=0
+        }
+
+        workspace "1" { open-on-output "DP-3"; }
+        workspace "2" { open-on-output "DP-3"; }
+        workspace "3" { open-on-output "DP-3"; }
+        workspace "4" { open-on-output "HDMI-A-1"; }
+        workspace "5" { open-on-output "HDMI-A-1"; }
+        workspace "6" { open-on-output "HDMI-A-1"; }
+        workspace "7" { open-on-output "DP-1"; }
+        workspace "8" { open-on-output "DP-1"; }
+        workspace "9" { open-on-output "DP-1"; }
+
         input {
           keyboard {
             xkb {
@@ -40,15 +79,55 @@
 
         prefer-no-csd
 
-        spawn-at-startup "${pkgs.dunst}/bin/dunst"
+        spawn-at-startup "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
+        spawn-at-startup "${mywm}/bin/mywm" "--autostart"
+        spawn-at-startup "${mywm}/bin/mywm" "--wallpaper"
+        spawn-at-startup "${mywm}/bin/mywm" "--bar"
+        spawn-at-startup "${mywm}/bin/mywm" "--idle"
+        spawn-at-startup "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
 
         hotkey-overlay {
           skip-at-startup
         }
 
         binds {
+          Mod+Space {
+            spawn "${mywm}/bin/mywm" "--launcher";
+          }
+
+          Mod+Escape {
+            spawn "${mywm}/bin/mywm" "--lock";
+          }
+
+          Mod+Shift+W {
+            spawn "${mywm}/bin/mywm" "--wallpaper-picker";
+          }
           Mod+Return {
             spawn "${pkgs.kitty}/bin/kitty";
+          }
+
+          Mod+B {
+            spawn "${helium}/bin/helium";
+          }
+
+          Mod+F {
+            spawn "${pkgs.nemo}/bin/nemo";
+          }
+
+          Mod+E {
+            spawn "${pkgs.zed-editor}/bin/zeditor";
+          }
+
+          Mod+C {
+            spawn "${chatgpt}/bin/chatgpt";
+          }
+
+          Mod+Ctrl+Shift+P {
+            screenshot-screen;
+          }
+
+          Mod+Shift+P {
+            screenshot;
           }
 
           Mod+Q {
@@ -88,46 +167,78 @@
           }
 
           Mod+1 {
-            focus-workspace 1;
+            focus-workspace "1";
           }
 
           Mod+2 {
-            focus-workspace 2;
+            focus-workspace "2";
           }
 
           Mod+3 {
-            focus-workspace 3;
+            focus-workspace "3";
           }
 
           Mod+4 {
-            focus-workspace 4;
+            focus-workspace "4";
           }
 
           Mod+5 {
-            focus-workspace 5;
+            focus-workspace "5";
+          }
+
+          Mod+6 {
+            focus-workspace "6";
+          }
+
+          Mod+7 {
+            focus-workspace "7";
+          }
+
+          Mod+8 {
+            focus-workspace "8";
+          }
+
+          Mod+9 {
+            focus-workspace "9";
           }
 
           Mod+Shift+1 {
-            move-column-to-workspace 1;
+            move-column-to-workspace "1";
           }
 
           Mod+Shift+2 {
-            move-column-to-workspace 2;
+            move-column-to-workspace "2";
           }
 
           Mod+Shift+3 {
-            move-column-to-workspace 3;
+            move-column-to-workspace "3";
           }
 
           Mod+Shift+4 {
-            move-column-to-workspace 4;
+            move-column-to-workspace "4";
           }
 
           Mod+Shift+5 {
-            move-column-to-workspace 5;
+            move-column-to-workspace "5";
           }
 
-          Mod+F {
+          Mod+Shift+6 {
+            move-column-to-workspace "6";
+          }
+
+          Mod+Shift+7 {
+            move-column-to-workspace "7";
+          }
+
+          Mod+Shift+8 {
+            move-column-to-workspace "8";
+          }
+
+          Mod+Shift+9 {
+            move-column-to-workspace "9";
+          }
+
+          Mod+M {
             maximize-column;
           }
 
