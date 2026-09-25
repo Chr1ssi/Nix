@@ -4,15 +4,7 @@
   flake.modules.nixos.desktop =
     { pkgs, ... }:
 
-    #let
-    #  opendeck = pkgs.callPackage ../../packages/opendeck.nix { };
-    #in
-
     {
-
-      #services.udev.packages = [
-      #  opendeck
-      #];
 
       environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
