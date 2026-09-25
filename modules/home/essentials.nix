@@ -71,7 +71,7 @@
 
       home.packages = with pkgs; [
         easyeffects
-        nautilus
+        nemo
         mpv
         imv
         pavucontrol
