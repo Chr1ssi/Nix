@@ -62,8 +62,12 @@ stdenv.mkDerivation rec {
   postFixup = ''
     # OpenDeck loads AppIndicator with dlopen, so autoPatchelf cannot discover
     # it and the library must be exposed explicitly at runtime.
+    # WebKitGTK 2.52 collapses OpenDeck's flex-contained canvases to their
+    # borders on the native Wayland backend. The X11 backend renders the
+    # 5x3 key grid at its intended size under XWayland.
     wrapProgram "$out/bin/opendeck" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libayatana-appindicator ]}
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libayatana-appindicator ]} \
+      --set-default GDK_BACKEND x11
   '';
 
   meta = {
