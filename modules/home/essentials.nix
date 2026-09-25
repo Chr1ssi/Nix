@@ -72,6 +72,7 @@
       home.packages = with pkgs; [
         easyeffects
         nemo
+        streamcontroller
         mpv
         imv
         pavucontrol
@@ -96,7 +97,7 @@
           "text/html" = [ "helium.desktop" ];
           "x-scheme-handler/http" = [ "helium.desktop" ];
           "x-scheme-handler/https" = [ "helium.desktop" ];
-          #"inode/directory" = [ "org.gnome.Nautilus.desktop" ];
+          "inode/directory" = [ "nemo.desktop" ];
         };
       };
     };

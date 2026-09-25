@@ -74,7 +74,7 @@ Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager
 │
 ├── packages/
 │   ├── helium.nix
-│   ├── opendeck.nix
+│   ├── chatgpt-linux.nix
 │   └── ...
 │
 ├── dotfiles/
@@ -120,8 +120,8 @@ Eigene Nix-Derivations für Software, die nicht direkt oder nicht in der gewüns
 
 Aktuell gehören dazu unter anderem:
 
+- ChatGPT Linux
 - Helium
-- OpenDeck
 
 ### `dotfiles`
 
@@ -265,27 +265,11 @@ Die Hardwareintegration erfolgt systemweit über NixOS einschließlich der benö
 
 ---
 
-## OpenDeck
+## StreamController
 
-OpenDeck wird über eine eigene Derivation bereitgestellt:
-
-```text
-packages/opendeck.nix
-```
-
-Das offizielle Debian-Paket wird von Nix heruntergeladen, entpackt und für die NixOS-Laufzeitumgebung gepatcht.
-
-Das Paket enthält zusätzlich eine generische udev-Regel für Elgato-Geräte:
-
-```udev
-SUBSYSTEM=="usb", ATTRS{idVendor}=="0fd9", TAG+="uaccess"
-```
-
-Die Regel wird über `services.udev.packages` in das NixOS-System eingebunden.
-
-Dadurch kann OpenDeck ohne Root-Rechte auf das Stream Deck zugreifen.
-
-Die bestehende OpenDeck-Konfiguration von CachyOS wird bewusst **nicht** übernommen. OpenDeck wird nach der Migration frisch eingerichtet; anschließend werden die tatsächlich benötigten Laufzeitdaten persistent gemacht.
+StreamController wird direkt aus nixpkgs installiert. Die vom Paket mitgelieferten
+udev-Regeln werden über `services.udev.packages` systemweit eingebunden, damit das
+Stream Deck ohne Root-Rechte verwendet werden kann.
 
 ---
 

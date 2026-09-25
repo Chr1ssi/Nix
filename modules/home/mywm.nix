@@ -88,7 +88,7 @@
 
             file_manager = {
               keys = [ "Super+f" ];
-              command = [ "${pkgs.nautilus}/bin/nautilus" ];
+              command = [ "${pkgs.nemo}/bin/nemo" ];
             };
 
             zed_editor = {
@@ -174,8 +174,6 @@
           ];
         };
 
-      # Referencing OpenDeck from a service does not link its desktop file
-      # into the user profile, so install it explicitly for application menus.
       home.packages = [
         screenshot
       ];
