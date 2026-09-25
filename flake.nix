@@ -27,7 +27,7 @@
 
     mywm-shell = {
       url = "github:Chr1ssi/mywm-shell";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     mywm = {

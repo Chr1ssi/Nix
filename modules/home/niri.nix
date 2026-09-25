@@ -2,15 +2,15 @@
 
 {
   flake.modules.homeManager.niri =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
 
     let
       chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
-      mywm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      shell = inputs.mywm-shell.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
-      home.packages = [ mywm ];
+      home.packages = [ shell ];
 
       xdg.configFile."niri/config.kdl".text = ''
         output "HDMI-A-1" {
@@ -43,6 +43,13 @@
         workspace "7" { open-on-output "DP-1"; }
         workspace "8" { open-on-output "DP-1"; }
         workspace "9" { open-on-output "DP-1"; }
+
+        environment {
+          MYWM_WALLPAPER_DIRECTORY "${config.home.homeDirectory}/Pictures/Wallpapers"
+          MYWM_LOCK_AFTER_SECONDS "600"
+          MYWM_MONITOR_OFF_AFTER_SECONDS "6000"
+          MYWM_TERMINAL_0 "${pkgs.kitty}/bin/kitty"
+        }
 
         input {
           keyboard {
@@ -80,10 +87,10 @@
         prefer-no-csd
 
         spawn-at-startup "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
-        spawn-at-startup "${mywm}/bin/mywm" "--autostart"
-        spawn-at-startup "${mywm}/bin/mywm" "--wallpaper"
-        spawn-at-startup "${mywm}/bin/mywm" "--bar"
-        spawn-at-startup "${mywm}/bin/mywm" "--idle"
+        spawn-at-startup "${pkgs.networkmanagerapplet}/bin/nm-applet"
+        spawn-at-startup "${shell}/bin/mywm-shell" "wallpaper"
+        spawn-at-startup "${shell}/bin/mywm-shell" "bar"
+        spawn-at-startup "${shell}/bin/mywm-shell" "idle"
         spawn-at-startup "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
 
         hotkey-overlay {
@@ -92,15 +99,15 @@
 
         binds {
           Mod+Space {
-            spawn "${mywm}/bin/mywm" "--launcher";
+            spawn "${shell}/bin/mywm-shell" "launcher";
           }
 
           Mod+Escape {
-            spawn "${mywm}/bin/mywm" "--lock";
+            spawn "${shell}/bin/mywm-shell" "lock";
           }
 
           Mod+Shift+W {
-            spawn "${mywm}/bin/mywm" "--wallpaper-picker";
+            spawn "${shell}/bin/mywm-shell" "wallpaper-picker";
           }
           Mod+Return {
             spawn "${pkgs.kitty}/bin/kitty";
