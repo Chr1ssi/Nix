@@ -65,7 +65,11 @@
       xdg.configFile."gtk-4.0/noctalia.css".source =
         ../../dotfiles/gtk-4.0/noctalia.css;
 
+      xdg.dataFile."easyeffects/input/Wave3 Clean.json".source =
+        ../../dotfiles/easyeffects/input/Wave3-Clean.json;
+
       home.packages = with pkgs; [
+        easyeffects
         nautilus
         mpv
         imv
@@ -74,6 +78,7 @@
         wl-clipboard
         libnotify
         helium
+        chatgpt
       ];
 
       xdg.enable = true;
