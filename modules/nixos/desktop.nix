@@ -5,10 +5,9 @@
     { pkgs, ... }:
     let
       greeterInit = pkgs.writeShellScript "greetd-river-init" ''
-        ${pkgs.wlr-randr}/bin/wlr-randr \
-          --output DP-3 --on --mode 2560x1440@143.97Hz --pos 0,0 --scale 1 \
-          --output DP-1 --off \
-          --output HDMI-A-1 --off
+        ${pkgs.wlr-randr}/bin/wlr-randr --output DP-3 --on --mode 2560x1440@143.973Hz --pos 0,0 --scale 1
+        ${pkgs.wlr-randr}/bin/wlr-randr --output DP-1 --off
+        ${pkgs.wlr-randr}/bin/wlr-randr --output HDMI-A-1 --off
 
         ${pkgs.river-classic}/bin/riverctl keyboard-layout de
         ${pkgs.river-classic}/bin/riverctl set-repeat 50 300
@@ -79,12 +78,74 @@
           package = pkgs.papirus-icon-theme;
         };
 
+        extraCss = ''
+          window {
+            color: #cdd6f4;
+          }
+
+          frame.background {
+            background-color: rgba(30, 30, 46, 0.94);
+            border: 2px solid #89b4fa;
+            border-radius: 0;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+            padding: 12px;
+          }
+
+          entry,
+          passwordentry,
+          combobox button {
+            background: #313244;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+            border-radius: 0;
+            min-height: 42px;
+          }
+
+          entry:focus,
+          passwordentry:focus,
+          combobox button:focus {
+            border-color: #89b4fa;
+            box-shadow: 0 0 0 1px #89b4fa;
+          }
+
+          button {
+            background: #313244;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+            border-radius: 0;
+            min-height: 38px;
+          }
+
+          button:hover {
+            background: #45475a;
+            border-color: #89b4fa;
+          }
+
+          button.suggested-action {
+            background: #89b4fa;
+            color: #1e1e2e;
+            border-color: #89b4fa;
+          }
+
+          button.destructive-action {
+            background: #313244;
+            color: #f38ba8;
+            border-color: #f38ba8;
+          }
+        '';
+
         settings = {
           GTK.application_prefer_dark_theme = true;
           appearance.greeting_msg = "Willkommen zurück!";
+          background = {
+            path = ../../wallpapers/wallhaven-1q2w63.jpg;
+            fit = "Cover";
+          };
           widget.clock = {
             format = "%a, %d. %b  %H:%M";
             resolution = "1s";
+            locale = "de_DE";
+            timezone = "Europe/Berlin";
           };
         };
       };
