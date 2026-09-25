@@ -10,11 +10,6 @@
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-      # Request the primary display native console resolution without disabling other outputs.
-      boot.kernelParams = [
-        "video=DP-3:2560x1440"
-      ];
-
       # Storage / USB required during early boot.
       boot.initrd.availableKernelModules = [
         "nvme"
