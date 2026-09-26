@@ -40,7 +40,10 @@
       services.gvfs.enable = true;
       services.udisks2.enable = true;
 
-      services.udev.packages = [ pkgs.streamcontroller ];
+      programs.streamdeck-ui = {
+        enable = true;
+        autoStart = true;
+      };
 
       services.gnome.gnome-keyring.enable = true;
       security.pam.services.greetd.enableGnomeKeyring = true;

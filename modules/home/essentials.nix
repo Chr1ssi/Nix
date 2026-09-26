@@ -77,7 +77,6 @@
       home.packages = with pkgs; [
         easyeffects
         nemo
-        streamcontroller
         mpv
         imv
         pavucontrol

@@ -265,11 +265,12 @@ Die Hardwareintegration erfolgt systemweit über NixOS einschließlich der benö
 
 ---
 
-## StreamController
+## Stream Deck
 
-StreamController wird direkt aus nixpkgs installiert. Die vom Paket mitgelieferten
-udev-Regeln werden über `services.udev.packages` systemweit eingebunden, damit das
-Stream Deck ohne Root-Rechte verwendet werden kann.
+`streamdeck-ui` wird über das NixOS-Modul installiert. Das Modul bindet die
+mitgelieferten udev-Regeln ein und startet den Controller nach dem Login ohne
+sichtbares Fenster automatisch. Die Konfigurationsoberfläche bleibt über den
+Launcher verfügbar.
 
 ---
 
