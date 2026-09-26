@@ -96,7 +96,13 @@ stdenv.mkDerivation rec {
 
     mkdir -p $out/bin
     makeWrapper $out/opt/helium/helium $out/bin/helium \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libGL libva ]}:${addDriverRunpath.driverLink}/lib"
+      --prefix LD_LIBRARY_PATH : "${
+        lib.makeLibraryPath [
+          libGL
+          libva
+        ]
+      }:${addDriverRunpath.driverLink}/lib" \
+      --add-flags "--enable-features=AcceleratedVideoDecodeLinuxGL"
 
     mkdir -p $out/share/applications
     cp helium.desktop $out/share/applications/helium.desktop
