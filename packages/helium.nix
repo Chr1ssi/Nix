@@ -3,6 +3,7 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
+  addDriverRunpath,
   makeWrapper,
 
   alsa-lib,
@@ -15,9 +16,10 @@
   glib,
   gtk3,
   libdrm,
+  libGL,
   libgbm,
+  libva,
   libxkbcommon,
-  mesa,
   nspr,
   nss,
   pango,
@@ -57,9 +59,10 @@ stdenv.mkDerivation rec {
     glib
     gtk3
     libdrm
+    libGL
     libgbm
+    libva
     libxkbcommon
-    mesa
     nspr
     nss
     pango
@@ -92,7 +95,8 @@ stdenv.mkDerivation rec {
     cp -r . $out/opt/helium/
 
     mkdir -p $out/bin
-    ln -s $out/opt/helium/helium $out/bin/helium
+    makeWrapper $out/opt/helium/helium $out/bin/helium \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libGL libva ]}:${addDriverRunpath.driverLink}/lib"
 
     mkdir -p $out/share/applications
     cp helium.desktop $out/share/applications/helium.desktop
