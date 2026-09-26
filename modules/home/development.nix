@@ -85,8 +85,8 @@
       '';
 
       home.packages = with pkgs; [
-        inputs.hermes-agent.packages.${pkgs.system}.default
-        inputs.hermes-agent.packages.${pkgs.system}.desktop
+        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop
         ripgrep
         fd
         jq
