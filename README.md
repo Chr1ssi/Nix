@@ -268,9 +268,11 @@ Die Hardwareintegration erfolgt systemweit über NixOS einschließlich der benö
 ## Stream Deck
 
 `streamdeck-ui` wird über das NixOS-Modul installiert. Das Modul bindet die
-mitgelieferten udev-Regeln ein und startet den Controller nach dem Login ohne
-sichtbares Fenster automatisch. Die Konfigurationsoberfläche bleibt über den
-Launcher verfügbar.
+mitgelieferten udev-Regeln ein. Ein Home-Manager-Systemd-Dienst startet den
+Controller zusammen mit der grafischen Sitzung ohne sichtbares Fenster; das
+funktioniert sowohl mit mywm als auch mit Niri. Die Konfigurationsoberfläche
+bleibt über den Launcher verfügbar. Die Tasten-Icons werden aus Papirus über
+stabile Pfade unter `~/.local/share/streamdeck-icons` bereitgestellt.
 
 ---
 

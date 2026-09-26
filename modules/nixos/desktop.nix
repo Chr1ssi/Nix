@@ -42,7 +42,9 @@
 
       programs.streamdeck-ui = {
         enable = true;
-        autoStart = true;
+        # mywm and Niri do not process XDG autostart entries. Home Manager
+        # starts the controller as part of graphical-session.target instead.
+        autoStart = false;
       };
 
       services.gnome.gnome-keyring.enable = true;

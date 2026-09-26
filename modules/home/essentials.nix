@@ -74,6 +74,47 @@
       xdg.dataFile."easyeffects/input/Wave3 Clean.json".source =
         ../../dotfiles/easyeffects/input/Wave3-Clean.json;
 
+      xdg.dataFile."streamdeck-icons/previous.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/media-skip-backward.svg";
+      xdg.dataFile."streamdeck-icons/play-pause.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/media-playback-start.svg";
+      xdg.dataFile."streamdeck-icons/next.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/media-skip-forward.svg";
+      xdg.dataFile."streamdeck-icons/volume-down.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/audio-volume-low.svg";
+      xdg.dataFile."streamdeck-icons/volume-up.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/audio-volume-high.svg";
+      xdg.dataFile."streamdeck-icons/vesktop.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/vesktop.svg";
+      xdg.dataFile."streamdeck-icons/helium.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/net.imput.helium.svg";
+      xdg.dataFile."streamdeck-icons/steam.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/steam.svg";
+      xdg.dataFile."streamdeck-icons/zed.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/zed.svg";
+      xdg.dataFile."streamdeck-icons/hermes.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/gnome-robots.svg";
+      xdg.dataFile."streamdeck-icons/screenshot-region.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/image-crop.svg";
+      xdg.dataFile."streamdeck-icons/screenshot-full.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/devices/camera-photo.svg";
+
+      systemd.user.services.streamdeck-ui = {
+        Unit = {
+          Description = "Stream Deck controller";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+        };
+
+        Service = {
+          ExecStart = "${pkgs.streamdeck-ui}/bin/streamdeck --no-ui";
+          Restart = "on-failure";
+          RestartSec = 2;
+        };
+
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+
       home.packages = with pkgs; [
         easyeffects
         nemo
