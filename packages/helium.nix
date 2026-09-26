@@ -104,7 +104,10 @@ stdenv.mkDerivation rec {
       }:${addDriverRunpath.driverLink}/lib" \
       --set LIBVA_DRIVER_NAME nvidia \
       --set NVD_BACKEND direct \
-      --add-flags "--enable-features=AcceleratedVideoDecodeLinuxGL"
+      --add-flags "--enable-features=AcceleratedVideoDecodeLinuxGL,VaapiOnNvidiaGPUs" \
+      --add-flags "--ignore-gpu-blocklist" \
+      --add-flags "--use-gl=angle" \
+      --add-flags "--use-angle=gl"
 
     mkdir -p $out/share/applications
     cp helium.desktop $out/share/applications/helium.desktop
