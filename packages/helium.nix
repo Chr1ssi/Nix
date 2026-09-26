@@ -102,6 +102,8 @@ stdenv.mkDerivation rec {
           libva
         ]
       }:${addDriverRunpath.driverLink}/lib" \
+      --set LIBVA_DRIVER_NAME nvidia \
+      --set NVD_BACKEND direct \
       --add-flags "--enable-features=AcceleratedVideoDecodeLinuxGL"
 
     mkdir -p $out/share/applications
