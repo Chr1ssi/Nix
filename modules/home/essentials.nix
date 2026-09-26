@@ -80,6 +80,7 @@
         mpv
         imv
         pavucontrol
+        playerctl
         networkmanagerapplet
         wl-clipboard
         libnotify
