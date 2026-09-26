@@ -256,7 +256,7 @@
       xdg.configFile."kanshi/config".text = ''
         profile desktop {
           output HDMI-A-1 enable mode 2560x1080@60Hz position 0,0 scale 1 transform normal
-          output DP-3 enable mode 2560x1440@143.97Hz position 0,1080 scale 1 transform normal
+          output DP-3 enable mode 2560x1440@143.97Hz position 0,1080 scale 1 transform normal adaptive_sync on
           output DP-1 enable mode 2560x1440@59.95Hz position 2560,0 scale 1 transform 270
         }
       '';
