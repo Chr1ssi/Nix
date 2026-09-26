@@ -14,12 +14,10 @@
 
       programs.kitty = {
         enable = true;
-        extraConfig =
-          builtins.readFile ../../dotfiles/kitty/kitty.conf;
+        extraConfig = builtins.readFile ../../dotfiles/kitty/kitty.conf;
       };
 
-      xdg.configFile."kitty/themes/noctalia.conf".source =
-        ../../dotfiles/kitty/themes/noctalia.conf;
+      xdg.configFile."kitty/themes/noctalia.conf".source = ../../dotfiles/kitty/themes/noctalia.conf;
 
       gtk = {
         enable = true;
@@ -48,11 +46,9 @@
           gtk-enable-input-feedback-sounds = 0;
         };
 
-        gtk3.extraCss =
-          builtins.readFile ../../dotfiles/gtk-3.0/gtk.css;
+        gtk3.extraCss = builtins.readFile ../../dotfiles/gtk-3.0/gtk.css;
 
-        gtk4.extraCss =
-          builtins.readFile ../../dotfiles/gtk-4.0/gtk.css;
+        gtk4.extraCss = builtins.readFile ../../dotfiles/gtk-4.0/gtk.css;
       };
 
       home.pointerCursor = {
@@ -65,11 +61,9 @@
         x11.enable = true;
       };
 
-      xdg.configFile."gtk-3.0/noctalia.css".source =
-        ../../dotfiles/gtk-3.0/noctalia.css;
+      xdg.configFile."gtk-3.0/noctalia.css".source = ../../dotfiles/gtk-3.0/noctalia.css;
 
-      xdg.configFile."gtk-4.0/noctalia.css".source =
-        ../../dotfiles/gtk-4.0/noctalia.css;
+      xdg.configFile."gtk-4.0/noctalia.css".source = ../../dotfiles/gtk-4.0/noctalia.css;
 
       xdg.dataFile."easyeffects/input/Wave3 Clean.json".source =
         ../../dotfiles/easyeffects/input/Wave3-Clean.json;
@@ -108,6 +102,22 @@
 
         Service = {
           ExecStart = "${pkgs.streamdeck-ui}/bin/streamdeck --no-ui";
+          Restart = "on-failure";
+          RestartSec = 2;
+        };
+
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+
+      systemd.user.services.network-manager-applet = {
+        Unit = {
+          Description = "NetworkManager applet";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+        };
+
+        Service = {
+          ExecStart = "${pkgs.networkmanagerapplet}/bin/nm-applet";
           Restart = "on-failure";
           RestartSec = 2;
         };

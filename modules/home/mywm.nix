@@ -93,10 +93,6 @@
           "${pkgs.kitty}/bin/kitty"
         ];
 
-        autostart = [
-          [ "${pkgs.networkmanagerapplet}/bin/nm-applet" ]
-        ];
-
         program_bindings = {
           browser = {
             keys = [ "Super+b" ];

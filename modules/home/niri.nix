@@ -92,7 +92,6 @@
         prefer-no-csd
 
         spawn-at-startup "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
-        spawn-at-startup "${pkgs.networkmanagerapplet}/bin/nm-applet"
         spawn-at-startup "${shell}/bin/mywm-shell" "wallpaper"
         spawn-at-startup "${shell}/bin/mywm-shell" "bar"
         spawn-at-startup "${shell}/bin/mywm-shell" "idle"
