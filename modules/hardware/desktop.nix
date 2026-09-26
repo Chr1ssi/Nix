@@ -10,6 +10,8 @@
       ...
     }:
     {
+      boot.kernelPackages = pkgs.linuxPackages_latest;
+
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
       ];
@@ -42,7 +44,7 @@
         modesetting.enable = true;
         open = true;
 
-        package = config.boot.kernelPackages.nvidiaPackages.stable;
+        package = config.boot.kernelPackages.nvidiaPackages.latest;
 
         nvidiaSettings = true;
       };
