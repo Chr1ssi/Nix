@@ -1,0 +1,78 @@
+{
+  "autoUpdate": true,
+  "autoUpdateNotification": true,
+  "useQuickCss": true,
+  "themeLinks": [],
+  "eagerPatches": false,
+  "enabledThemes": [],
+  "enableReactDevtools": false,
+  "frameless": false,
+  "transparent": false,
+  "winCtrlQ": false,
+  "windowsMaterial": "none",
+  "disableMinSize": false,
+  "winNativeTitleBar": false,
+  "plugins": {
+    "ChatInputButtonAPI": { "enabled": true },
+    "CommandsAPI": { "enabled": true },
+    "MessageAccessoriesAPI": { "enabled": true },
+    "MessageEventsAPI": { "enabled": true },
+    "ServerListAPI": { "enabled": true },
+    "UserSettingsAPI": { "enabled": true },
+    "BiggerStreamPreview": { "enabled": true },
+    "ClearURLs": { "enabled": true },
+    "CrashHandler": { "enabled": true },
+    "FixImagesQuality": { "enabled": true },
+    "FixYoutubeEmbeds": { "enabled": true },
+    "NoProfileThemes": { "enabled": true },
+    "OpenInApp": { "enabled": true },
+    "ReadAllNotificationsButton": { "enabled": true },
+    "RoleColorEverywhere": { "enabled": true },
+    "ShowHiddenChannels": { "enabled": true },
+    "ShowMeYourName": { "enabled": true },
+    "SilentTyping": { "enabled": true },
+    "VoiceDownload": { "enabled": true },
+    "VoiceMessages": { "enabled": true },
+    "VolumeBooster": { "enabled": true },
+    "WebKeybinds": {
+      "enabled": true,
+      "showNavigationButtons": true,
+      "overrideCommonKeybinds": true
+    },
+    "WebScreenShareFixes": { "enabled": true },
+    "WhoReacted": { "enabled": true },
+    "YoutubeAdblock": { "enabled": true },
+    "BadgeAPI": { "enabled": true },
+    "NoTrack": {
+      "enabled": true,
+      "disableAnalytics": true
+    },
+    "Settings": {
+      "enabled": true,
+      "settingsLocation": "aboveNitro",
+      "includeVencordInfoWhenCopying": true
+    },
+    "ConcatenatedComponentExtractor": { "enabled": true },
+    "ContextMenuAPI": { "enabled": true },
+    "DisableDeepLinks": { "enabled": true },
+    "NoticesAPI": { "enabled": true },
+    "SupportHelper": { "enabled": true },
+    "WebContextMenus": { "enabled": true }
+  },
+  "uiElements": {
+    "chatBarButtons": {},
+    "messagePopoverButtons": {}
+  },
+  "notifications": {
+    "timeout": 5000,
+    "position": "bottom-right",
+    "useNative": "not-focused",
+    "logLimit": 50
+  },
+  "cloud": {
+    "authenticated": false,
+    "url": "https://api.vencord.dev/",
+    "settingsSync": false,
+    "settingsSyncVersion": 1790325492654
+  }
+}

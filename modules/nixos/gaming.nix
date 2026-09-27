@@ -24,33 +24,41 @@
             vesktop
           ];
 
-          xdg.configFile."vesktop/settings.json".source =
-            ../../dotfiles/vesktop/settings.json;
+          xdg.configFile."vesktop/settings.json".source = ../../dotfiles/vesktop/settings.json;
 
-          home.activation.seedGamingConfigs =
-            lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-              run mkdir -p \
-                ${lib.escapeShellArg "${config.xdg.configHome}/MangoHud"} \
-                ${lib.escapeShellArg "${config.xdg.configHome}/goverlay"}
+          xdg.configFile."vesktop/settings/settings.json" = {
+            source = ../../dotfiles/vesktop/vencord-settings.json;
+            force = true;
+          };
 
-              if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/MangoHud/MangoHud.conf"} ]; then
-                run install -m 644 \
-                  ${../../dotfiles/MangoHud/MangoHud.conf} \
-                  ${lib.escapeShellArg "${config.xdg.configHome}/MangoHud/MangoHud.conf"}
-              fi
+          xdg.configFile."vesktop/settings/quickCss.css" = {
+            source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.stateHome}/mywm/vesktop.css";
+            force = true;
+          };
 
-              if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/blacklist.conf"} ]; then
-                run install -m 644 \
-                  ${../../dotfiles/goverlay/blacklist.conf} \
-                  ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/blacklist.conf"}
-              fi
+          home.activation.seedGamingConfigs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            run mkdir -p \
+              ${lib.escapeShellArg "${config.xdg.configHome}/MangoHud"} \
+              ${lib.escapeShellArg "${config.xdg.configHome}/goverlay"}
 
-              if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/goverlay.conf"} ]; then
-                run install -m 644 \
-                  ${../../dotfiles/goverlay/goverlay.conf} \
-                  ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/goverlay.conf"}
-              fi
-            '';
+            if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/MangoHud/MangoHud.conf"} ]; then
+              run install -m 644 \
+                ${../../dotfiles/MangoHud/MangoHud.conf} \
+                ${lib.escapeShellArg "${config.xdg.configHome}/MangoHud/MangoHud.conf"}
+            fi
+
+            if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/blacklist.conf"} ]; then
+              run install -m 644 \
+                ${../../dotfiles/goverlay/blacklist.conf} \
+                ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/blacklist.conf"}
+            fi
+
+            if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/goverlay.conf"} ]; then
+              run install -m 644 \
+                ${../../dotfiles/goverlay/goverlay.conf} \
+                ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/goverlay.conf"}
+            fi
+          '';
         };
     };
 }
