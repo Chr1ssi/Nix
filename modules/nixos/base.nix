@@ -51,6 +51,19 @@
         unzip
       ];
 
+      # Helium uses Chromium's Linux policy directory. Keep the extensions
+      # installed for every Helium profile while still letting them receive
+      # updates from the Chrome Web Store (proxied anonymously by Helium).
+      environment.etc."chromium/policies/managed/helium-extensions.json".text = builtins.toJSON {
+        ExtensionInstallForcelist = map (id: "${id};https://clients2.google.com/service/update2/crx") [
+          "anbbfkflfipbnmkgndpbdmjphdkknnpb" # Auto HD/Automatic 4K for YouTube
+          "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
+          "gebbhagfogifgggkldgodflihgfeippi" # Return YouTube Dislike
+          "nngceckbapebfimnlniiiahkandclblb" # Bitwarden Password Manager
+          "omkfmpieigblcllmkgbflkikinpkodlk" # enhanced-h264ify
+        ];
+      };
+
       users.users.chris = {
         isNormalUser = true;
 

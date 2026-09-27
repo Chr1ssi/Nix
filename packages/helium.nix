@@ -5,6 +5,7 @@
   autoPatchelfHook,
   addDriverRunpath,
   makeWrapper,
+  writeText,
 
   alsa-lib,
   at-spi2-atk,
@@ -34,6 +35,17 @@
   libxcb,
 }:
 
+let
+  initialPreferences = writeText "helium-initial-preferences.json" (
+    builtins.toJSON {
+      browser.theme = {
+        # Match the currently selected dark grayscale Helium theme.
+        color_scheme2 = 2;
+        is_grayscale2 = true;
+      };
+    }
+  );
+in
 stdenv.mkDerivation rec {
   pname = "helium";
   version = "0.17.2.1";
@@ -93,6 +105,7 @@ stdenv.mkDerivation rec {
 
     mkdir -p $out/opt/helium
     cp -r . $out/opt/helium/
+    cp ${initialPreferences} $out/opt/helium/initial_preferences
 
     mkdir -p $out/bin
     makeWrapper $out/opt/helium/helium $out/bin/helium \
