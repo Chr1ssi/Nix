@@ -6,6 +6,21 @@ Das Repository dient als zentrale Definition meiner Linux- und macOS-Systeme. Sy
 
 Der Desktop basiert auf meinem eigenen Wayland-Setup mit **River**, **mywm** und **Quickshell**.
 
+### iCloud-Kalender
+
+Der Desktop synchronisiert iCloud-Kalender alle fünf Minuten mit `vdirsyncer`.
+`khal` stellt die Kalender-App bereit; Datum und Uhrzeit in der Quickshell-Bar
+öffnen zusätzlich eine Monats- und Terminübersicht. Nach dem ersten Rebuild wird
+das Konto einmalig eingerichtet:
+
+```sh
+mywm-calendar-setup
+```
+
+Der Befehl erwartet eine Apple-ID und ein app-spezifisches Passwort. Beide
+werden im GNOME-Keyring gespeichert und nicht in die Nix-Konfiguration
+geschrieben.
+
 ## Ziele
 
 Das Setup verfolgt einige grundlegende Prinzipien:

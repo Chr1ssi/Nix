@@ -55,6 +55,7 @@
               config.flake.modules.homeManager.fish
               config.flake.modules.homeManager.starship
               config.flake.modules.homeManager.development
+              config.flake.modules.homeManager.calendar
 
               config.flake.modules.homeManager.mywm
               config.flake.modules.homeManager.niri
