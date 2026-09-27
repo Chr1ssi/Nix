@@ -18,10 +18,23 @@
             events)
               exec python3 - "''${2:-31d}" <<'PY'
           import json
+          import os
           import subprocess
           import sys
+          from pathlib import Path
 
           separator = "\x1f"
+          calendar_root = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "calendars/icloud"
+          colors = {}
+          if calendar_root.is_dir():
+              for directory in calendar_root.iterdir():
+                  try:
+                      name = (directory / "displayname").read_text().strip()
+                      color = (directory / "color").read_text().strip()
+                  except OSError:
+                      continue
+                  if name and color:
+                      colors[name] = color
           result = subprocess.run(
               [
                   "khal", "list", "--day-format", "", "--format",
@@ -37,7 +50,9 @@
               fields = line.split(separator)
               if len(fields) != 5:
                   continue
-              events.append(dict(zip(("start", "end", "title", "location", "calendar"), fields)))
+              event = dict(zip(("start", "end", "title", "location", "calendar"), fields))
+              event["color"] = colors.get(event["calendar"], "")
+              events.append(event)
           print(json.dumps(events, ensure_ascii=False))
           PY
               ;;
@@ -97,10 +112,10 @@
         enable = true;
         locale = {
           dateformat = "%d.%m.%Y";
-          longdateformat = "%A, %d. %B %Y";
+          longdateformat = "%A %d. %B %Y";
           timeformat = "%H:%M";
           datetimeformat = "%d.%m.%Y %H:%M";
-          longdatetimeformat = "%A, %d. %B %Y %H:%M";
+          longdatetimeformat = "%A %d. %B %Y %H:%M";
           firstweekday = 0;
           weeknumbers = "left";
         };
@@ -120,6 +135,7 @@
         basePath = "${config.xdg.dataHome}/calendars";
         accounts.icloud = {
           primary = true;
+          primaryCollection = "Privat";
           local = {
             path = calendarDirectory;
             type = "filesystem";
@@ -166,6 +182,15 @@
         exec = "${pkgs.kitty}/bin/kitty --class mywm-calendar --title Kalender ${calendar}/bin/mywm-calendar app";
         categories = [ "Office" "Calendar" ];
         mimeType = [ "text/calendar" ];
+      };
+
+      # khal ships its own terminal-only launcher. Keep the tailored entry
+      # above as the single visible calendar application.
+      xdg.desktopEntries.khal = {
+        name = "ikhal";
+        exec = "ikhal";
+        terminal = true;
+        noDisplay = true;
       };
 
       systemd.user.services.vdirsyncer.Unit = {
