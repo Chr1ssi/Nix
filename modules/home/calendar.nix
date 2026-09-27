@@ -9,22 +9,28 @@
 
       calendar = pkgs.writeShellApplication {
         name = "mywm-calendar";
-        runtimeInputs = with pkgs; [ khal python3 vdirsyncer ];
+        runtimeInputs = with pkgs; [ coreutils khal python3 vdirsyncer ];
         text = ''
           case "''${1:-app}" in
             app)
               exec khal interactive
               ;;
             events)
-              exec python3 - "''${2:-31d}" <<'PY'
+              exec python3 - "''${2:-today}" "''${3:-31d}" <<'PY'
+          from datetime import datetime
           import json
           import os
           import subprocess
           import sys
           from pathlib import Path
 
-          separator = "\x1f"
           calendar_root = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "calendars/icloud"
+          def khal_date(value):
+              try:
+                  return datetime.strptime(value, "%Y-%m-%d").strftime("%d.%m.%Y")
+              except ValueError:
+                  return value
+
           colors = {}
           if calendar_root.is_dir():
               for directory in calendar_root.iterdir():
@@ -37,9 +43,9 @@
                       colors[name] = color
           result = subprocess.run(
               [
-                  "khal", "list", "--day-format", "", "--format",
-                  separator.join(("{start-long}", "{end-long}", "{title}", "{location}", "{calendar}")),
-                  "today", sys.argv[1],
+                  "khal", "list", "--json", "start", "--json", "end",
+                  "--json", "title", "--json", "location", "--json", "calendar",
+                  khal_date(sys.argv[1]), khal_date(sys.argv[2]),
               ],
               check=False,
               capture_output=True,
@@ -47,20 +53,72 @@
           )
           events = []
           for line in result.stdout.splitlines():
-              fields = line.split(separator)
-              if len(fields) != 5:
+              try:
+                  day_events = json.loads(line)
+              except json.JSONDecodeError:
                   continue
-              event = dict(zip(("start", "end", "title", "location", "calendar"), fields))
-              event["color"] = colors.get(event["calendar"], "")
-              events.append(event)
+              for event in day_events:
+                  try:
+                      start = datetime.strptime(event["start"], "%d.%m.%Y %H:%M")
+                      end = datetime.strptime(event["end"], "%d.%m.%Y %H:%M")
+                      all_day = False
+                  except (KeyError, ValueError):
+                      try:
+                          start = datetime.strptime(event["start"], "%d.%m.%Y")
+                          end = datetime.strptime(event["end"], "%d.%m.%Y")
+                          all_day = True
+                      except (KeyError, ValueError):
+                          continue
+                  event["startDate"] = start.strftime("%Y-%m-%d")
+                  event["endDate"] = end.strftime("%Y-%m-%d")
+                  event["startTime"] = "" if all_day else start.strftime("%H:%M")
+                  event["endTime"] = "" if all_day else end.strftime("%H:%M")
+                  event["allDay"] = all_day
+                  event["color"] = colors.get(event["calendar"], "")
+                  if event not in events:
+                      events.append(event)
           print(json.dumps(events, ensure_ascii=False))
           PY
+              ;;
+            calendars)
+              exec python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "calendars/icloud"
+          calendars = []
+          if root.is_dir():
+              for directory in root.iterdir():
+                  try:
+                      name = (directory / "displayname").read_text().strip()
+                      color = (directory / "color").read_text().strip()
+                  except OSError:
+                      continue
+                  if name:
+                      calendars.append({"name": name, "color": color})
+          print(json.dumps(sorted(calendars, key=lambda item: item["name"]), ensure_ascii=False))
+          PY
+              ;;
+            create)
+              calendar_name="''${2:?Kalender fehlt}"
+              event_date="''${3:?Datum fehlt}"
+              start_time="''${4:?Startzeit fehlt}"
+              end_time="''${5:?Endzeit fehlt}"
+              title="''${6:?Titel fehlt}"
+              location="''${7:-}"
+              event_date=$(date --date="$event_date" +%d.%m.%Y)
+              khal new --calendar "$calendar_name" --location "$location" \
+                "$event_date $start_time" "$event_date $end_time" "$title"
+              if [ -z "''${MYWM_CALENDAR_SKIP_SYNC:-}" ]; then
+                vdirsyncer sync calendar_icloud
+              fi
               ;;
             sync)
               exec vdirsyncer sync calendar_icloud
               ;;
             *)
-              echo "Verwendung: mywm-calendar [app|events [ZEITRAUM]|sync]" >&2
+              echo "Verwendung: mywm-calendar [app|events [START] [ENDE]|calendars|create KALENDER DATUM START ENDE TITEL [ORT]|sync]" >&2
               exit 2
               ;;
           esac
