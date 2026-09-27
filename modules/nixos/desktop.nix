@@ -11,6 +11,8 @@
 
         ${pkgs.river-classic}/bin/riverctl keyboard-layout de
         ${pkgs.river-classic}/bin/riverctl set-repeat 50 300
+        ${pkgs.river-classic}/bin/riverctl input 'pointer-*' accel-profile flat
+        ${pkgs.river-classic}/bin/riverctl input 'pointer-*' pointer-accel 0.0
         ${pkgs.river-classic}/bin/riverctl default-layout rivertile
         ${pkgs.river-classic}/bin/rivertile -view-padding 0 -outer-padding 0 &
 
