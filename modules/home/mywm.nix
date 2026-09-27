@@ -192,14 +192,6 @@
           gaps_outer = 4;
           border_width = 2;
 
-          active_border = "#89b4fa";
-          inactive_border = "#45475a";
-
-          background = "#1e1e2e";
-          surface = "#313244";
-
-          text = "#cdd6f4";
-          muted_text = "#a6adc8";
         };
 
         rules = [

@@ -199,22 +199,6 @@
         x11.enable = true;
       };
 
-      home.activation.seedMywmTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        run mkdir -p ${lib.escapeShellArg "${config.xdg.stateHome}/mywm"}
-        if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/kitty.conf"} ]; then
-          run install -m 644 ${../../dotfiles/kitty/themes/noctalia.conf} \
-            ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/kitty.conf"}
-        fi
-        if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-3.css"} ]; then
-          run install -m 644 ${../../dotfiles/gtk-3.0/noctalia.css} \
-            ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-3.css"}
-        fi
-        if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-4.css"} ]; then
-          run install -m 644 ${../../dotfiles/gtk-4.0/noctalia.css} \
-            ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-4.css"}
-        fi
-      '';
-
       dconf.settings = {
         "org/nemo/preferences" = {
           close-device-view-on-device-eject = true;
