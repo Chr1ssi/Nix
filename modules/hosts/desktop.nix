@@ -53,6 +53,7 @@
               config.flake.modules.homeManager.essentials
               config.flake.modules.homeManager.firefox
               config.flake.modules.homeManager.fish
+              config.flake.modules.homeManager.starship
               config.flake.modules.homeManager.development
 
               config.flake.modules.homeManager.mywm

@@ -86,6 +86,7 @@
                 config.flake.modules.homeManager.mac-settings
                 config.flake.modules.homeManager.essentials-mac
                 config.flake.modules.homeManager.zsh
+                config.flake.modules.homeManager.starship
                 config.flake.modules.homeManager.development
               ];
             };

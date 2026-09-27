@@ -16,12 +16,8 @@
 
         interactiveShellInit = ''
           fastfetch
+          type -q enable_transience; and enable_transience
         '';
-      };
-
-      programs.starship = {
-        enable = true;
-        enableFishIntegration = true;
       };
 
       programs.zoxide = {
