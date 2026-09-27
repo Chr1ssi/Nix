@@ -147,10 +147,11 @@
 
       programs.kitty = {
         enable = true;
-        extraConfig = builtins.readFile ../../dotfiles/kitty/kitty.conf;
+        extraConfig = builtins.replaceStrings
+          [ "include themes/noctalia.conf" ]
+          [ "include ${config.xdg.stateHome}/mywm/kitty.conf" ]
+          (builtins.readFile ../../dotfiles/kitty/kitty.conf);
       };
-
-      xdg.configFile."kitty/themes/noctalia.conf".source = ../../dotfiles/kitty/themes/noctalia.conf;
 
       gtk = {
         enable = true;
@@ -179,9 +180,13 @@
           gtk-enable-input-feedback-sounds = 0;
         };
 
-        gtk3.extraCss = builtins.readFile ../../dotfiles/gtk-3.0/gtk.css;
+        gtk3.extraCss = ''
+          @import url("file://${config.xdg.stateHome}/mywm/gtk-3.css");
+        '';
 
-        gtk4.extraCss = builtins.readFile ../../dotfiles/gtk-4.0/gtk.css;
+        gtk4.extraCss = ''
+          @import url("file://${config.xdg.stateHome}/mywm/gtk-4.css");
+        '';
       };
 
       home.pointerCursor = {
@@ -194,9 +199,21 @@
         x11.enable = true;
       };
 
-      xdg.configFile."gtk-3.0/noctalia.css".source = ../../dotfiles/gtk-3.0/noctalia.css;
-
-      xdg.configFile."gtk-4.0/noctalia.css".source = ../../dotfiles/gtk-4.0/noctalia.css;
+      home.activation.seedMywmTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run mkdir -p ${lib.escapeShellArg "${config.xdg.stateHome}/mywm"}
+        if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/kitty.conf"} ]; then
+          run install -m 644 ${../../dotfiles/kitty/themes/noctalia.conf} \
+            ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/kitty.conf"}
+        fi
+        if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-3.css"} ]; then
+          run install -m 644 ${../../dotfiles/gtk-3.0/noctalia.css} \
+            ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-3.css"}
+        fi
+        if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-4.css"} ]; then
+          run install -m 644 ${../../dotfiles/gtk-4.0/noctalia.css} \
+            ${lib.escapeShellArg "${config.xdg.stateHome}/mywm/gtk-4.css"}
+        fi
+      '';
 
       dconf.settings = {
         "org/nemo/preferences" = {

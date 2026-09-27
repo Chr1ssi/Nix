@@ -1,7 +1,7 @@
- local M = {}
+local M = {}
 
 function M.setup()
-  require('base16-colorscheme').setup({
+  local fallback = {
     base00 = '#000000',
     base01 = '#111415',
     base02 = '#1a1d20',
@@ -18,27 +18,31 @@ function M.setup()
     base0D = '#91cef7',
     base0E = '#b3c9db',
     base0F = '#cfe5f8',
-  })
+  }
+  local state_home = vim.env.XDG_STATE_HOME or (vim.env.HOME .. '/.local/state')
+  local generated = loadfile(state_home .. '/mywm/nvim.lua')
+  local palette = generated and generated() or fallback
+  require('base16-colorscheme').setup(palette)
 
   local hi = function(group, opts)
     vim.api.nvim_set_hl(0, group, opts)
   end
 
-  hi('TelescopeNormal',         { fg = '#e1e2e6',          bg = '#000000' })
-  hi('TelescopeBorder',         { fg = '#8a9298',             bg = '#000000' })
-  hi('TelescopePromptNormal',   { fg = '#e1e2e6',          bg = '#000000' })
-  hi('TelescopePromptBorder',   { fg = '#8a9298',             bg = '#000000' })
-  hi('TelescopePromptPrefix',   { fg = '#91cef7',             bg = '#000000' })
-  hi('TelescopePromptCounter',  { fg = '#c0c7cf',  bg = '#000000' })
-  hi('TelescopePromptTitle',    { fg = '#000000',             bg = '#91cef7' })
-  hi('TelescopePreviewTitle',   { fg = '#000000',             bg = '#b3c9db' })
-  hi('TelescopeResultsTitle',   { fg = '#000000',             bg = '#e6b6f3' })
-  hi('TelescopeSelection',      { fg = '#e1e2e6',          bg = '#1a1d20' })
-  hi('TelescopeSelectionCaret', { fg = '#91cef7',             bg = '#1a1d20' })
-  hi('TelescopeMatching',       { fg = '#91cef7',             bold = true })
+  hi('TelescopeNormal',         { fg = palette.base05, bg = palette.base00 })
+  hi('TelescopeBorder',         { fg = palette.base03, bg = palette.base00 })
+  hi('TelescopePromptNormal',   { fg = palette.base05, bg = palette.base00 })
+  hi('TelescopePromptBorder',   { fg = palette.base03, bg = palette.base00 })
+  hi('TelescopePromptPrefix',   { fg = palette.base0D, bg = palette.base00 })
+  hi('TelescopePromptCounter',  { fg = palette.base04, bg = palette.base00 })
+  hi('TelescopePromptTitle',    { fg = palette.base00, bg = palette.base0D })
+  hi('TelescopePreviewTitle',   { fg = palette.base00, bg = palette.base0A })
+  hi('TelescopeResultsTitle',   { fg = palette.base00, bg = palette.base0E })
+  hi('TelescopeSelection',      { fg = palette.base05, bg = palette.base02 })
+  hi('TelescopeSelectionCaret', { fg = palette.base0D, bg = palette.base02 })
+  hi('TelescopeMatching',       { fg = palette.base0D, bold = true })
 end
 
--- Register a signal handler for SIGUSR1 (matugen updates).
+-- Register a signal handler for SIGUSR1 (mywm theme updates).
 -- The handler re-requires this module, which re-runs the code below, so the
 -- previous handle is stopped first; otherwise handlers double on every signal.
 if _G.__matugen_signal then

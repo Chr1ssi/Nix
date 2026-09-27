@@ -213,11 +213,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790474025,
-        "narHash": "sha256-AwS0X32BAZFKI1slvI/H+yo1tEZhYeVPyXaO0SFUd6g=",
+        "lastModified": 1790515386,
+        "narHash": "sha256-4Ljz4YnzQn8c/Wc7+7o6+/vaNgcTvHapPugeUZqpQL8=",
         "owner": "Chr1ssi",
         "repo": "mywm",
-        "rev": "0fbb3f32c644feafd415f8913ae57cb5259c278a",
+        "rev": "0c6ed545a5398ab29a721edb7fe7156c60355f74",
         "type": "github"
       },
       "original": {
@@ -233,11 +233,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790478447,
-        "narHash": "sha256-egDRaVlya+/Z8CTa76rdjt0DkAXYyVmIc5jcm3IG6OE=",
+        "lastModified": 1790515365,
+        "narHash": "sha256-9oui0FPpLR4NoGGKC507cx5G+1GdU4AAQEKUSlgWfbg=",
         "owner": "Chr1ssi",
         "repo": "mywm-shell",
-        "rev": "b1453d6c76279fee350f6cc3d8b4a1ab797e7e3c",
+        "rev": "ac26cdf56b4421491d9062c9f171b0b107b8a5b3",
         "type": "github"
       },
       "original": {

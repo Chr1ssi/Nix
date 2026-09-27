@@ -8,9 +8,10 @@
       chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
       shell = inputs.mywm-shell.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      wm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
-      home.packages = [ shell ];
+      home.packages = [ shell wm ];
 
       xdg.configFile."niri/config.kdl".text = ''
         output "HDMI-A-1" {
@@ -46,6 +47,7 @@
 
         environment {
           MYWM_WALLPAPER_DIRECTORY "${config.home.homeDirectory}/Pictures/Wallpapers"
+          MYWM_THEME_HELPER "${wm}/bin/mywm"
           MYWM_LOCK_AFTER_SECONDS "600"
           MYWM_MONITOR_OFF_AFTER_SECONDS "6000"
           MYWM_TERMINAL_0 "${pkgs.kitty}/bin/kitty"
