@@ -234,6 +234,7 @@
           };
           Service = {
             ExecStart = "${pkgs.easyeffects}/bin/easyeffects --service-mode --hide-window";
+            ExecStartPost = "${pkgs.easyeffects}/bin/easyeffects --load-preset 'Wave3 Clean'";
             Restart = "on-failure";
             RestartSec = 2;
           };

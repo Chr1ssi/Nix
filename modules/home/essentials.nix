@@ -2,11 +2,144 @@
 
 {
   flake.modules.homeManager.essentials =
-    { pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
     let
       chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
+
+      streamDeckIcon = name: "${config.xdg.dataHome}/streamdeck-icons/${name}.svg";
+      streamDeckButton =
+        {
+          text,
+          icon,
+          command,
+          backgroundColor ? "#ffffff",
+        }:
+        {
+          state = 0;
+          states."0" = {
+            inherit text command;
+            icon = streamDeckIcon icon;
+            keys = "";
+            write = "";
+            brightness_change = 0;
+            switch_page = 0;
+            switch_state = 0;
+            text_vertical_align = "middle-center";
+            text_horizontal_align = "center";
+            font = "";
+            font_color = "#cdd6f4";
+            font_size = 11;
+            background_color = backgroundColor;
+          };
+        };
+      emptyStreamDeckButton = {
+        state = 0;
+        states."0" = {
+          text = "";
+          icon = "";
+          keys = "";
+          write = "";
+          command = "";
+          brightness_change = 0;
+          switch_page = 0;
+          switch_state = 0;
+          text_vertical_align = "";
+          text_horizontal_align = "";
+          font = "";
+          font_color = "";
+          font_size = 0;
+          background_color = "";
+        };
+      };
+      streamDeckConfig = pkgs.writeText "streamdeck-ui.json" (
+        builtins.toJSON {
+          state.DL22L2A34556 = {
+            buttons."0" = {
+              "0" = streamDeckButton {
+                text = "ZURÜCK";
+                icon = "previous";
+                command = "playerctl previous";
+              };
+              "1" = streamDeckButton {
+                text = "PLAY";
+                icon = "play-pause";
+                command = "playerctl play-pause";
+              };
+              "2" = streamDeckButton {
+                text = "WEITER";
+                icon = "next";
+                command = "playerctl next";
+              };
+              "3" = streamDeckButton {
+                text = "LEISER";
+                icon = "volume-down";
+                command = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+              };
+              "4" = streamDeckButton {
+                text = "LAUTER";
+                icon = "volume-up";
+                command = "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+";
+              };
+              "5" = streamDeckButton {
+                text = "VESKTOP";
+                icon = "vesktop";
+                command = "vesktop";
+                backgroundColor = "#1e1e2e";
+              };
+              "6" = streamDeckButton {
+                text = "HELIUM";
+                icon = "helium";
+                command = "helium";
+                backgroundColor = "#1e1e2e";
+              };
+              "7" = streamDeckButton {
+                text = "STEAM";
+                icon = "steam";
+                command = "steam";
+                backgroundColor = "#1e1e2e";
+              };
+              "8" = streamDeckButton {
+                text = "ZED";
+                icon = "zed";
+                command = "zeditor";
+                backgroundColor = "#1e1e2e";
+              };
+              "9" = streamDeckButton {
+                text = "HERMES";
+                icon = "hermes";
+                command = "hermes";
+                backgroundColor = "#1e1e2e";
+              };
+              "10" = streamDeckButton {
+                text = "BEREICH";
+                icon = "screenshot-region";
+                command = "mywm-screenshot region";
+              };
+              "11" = streamDeckButton {
+                text = "VOLLBILD";
+                icon = "screenshot-full";
+                command = "mywm-screenshot full";
+              };
+              "12" = emptyStreamDeckButton;
+              "13" = emptyStreamDeckButton;
+              "14" = emptyStreamDeckButton;
+            };
+            display_timeout = 0;
+            brightness = 99;
+            brightness_dimmed = 0;
+            rotation = 0;
+            page = 0;
+          };
+          streamdeck_ui_version = 2;
+        }
+      );
     in
 
     {
@@ -65,6 +198,26 @@
 
       xdg.configFile."gtk-4.0/noctalia.css".source = ../../dotfiles/gtk-4.0/noctalia.css;
 
+      dconf.settings = {
+        "org/nemo/preferences" = {
+          close-device-view-on-device-eject = true;
+          date-font-choice = "system-mono";
+          show-compact-view-icon-toolbar = false;
+          show-edit-icon-toolbar = false;
+          show-full-path-titles = true;
+          show-hidden-files = true;
+          show-image-thumbnails = "always";
+          swap-trash-delete = true;
+        };
+
+        "org/nemo/window-state" = {
+          side-pane-view = "places";
+          start-with-sidebar = true;
+        };
+
+        "org/gtk/gtk4/settings/file-chooser".show-hidden = true;
+      };
+
       xdg.dataFile."easyeffects/input/Wave3 Clean.json".source =
         ../../dotfiles/easyeffects/input/Wave3-Clean.json;
 
@@ -92,6 +245,15 @@
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/image-crop.svg";
       xdg.dataFile."streamdeck-icons/screenshot-full.svg".source =
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/devices/camera-photo.svg";
+
+      # Keep GUI edits possible, but seed the complete layout on a fresh home.
+      home.activation.seedStreamDeckConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        if [ ! -e ${lib.escapeShellArg "${config.home.homeDirectory}/.streamdeck_ui.json"} ]; then
+          run install -m 600 \
+            ${streamDeckConfig} \
+            ${lib.escapeShellArg "${config.home.homeDirectory}/.streamdeck_ui.json"}
+        fi
+      '';
 
       systemd.user.services.streamdeck-ui = {
         Unit = {

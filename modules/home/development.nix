@@ -25,6 +25,25 @@
         ];
 
         userSettings = {
+          cli_default_open_behavior = "existing_window";
+          base_keymap = "JetBrains";
+
+          project_panel.dock = "left";
+
+          telemetry = {
+            diagnostics = false;
+            metrics = false;
+            anthropic_retention = false;
+          };
+
+          session.trust_all_worktrees = true;
+
+          theme = {
+            mode = "dark";
+            light = "One Light";
+            dark = "Ayu Dark";
+          };
+
           languages.Nix.language_servers = [
             "nixd"
             "nil"
