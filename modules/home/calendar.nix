@@ -40,7 +40,10 @@
                   except OSError:
                       continue
                   if name and color:
-                      colors[name] = color
+                      # iCloud/vdirsyncer stores #RRGGBBAA, while Qt treats an
+                      # eight-digit color as #AARRGGBB. Drop the opaque alpha
+                      # channel so calendar colors remain visible in QML.
+                      colors[name] = color[:7] if color.startswith("#") and len(color) == 9 else color
           result = subprocess.run(
               [
                   "khal", "list", "--json", "start", "--json", "end",
@@ -96,7 +99,8 @@
                   except OSError:
                       continue
                   if name:
-                      calendars.append({"name": name, "color": color})
+                      qml_color = color[:7] if color.startswith("#") and len(color) == 9 else color
+                      calendars.append({"name": name, "color": qml_color})
           print(json.dumps(sorted(calendars, key=lambda item: item["name"]), ensure_ascii=False))
           PY
               ;;
