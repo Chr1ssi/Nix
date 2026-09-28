@@ -144,8 +144,8 @@
           close = [ "Super+q" ];
           exit = [ "Super+m" ];
           toggle_floating = [ "Super+v" ];
-          toggle_scratchpad = [ "Super+grave" ];
-          move_to_scratchpad = [ "Super+Shift+grave" ];
+          toggle_scratchpad = [ "Super+s" ];
+          move_to_scratchpad = [ "Super+Shift+s" ];
 
           focus_output_left = [ "Super+Alt+Left" ];
           focus_output_right = [ "Super+Alt+Right" ];
