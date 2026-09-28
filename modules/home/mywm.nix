@@ -151,10 +151,10 @@
           focus_output_right = [ "Super+Alt+Right" ];
           focus_output_up = [ "Super+Alt+Up" ];
           focus_output_down = [ "Super+Alt+Down" ];
-          move_to_output_left = [ "Super+Alt+Shift+Left" ];
-          move_to_output_right = [ "Super+Alt+Shift+Right" ];
-          move_to_output_up = [ "Super+Alt+Shift+Up" ];
-          move_to_output_down = [ "Super+Alt+Shift+Down" ];
+          move_to_output_left = [ "Super+Shift+Left" ];
+          move_to_output_right = [ "Super+Shift+Right" ];
+          move_to_output_up = [ "Super+Shift+Up" ];
+          move_to_output_down = [ "Super+Shift+Down" ];
 
           pointer_modifiers = "Super";
 
@@ -166,14 +166,8 @@
             "Super+l"
             "Super+Right"
           ];
-          move_left = [
-            "Super+Shift+h"
-            "Super+Shift+Left"
-          ];
-          move_right = [
-            "Super+Shift+l"
-            "Super+Shift+Right"
-          ];
+          move_left = [ "Super+Shift+h" ];
+          move_right = [ "Super+Shift+l" ];
 
           workspace_previous = [
             "Super+Ctrl+Left"
@@ -183,8 +177,8 @@
             "Super+Ctrl+Right"
             "Super+Ctrl+Down"
           ];
-          move_to_workspace_previous = [ "Super+Shift+Up" ];
-          move_to_workspace_next = [ "Super+Shift+Down" ];
+          move_to_workspace_previous = [ "Super+Ctrl+Shift+Up" ];
+          move_to_workspace_next = [ "Super+Ctrl+Shift+Down" ];
 
           workspace_modifiers = "Super";
           move_to_workspace_modifiers = "Super+Shift";
