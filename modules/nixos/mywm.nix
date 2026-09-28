@@ -32,7 +32,6 @@
           systemd
           coreutils
           bash
-          zenity
         ];
 
         text = ''
@@ -108,7 +107,7 @@
           chooser_type = "dmenu";
 
           chooser_cmd =
-            "${pkgs.zenity}/bin/zenity --list --title='Bildschirm oder Fenster freigeben' --column='Quelle' --width=800 --height=500";
+            "${pkgs.fuzzel}/bin/fuzzel --dmenu --prompt='Bildschirm oder Fenster freigeben: ' --width=80 --lines=12";
         };
       };
     };
