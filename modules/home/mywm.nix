@@ -144,6 +144,18 @@
           close = [ "Super+q" ];
           exit = [ "Super+m" ];
           toggle_floating = [ "Super+v" ];
+          toggle_scratchpad = [ "Super+grave" ];
+          move_to_scratchpad = [ "Super+Shift+grave" ];
+
+          focus_output_left = [ "Super+Alt+Left" ];
+          focus_output_right = [ "Super+Alt+Right" ];
+          focus_output_up = [ "Super+Alt+Up" ];
+          focus_output_down = [ "Super+Alt+Down" ];
+          move_to_output_left = [ "Super+Alt+Shift+Left" ];
+          move_to_output_right = [ "Super+Alt+Shift+Right" ];
+          move_to_output_up = [ "Super+Alt+Shift+Up" ];
+          move_to_output_down = [ "Super+Alt+Shift+Down" ];
+
           pointer_modifiers = "Super";
 
           focus_left = [
