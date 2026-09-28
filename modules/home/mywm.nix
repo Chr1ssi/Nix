@@ -64,6 +64,7 @@
           "steam_app_"
           "gamescope"
         ];
+        async_outputs = [ "DP-3" ];
 
         vrr = {
           enabled = true;
