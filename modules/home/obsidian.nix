@@ -27,6 +27,8 @@
       programs.obsidian = {
         enable = true;
 
+        defaultSettings.appearance.baseTheme = "dark";
+
         defaultSettings.communityPlugins = [
           liveSync
         ];
