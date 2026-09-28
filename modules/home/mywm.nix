@@ -57,9 +57,9 @@
     in
     {
       xdg.configFile."mywm/config.toml".source = toml.generate "mywm.toml" {
-        workspaces = 9;
+        workspaces = 4;
         float_dialogs = true;
-        gaming_workspace = 3;
+        gaming_workspace = 2;
         game_app_id_prefixes = [
           "steam_app_"
           "gamescope"
@@ -75,18 +75,9 @@
           "DP-3" = [
             1
             2
-            3
           ];
-          "HDMI-A-1" = [
-            4
-            5
-            6
-          ];
-          "DP-1" = [
-            7
-            8
-            9
-          ];
+          "HDMI-A-1" = [ 3 ];
+          "DP-1" = [ 4 ];
         };
 
         terminal = [

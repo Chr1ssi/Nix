@@ -11,7 +11,10 @@
       wm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
-      home.packages = [ shell wm ];
+      home.packages = [
+        shell
+        wm
+      ];
 
       xdg.configFile."niri/config.kdl".text = ''
         output "HDMI-A-1" {
@@ -37,13 +40,8 @@
 
         workspace "1" { open-on-output "DP-3"; }
         workspace "2" { open-on-output "DP-3"; }
-        workspace "3" { open-on-output "DP-3"; }
-        workspace "4" { open-on-output "HDMI-A-1"; }
-        workspace "5" { open-on-output "HDMI-A-1"; }
-        workspace "6" { open-on-output "HDMI-A-1"; }
-        workspace "7" { open-on-output "DP-1"; }
-        workspace "8" { open-on-output "DP-1"; }
-        workspace "9" { open-on-output "DP-1"; }
+        workspace "3" { open-on-output "HDMI-A-1"; }
+        workspace "4" { open-on-output "DP-1"; }
 
         environment {
           MYWM_WALLPAPER_DIRECTORY "${config.home.homeDirectory}/Pictures/Wallpapers"
@@ -195,26 +193,6 @@
             focus-workspace "4";
           }
 
-          Mod+5 {
-            focus-workspace "5";
-          }
-
-          Mod+6 {
-            focus-workspace "6";
-          }
-
-          Mod+7 {
-            focus-workspace "7";
-          }
-
-          Mod+8 {
-            focus-workspace "8";
-          }
-
-          Mod+9 {
-            focus-workspace "9";
-          }
-
           Mod+Shift+1 {
             move-column-to-workspace "1";
           }
@@ -229,26 +207,6 @@
 
           Mod+Shift+4 {
             move-column-to-workspace "4";
-          }
-
-          Mod+Shift+5 {
-            move-column-to-workspace "5";
-          }
-
-          Mod+Shift+6 {
-            move-column-to-workspace "6";
-          }
-
-          Mod+Shift+7 {
-            move-column-to-workspace "7";
-          }
-
-          Mod+Shift+8 {
-            move-column-to-workspace "8";
-          }
-
-          Mod+Shift+9 {
-            move-column-to-workspace "9";
           }
 
           Mod+M {
