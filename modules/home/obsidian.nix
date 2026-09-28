@@ -26,6 +26,7 @@
     {
       programs.obsidian = {
         enable = true;
+        package = if pkgs.stdenv.hostPlatform.isDarwin then null else pkgs.obsidian;
 
         defaultSettings.appearance.baseTheme = "dark";
 

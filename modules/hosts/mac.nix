@@ -35,6 +35,7 @@
           };
 
           casks = [
+            "obsidian"
             "the-unarchiver"
             "font-jetbrains-mono-nerd-font"
             "homebrew-app"
