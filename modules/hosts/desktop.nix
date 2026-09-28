@@ -19,7 +19,6 @@
 
       config.flake.modules.nixos.desktop
       config.flake.modules.nixos.mywm
-      # config.flake.modules.nixos.niri
 
       config.flake.modules.nixos.development
       config.flake.modules.nixos.gaming
@@ -59,7 +58,6 @@
               config.flake.modules.homeManager.obsidian
 
               config.flake.modules.homeManager.mywm
-              # config.flake.modules.homeManager.niri
             ];
 
             home.packages = [

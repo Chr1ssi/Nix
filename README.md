@@ -284,8 +284,7 @@ Die Hardwareintegration erfolgt systemweit über NixOS einschließlich der benö
 
 `streamdeck-ui` wird über das NixOS-Modul installiert. Das Modul bindet die
 mitgelieferten udev-Regeln ein. Ein Home-Manager-Systemd-Dienst startet den
-Controller zusammen mit der grafischen Sitzung ohne sichtbares Fenster; das
-funktioniert sowohl mit mywm als auch mit Niri. Die Konfigurationsoberfläche
+Controller zusammen mit der grafischen Sitzung ohne sichtbares Fenster. Die Konfigurationsoberfläche
 bleibt über den Launcher verfügbar. Die Tasten-Icons werden aus Papirus über
 stabile Pfade unter `~/.local/share/streamdeck-icons` bereitgestellt.
 

@@ -44,7 +44,7 @@
 
       programs.streamdeck-ui = {
         enable = true;
-        # mywm and Niri do not process XDG autostart entries. Home Manager
+        # mywm does not process XDG autostart entries. Home Manager
         # starts the controller as part of graphical-session.target instead.
         autoStart = false;
       };
