@@ -90,23 +90,20 @@ in
     in
     {
       xdg.configFile."mywm/config.toml".source = toml.generate "mywm.toml" {
-        workspaces = 4;
         float_dialogs = true;
-        gaming_workspace = 2;
+        # One fixed workspace per monitor, numbered in this order (main = 1, top = 2,
+        # side = 3). Extra workspaces and the gaming workspace are created on demand.
+        workspace_outputs = [
+          monitors.main
+          monitors.top
+          monitors.side
+        ];
+        gaming_output = monitors.main;
         game_app_id_prefixes = [
           "steam_app_"
           "gamescope"
         ];
         async_outputs = [ monitors.main ];
-
-        workspace_outputs = {
-          ${monitors.main} = [
-            1
-            2
-          ];
-          ${monitors.top} = [ 3 ];
-          ${monitors.side} = [ 4 ];
-        };
 
         terminal = [
           "${pkgs.kitty}/bin/kitty"
