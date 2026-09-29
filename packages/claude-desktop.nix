@@ -121,6 +121,8 @@ stdenv.mkDerivation rec {
   preFixup = ''
     makeWrapper "$out/lib/claude-desktop/claude-desktop" "$out/bin/claude-desktop" \
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]} \
+      --add-flags "--password-store=gnome-libsecret" \
+      --add-flags "--ozone-platform=x11" \
       "''${gappsWrapperArgs[@]}"
   '';
 

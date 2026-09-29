@@ -120,7 +120,8 @@ stdenv.mkDerivation rec {
       --add-flags "--enable-features=AcceleratedVideoDecodeLinuxGL,VaapiOnNvidiaGPUs" \
       --add-flags "--ignore-gpu-blocklist" \
       --add-flags "--use-gl=angle" \
-      --add-flags "--use-angle=gl"
+      --add-flags "--use-angle=gl" \
+      --add-flags "--password-store=gnome-libsecret"
 
     mkdir -p $out/share/applications
     cp helium.desktop $out/share/applications/helium.desktop

@@ -139,6 +139,7 @@ stdenv.mkDerivation rec {
           xdg-utils
         ]
       } \
+      --add-flags "--password-store=gnome-libsecret" \
       "''${gappsWrapperArgs[@]}"
   '';
 

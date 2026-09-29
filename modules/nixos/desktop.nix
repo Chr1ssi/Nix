@@ -1,13 +1,16 @@
-{ ... }:
+{ config, ... }:
 
+let
+  monitors = config.flake.monitors;
+in
 {
   flake.modules.nixos.desktop =
     { pkgs, ... }:
     let
       greeterInit = pkgs.writeShellScript "greetd-river-init" ''
-        ${pkgs.wlr-randr}/bin/wlr-randr --output DP-3 --on --mode 2560x1440@143.973Hz --pos 0,0 --scale 1
-        ${pkgs.wlr-randr}/bin/wlr-randr --output DP-1 --off
-        ${pkgs.wlr-randr}/bin/wlr-randr --output HDMI-A-1 --off
+        ${pkgs.wlr-randr}/bin/wlr-randr --output ${monitors.main} --on --mode 2560x1440@143.973Hz --pos 0,0 --scale 1
+        ${pkgs.wlr-randr}/bin/wlr-randr --output ${monitors.side} --off
+        ${pkgs.wlr-randr}/bin/wlr-randr --output ${monitors.top} --off
 
         ${pkgs.river-classic}/bin/riverctl keyboard-layout de
         ${pkgs.river-classic}/bin/riverctl set-repeat 50 300
@@ -70,8 +73,7 @@
         enable = true;
 
         settings.default_session = {
-          command =
-            "${pkgs.dbus}/bin/dbus-run-session ${pkgs.river-classic}/bin/river -no-xwayland -c ${greeterInit}";
+          command = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.river-classic}/bin/river -no-xwayland -c ${greeterInit}";
 
           user = "greeter";
         };

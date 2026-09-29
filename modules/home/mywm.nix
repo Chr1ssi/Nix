@@ -1,5 +1,8 @@
-{ ... }:
+{ config, ... }:
 
+let
+  monitors = config.flake.monitors;
+in
 {
   flake.modules.homeManager.mywm =
     { config, pkgs, ... }:
@@ -41,7 +44,10 @@
       };
       loadEasyEffectsPreset = pkgs.writeShellApplication {
         name = "load-easyeffects-preset";
-        runtimeInputs = with pkgs; [ coreutils easyeffects ];
+        runtimeInputs = with pkgs; [
+          coreutils
+          easyeffects
+        ];
         text = ''
           for _ in {1..100}; do
             if [[ -S "''${XDG_RUNTIME_DIR}/EasyEffectsServer" ]]; then
@@ -71,13 +77,13 @@
         runtimeInputs = [ pkgs.xrandr ];
         text = ''
           for _ in {1..50}; do
-            if xrandr --query 2>/dev/null | grep -q '^DP-3 connected'; then
-              exec xrandr --output DP-3 --primary
+            if xrandr --query 2>/dev/null | grep -q '^${monitors.main} connected'; then
+              exec xrandr --output ${monitors.main} --primary
             fi
             sleep 0.2
           done
 
-          echo 'DP-3 wurde von XWayland nicht rechtzeitig erkannt.' >&2
+          echo '${monitors.main} wurde von XWayland nicht rechtzeitig erkannt.' >&2
           exit 1
         '';
       };
@@ -91,15 +97,15 @@
           "steam_app_"
           "gamescope"
         ];
-        async_outputs = [ "DP-3" ];
+        async_outputs = [ monitors.main ];
 
         workspace_outputs = {
-          "DP-3" = [
+          ${monitors.main} = [
             1
             2
           ];
-          "HDMI-A-1" = [ 3 ];
-          "DP-1" = [ 4 ];
+          ${monitors.top} = [ 3 ];
+          ${monitors.side} = [ 4 ];
         };
 
         terminal = [
@@ -254,7 +260,7 @@
 
         xwayland-primary-output = {
           Unit = {
-            Description = "Mark DP-3 as the primary XWayland output";
+            Description = "Mark the main output as the primary XWayland output";
             PartOf = [ "graphical-session.target" ];
             After = [ "graphical-session.target" ];
           };
@@ -269,9 +275,9 @@
 
       xdg.configFile."kanshi/config".text = ''
         profile desktop {
-          output HDMI-A-1 enable mode 2560x1080@60Hz position 0,0 scale 1 transform normal
-          output DP-3 enable mode 2560x1440@143.97Hz position 0,1080 scale 1 transform normal adaptive_sync on
-          output DP-1 enable mode 2560x1440@59.95Hz position 2560,0 scale 1 transform 270
+          output ${monitors.top} enable mode 2560x1080@60Hz position 0,0 scale 1 transform normal
+          output ${monitors.main} enable mode 2560x1440@143.97Hz position 0,1080 scale 1 transform normal adaptive_sync on
+          output ${monitors.side} enable mode 2560x1440@59.95Hz position 2560,0 scale 1 transform 270
         }
       '';
 

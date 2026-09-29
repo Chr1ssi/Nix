@@ -190,6 +190,12 @@
         '';
       };
 
+      qt = {
+        enable = true;
+        platformTheme.name = "adwaita";
+        style.name = "adwaita-dark";
+      };
+
       home.pointerCursor = {
         enable = true;
         name = "Bibata-Modern-Ice";
@@ -201,6 +207,10 @@
       };
 
       dconf.settings = {
+        # Read by xdg-desktop-portal-gtk, so Electron/Chromium, libadwaita
+        # and Firefox all pick up dark mode.
+        "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+
         "org/nemo/preferences" = {
           close-device-view-on-device-eject = true;
           date-font-choice = "system-mono";
