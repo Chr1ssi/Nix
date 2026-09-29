@@ -1,15 +1,48 @@
-{ config, ... }:
+{ config, inputs, ... }:
 
 let
   monitors = config.monitors;
 in
 {
+  flake.modules.nixos.mywm =
+    { pkgs, ... }:
+    {
+      imports = [ inputs.mywm.nixosModules.default ];
+
+      home-manager.sharedModules = [ config.flake.modules.homeManager.mywm ];
+
+      programs.mywm = {
+        enable = true;
+        greeterDirectory = "/persist/mywm-greeter";
+      };
+
+      xdg.portal = {
+        config.river."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+
+        wlr.settings.screencast = {
+          max_fps = 60;
+
+          chooser_cmd = "${pkgs.fuzzel}/bin/fuzzel --dmenu --prompt='Bildschirm oder Fenster freigeben: ' --font='JetBrainsMono Nerd Font:size=12' --width=80 --lines=12 --minimal-lines --inner-pad=8 --background-color=1e1e2eff --text-color=cdd6f4ff --prompt-color=89b4faff --match-color=f5c2e7ff --selection-color=313244ff --selection-text-color=cdd6f4ff --selection-match-color=f5c2e7ff --border-width=2 --border-radius=0 --border-color=89b4faff";
+        };
+      };
+    };
+
+  perSystem =
+    { pkgs, ... }:
+    let
+      mywm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    in
+    {
+      packages = {
+        inherit mywm;
+        default = mywm;
+      };
+    };
+
   flake.modules.homeManager.mywm =
     { config, pkgs, ... }:
 
     let
-      claude-desktop = pkgs.callPackage ../../packages/claude-desktop.nix { };
-      helium = pkgs.callPackage ../../packages/helium.nix { };
       toml = pkgs.formats.toml { };
       screenshot = pkgs.writeShellApplication {
         name = "mywm-screenshot";
@@ -40,36 +73,6 @@ in
 
           wl-copy --type image/png < "$screenshot"
           notify-send "Screenshot gespeichert" "$screenshot"
-        '';
-      };
-      loadEasyEffectsPreset = pkgs.writeShellApplication {
-        name = "load-easyeffects-preset";
-        runtimeInputs = with pkgs; [
-          coreutils
-          easyeffects
-        ];
-        text = ''
-          for _ in {1..100}; do
-            if [[ -S "''${XDG_RUNTIME_DIR}/EasyEffectsServer" ]]; then
-              break
-            fi
-            sleep 0.1
-          done
-
-          if [[ ! -S "''${XDG_RUNTIME_DIR}/EasyEffectsServer" ]]; then
-            echo "Easy Effects IPC socket did not become ready; leaving audio service running" >&2
-            exit 0
-          fi
-
-          for attempt in {1..3}; do
-            if timeout 10s easyeffects --load-preset "Wave3 Clean"; then
-              exit 0
-            fi
-            echo "Could not load Easy Effects preset (attempt $attempt/3)" >&2
-            sleep 1
-          done
-
-          echo "Giving up loading the Easy Effects preset; leaving audio service running" >&2
         '';
       };
       xwaylandPrimary = pkgs.writeShellApplication {
@@ -112,7 +115,7 @@ in
         program_bindings = {
           browser = {
             keys = [ "Super+b" ];
-            command = [ "${helium}/bin/helium" ];
+            command = [ "${pkgs.local.helium}/bin/helium" ];
           };
 
           file_manager = {
@@ -127,7 +130,7 @@ in
 
           claude = {
             keys = [ "Super+c" ];
-            command = [ "${claude-desktop}/bin/claude-desktop" ];
+            command = [ "${pkgs.local.claude-desktop}/bin/claude-desktop" ];
           };
 
           screenshot_full = {
@@ -229,24 +232,6 @@ in
       ];
 
       systemd.user.services = {
-        easyeffects = {
-          Unit = {
-            Description = "Easy Effects audio processing";
-            PartOf = [ "graphical-session.target" ];
-            After = [
-              "graphical-session.target"
-              "pipewire.service"
-            ];
-          };
-          Service = {
-            ExecStart = "${pkgs.easyeffects}/bin/easyeffects --service-mode --hide-window";
-            ExecStartPost = "${loadEasyEffectsPreset}/bin/load-easyeffects-preset";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-
         xwayland-primary-output = {
           Unit = {
             Description = "Mark the main output as the primary XWayland output";

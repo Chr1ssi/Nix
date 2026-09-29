@@ -4,7 +4,7 @@ let
   monitors = config.monitors;
 in
 {
-  flake.modules.nixos.desktop =
+  flake.modules.nixos.greeter =
     { pkgs, ... }:
     let
       greeterInit = pkgs.writeShellScript "greetd-river-init" ''
@@ -24,34 +24,6 @@ in
       '';
     in
     {
-
-      environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-      hardware.graphics.enable = true;
-
-      security.polkit.enable = true;
-      security.rtkit.enable = true;
-
-      programs.dconf.enable = true;
-
-      services.graphical-desktop.enable = true;
-
-      services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        pulse.enable = true;
-      };
-
-      services.gvfs.enable = true;
-      services.udisks2.enable = true;
-
-      programs.streamdeck-ui = {
-        enable = true;
-        # mywm does not process XDG autostart entries. Home Manager
-        # starts the controller as part of graphical-session.target instead.
-        autoStart = false;
-      };
-
       # mywm mirrors the current wallpaper and theme colors here (see
       # programs.mywm.greeterDirectory); the initial wallpaper is only a seed.
       systemd.tmpfiles.rules = [
@@ -59,22 +31,7 @@ in
         "C /persist/mywm-greeter/background 0644 chris users - ${../../wallpapers/wallhaven-1q2w63.jpg}"
       ];
 
-      services.gnome.gnome-keyring.enable = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
-
-      fonts.packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
-        noto-fonts
-        noto-fonts-color-emoji
-      ];
-
-      xdg.portal = {
-        enable = true;
-
-        extraPortals = [
-          pkgs.xdg-desktop-portal-gtk
-        ];
-      };
 
       services.greetd = {
         enable = true;

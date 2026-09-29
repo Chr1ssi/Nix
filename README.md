@@ -71,21 +71,11 @@ Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager
 ├── flake.lock
 │
 ├── modules/
-│   ├── nixos/
-│   │   ├── base.nix
-│   │   ├── desktop.nix
-│   │   ├── gaming.nix
-│   │   ├── development.nix
-│   │   └── ...
-│   │
-│   └── home/
-│       ├── essentials.nix
-│       ├── essentials-mac.nix
-│       ├── fish.nix
-│       ├── zsh.nix
-│       ├── mywm.nix
-│       ├── development.nix
-│       └── ...
+│   ├── hosts/          # desktop/, vm/, mac.nix – setzen nur Features zusammen
+│   ├── features/       # ein Feature pro Datei (NixOS-, Home-Manager- und Darwin-Teil)
+│   ├── packages/       # Overlay `pkgs.local.*` für ../packages
+│   ├── monitors.nix    # zentrale Output-Namen
+│   └── checks.nix
 │
 ├── packages/
 │   ├── helium.nix
@@ -97,41 +87,20 @@ Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager
 └── wallpapers/
 ```
 
-### `modules/nixos`
+### `modules`
 
-Systemweite NixOS-Konfiguration.
+Die Konfiguration folgt dem *dendritic pattern*: `flake-parts` und `import-tree` laden jede Datei unter `modules/` automatisch, und jede Datei registriert ihre Teile unter `flake.modules.<klasse>.<name>`.
 
-Hier befinden sich unter anderem:
-
-- Basissystem
-- Boot- und Storage-Konfiguration
-- Netzwerk
-- Desktop-Session
-- Audio
-- udev und Hardwareintegration
-- Gaming
-- Entwicklungsumgebung
-- Persistence
-
-### `modules/home`
-
-Benutzerspezifische Konfiguration über Home Manager.
-
-Dazu gehören unter anderem:
-
-- Terminal
-- Browser
-- Desktop-Anwendungen
-- MIME-Zuordnungen
-- Dotfiles
-- mywm-Konfiguration
-- Entwicklungswerkzeuge
+- **`features/`**: ein Feature pro Datei, zum Beispiel `audio`, `streamdeck`, `greeter`, `mywm`, `theming`, `terminal`, `shell`, `development`, `gaming`. Hat ein Feature sowohl einen NixOS- als auch einen Home-Manager-Teil, hängt das NixOS-Modul den Home-Manager-Teil selbst über `home-manager.sharedModules` ein. Der Host importiert dann nur `nixos.<feature>`.
+- **`hosts/`**: `desktop/` und `vm/` enthalten neben der Host-Definition auch Hardware und Storage bzw. Disko; `mac.nix` ist die nix-darwin-Konfiguration. Hosts wählen Features aus und setzen hostspezifische Werte.
+- **Shell:** `features/shell.nix` enthält `fish` (NixOS, inklusive Login-Shell) und `zsh` (macOS). Gemeinsame Aliase stehen an einer Stelle.
+- **Reine Home-Manager-Features** (`theming`, `terminal`, `file-manager`, `firefox`, `starship`, `calendar`, `obsidian`) werden vom Host direkt unter `home-manager.users.chris.imports` aufgeführt.
 
 Home Manager wird über die jeweilige NixOS- bzw. nix-darwin-Konfiguration eingebunden. Ein separater `home-manager switch` ist daher nicht notwendig.
 
 ### `packages`
 
-Eigene Nix-Derivations für Software, die nicht direkt oder nicht in der gewünschten Form aus nixpkgs verwendet wird.
+Eigene Nix-Derivations (als `pkgs.local.<name>` über `modules/packages/local.nix` verfügbar) für Software, die nicht direkt oder nicht in der gewünschten Form aus nixpkgs verwendet wird.
 
 Aktuell gehören dazu unter anderem:
 
@@ -179,7 +148,7 @@ Das Projekt übernimmt unter anderem:
 Die benutzerspezifische Konfiguration befindet sich in:
 
 ```text
-modules/home/mywm.nix
+modules/features/mywm.nix
 ```
 
 Der Anwendungscode selbst wird nicht in diesem Repository gepflegt. Das Release `v0.1.0`

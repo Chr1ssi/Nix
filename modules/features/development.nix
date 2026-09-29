@@ -1,6 +1,15 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 
 {
+  flake.modules.nixos.development = {
+    nixpkgs.config.allowUnfree = true;
+
+    # LazyVim/Mason downloads conventional Linux binaries.
+    programs.nix-ld.enable = true;
+
+    home-manager.sharedModules = [ config.flake.modules.homeManager.development ];
+  };
+
   flake.modules.homeManager.development =
     {
       config,
@@ -9,6 +18,8 @@
       ...
     }:
     {
+      programs.git.enable = true;
+
       programs.neovim = {
         enable = true;
         defaultEditor = true;

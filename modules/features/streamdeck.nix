@@ -1,7 +1,18 @@
-{ ... }:
+{ config, ... }:
 
 {
-  flake.modules.homeManager.essentials =
+  flake.modules.nixos.streamdeck = {
+    home-manager.sharedModules = [ config.flake.modules.homeManager.streamdeck ];
+
+    programs.streamdeck-ui = {
+      enable = true;
+      # mywm does not process XDG autostart entries. Home Manager
+      # starts the controller as part of graphical-session.target instead.
+      autoStart = false;
+    };
+  };
+
+  flake.modules.homeManager.streamdeck =
     {
       config,
       lib,
@@ -10,10 +21,6 @@
     }:
 
     let
-      claude-desktop = pkgs.callPackage ../../packages/claude-desktop.nix { };
-      chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
-      helium = pkgs.callPackage ../../packages/helium.nix { };
-
       # Papirus action icons are dark grey; recolor them for the dark key background.
       lightIcon =
         { path, from }:
@@ -143,98 +150,7 @@
         }
       );
     in
-
     {
-      programs.git.enable = true;
-
-      programs.kitty = {
-        enable = true;
-        extraConfig =
-          builtins.replaceStrings
-            [ "include themes/noctalia.conf" ]
-            [ "include ${config.xdg.stateHome}/mywm/kitty.conf" ]
-            (builtins.readFile ../../dotfiles/kitty/kitty.conf);
-      };
-
-      gtk = {
-        enable = true;
-
-        theme = {
-          name = "adw-gtk3";
-          package = pkgs.adw-gtk3;
-        };
-
-        iconTheme = {
-          name = "Papirus-Dark";
-          package = pkgs.papirus-icon-theme;
-        };
-
-        gtk3.extraConfig = {
-          gtk-application-prefer-dark-theme = true;
-          gtk-xft-antialias = 1;
-          gtk-xft-hinting = 1;
-          gtk-xft-hintstyle = "hintslight";
-          gtk-xft-rgba = "rgb";
-          gtk-toolbar-style = "GTK_TOOLBAR_ICONS";
-          gtk-toolbar-icon-size = "GTK_ICON_SIZE_LARGE_TOOLBAR";
-          gtk-button-images = 0;
-          gtk-menu-images = 0;
-          gtk-enable-event-sounds = 1;
-          gtk-enable-input-feedback-sounds = 0;
-        };
-
-        gtk3.extraCss = ''
-          @import url("file://${config.xdg.stateHome}/mywm/gtk-3.css");
-        '';
-
-        gtk4.extraCss = ''
-          @import url("file://${config.xdg.stateHome}/mywm/gtk-4.css");
-        '';
-      };
-
-      qt = {
-        enable = true;
-        platformTheme.name = "adwaita";
-        style.name = "adwaita-dark";
-      };
-
-      home.pointerCursor = {
-        enable = true;
-        name = "Bibata-Modern-Ice";
-        package = pkgs.bibata-cursors;
-        size = 24;
-
-        gtk.enable = true;
-        x11.enable = true;
-      };
-
-      dconf.settings = {
-        # Read by xdg-desktop-portal-gtk, so Electron/Chromium, libadwaita
-        # and Firefox all pick up dark mode.
-        "org/gnome/desktop/interface".color-scheme = "prefer-dark";
-
-        "org/nemo/preferences" = {
-          close-device-view-on-device-eject = true;
-          date-font-choice = "system-mono";
-          show-compact-view-icon-toolbar = false;
-          show-edit-icon-toolbar = false;
-          show-full-path-titles = true;
-          show-hidden-files = true;
-          show-image-thumbnails = "always";
-          swap-trash-delete = true;
-        };
-
-        "org/nemo/window-state" = {
-          side-pane-view = "places";
-          start-with-sidebar = true;
-        };
-
-        "org/gtk/gtk4/settings/file-chooser".show-hidden = true;
-      };
-
-      xdg.dataFile."easyeffects/input/Wave3 Clean.json".source =
-        ../../dotfiles/easyeffects/input/Wave3-Clean.json;
-
       xdg.dataFile."streamdeck-icons/previous.svg".source = lightIcon {
         path = "${papirus}/24x24/actions/media-skip-backward.svg";
         from = "#444444";
@@ -301,55 +217,6 @@
         };
 
         Install.WantedBy = [ "graphical-session.target" ];
-      };
-
-      systemd.user.services.network-manager-applet = {
-        Unit = {
-          Description = "NetworkManager applet";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-        };
-
-        Service = {
-          ExecStart = "${pkgs.networkmanagerapplet}/bin/nm-applet";
-          Restart = "on-failure";
-          RestartSec = 2;
-        };
-
-        Install.WantedBy = [ "graphical-session.target" ];
-      };
-
-      home.packages = with pkgs; [
-        easyeffects
-        nemo
-        mpv
-        imv
-        pavucontrol
-        playerctl
-        networkmanagerapplet
-        wl-clipboard
-        libnotify
-        helium
-        claude-desktop
-        chatgpt
-      ];
-
-      xdg.enable = true;
-
-      xdg.userDirs = {
-        enable = true;
-        createDirectories = true;
-      };
-
-      xdg.mimeApps = {
-        enable = true;
-
-        defaultApplications = {
-          "text/html" = [ "helium.desktop" ];
-          "x-scheme-handler/http" = [ "helium.desktop" ];
-          "x-scheme-handler/https" = [ "helium.desktop" ];
-          "inode/directory" = [ "nemo.desktop" ];
-        };
       };
     };
 }
