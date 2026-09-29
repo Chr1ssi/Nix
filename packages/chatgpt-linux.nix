@@ -64,6 +64,10 @@ stdenv.mkDerivation rec {
   # folder is selected.
   dontWrapGApps = true;
 
+  # Chromium dlopen()s libsecret for the keyring backend, so DT_NEEDED alone
+  # would not put it on the RUNPATH.
+  runtimeDependencies = [ libsecret ];
+
   buildInputs = [
     alsa-lib
     at-spi2-atk

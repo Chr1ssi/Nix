@@ -20,6 +20,7 @@
   libGL,
   libgbm,
   libva,
+  libsecret,
   libxkbcommon,
   nspr,
   nss,
@@ -113,6 +114,7 @@ stdenv.mkDerivation rec {
         lib.makeLibraryPath [
           libGL
           libva
+          libsecret
         ]
       }:${addDriverRunpath.driverLink}/lib" \
       --set LIBVA_DRIVER_NAME nvidia \
