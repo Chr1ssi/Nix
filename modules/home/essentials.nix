@@ -14,13 +14,19 @@
       chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
 
+      # Papirus action icons are dark grey; recolor them for the dark key background.
+      lightIcon =
+        { path, from }:
+        pkgs.runCommand "streamdeck-icon.svg" { } "sed -E 's/${from}/#cdd6f4/Ig' ${path} > $out";
+      papirus = "${pkgs.papirus-icon-theme}/share/icons/Papirus";
+
       streamDeckIcon = name: "${config.xdg.dataHome}/streamdeck-icons/${name}.svg";
       streamDeckButton =
         {
           text,
           icon,
           command,
-          backgroundColor ? "#ffffff",
+          backgroundColor ? "#1e1e2e",
         }:
         {
           state = 0;
@@ -92,31 +98,26 @@
                 text = "VESKTOP";
                 icon = "vesktop";
                 command = "vesktop";
-                backgroundColor = "#1e1e2e";
               };
               "6" = streamDeckButton {
                 text = "HELIUM";
                 icon = "helium";
                 command = "helium";
-                backgroundColor = "#1e1e2e";
               };
               "7" = streamDeckButton {
                 text = "STEAM";
                 icon = "steam";
                 command = "steam";
-                backgroundColor = "#1e1e2e";
               };
               "8" = streamDeckButton {
                 text = "ZED";
                 icon = "zed";
                 command = "zeditor";
-                backgroundColor = "#1e1e2e";
               };
               "9" = streamDeckButton {
                 text = "HERMES";
                 icon = "hermes";
                 command = "hermes";
-                backgroundColor = "#1e1e2e";
               };
               "10" = streamDeckButton {
                 text = "BEREICH";
@@ -234,30 +235,48 @@
       xdg.dataFile."easyeffects/input/Wave3 Clean.json".source =
         ../../dotfiles/easyeffects/input/Wave3-Clean.json;
 
-      xdg.dataFile."streamdeck-icons/previous.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/media-skip-backward.svg";
-      xdg.dataFile."streamdeck-icons/play-pause.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/media-playback-start.svg";
-      xdg.dataFile."streamdeck-icons/next.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/media-skip-forward.svg";
-      xdg.dataFile."streamdeck-icons/volume-down.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/audio-volume-low.svg";
-      xdg.dataFile."streamdeck-icons/volume-up.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/audio-volume-high.svg";
+      xdg.dataFile."streamdeck-icons/previous.svg".source = lightIcon {
+        path = "${papirus}/24x24/actions/media-skip-backward.svg";
+        from = "#444444";
+      };
+      xdg.dataFile."streamdeck-icons/play-pause.svg".source = lightIcon {
+        path = "${papirus}/24x24/actions/media-playback-start.svg";
+        from = "#444444";
+      };
+      xdg.dataFile."streamdeck-icons/next.svg".source = lightIcon {
+        path = "${papirus}/24x24/actions/media-skip-forward.svg";
+        from = "#444444";
+      };
+      xdg.dataFile."streamdeck-icons/volume-down.svg".source = lightIcon {
+        path = "${papirus}/24x24/actions/audio-volume-low.svg";
+        from = "#444444";
+      };
+      xdg.dataFile."streamdeck-icons/volume-up.svg".source = lightIcon {
+        path = "${papirus}/24x24/actions/audio-volume-high.svg";
+        from = "#444444";
+      };
       xdg.dataFile."streamdeck-icons/vesktop.svg".source =
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/vesktop.svg";
       xdg.dataFile."streamdeck-icons/helium.svg".source =
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/net.imput.helium.svg";
       xdg.dataFile."streamdeck-icons/steam.svg".source =
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/steam.svg";
-      xdg.dataFile."streamdeck-icons/zed.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/zed.svg";
-      xdg.dataFile."streamdeck-icons/hermes.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/gnome-robots.svg";
-      xdg.dataFile."streamdeck-icons/screenshot-region.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/24x24/actions/image-crop.svg";
-      xdg.dataFile."streamdeck-icons/screenshot-full.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/devices/camera-photo.svg";
+      xdg.dataFile."streamdeck-icons/zed.svg".source = lightIcon {
+        path = "${papirus}/64x64/apps/zed.svg";
+        from = "#4f4f4f|#2f2f2f";
+      };
+      xdg.dataFile."streamdeck-icons/hermes.svg".source = lightIcon {
+        path = "${papirus}/64x64/apps/gnome-robots.svg";
+        from = "#4f4f4f|#2f2f2f";
+      };
+      xdg.dataFile."streamdeck-icons/screenshot-region.svg".source = lightIcon {
+        path = "${papirus}/24x24/actions/image-crop.svg";
+        from = "#444444";
+      };
+      xdg.dataFile."streamdeck-icons/screenshot-full.svg".source = lightIcon {
+        path = "${papirus}/64x64/devices/camera-photo.svg";
+        from = "#4f4f4f|#2f2f2f";
+      };
 
       # Keep GUI edits possible, but seed the complete layout on a fresh home.
       home.activation.seedStreamDeckConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
