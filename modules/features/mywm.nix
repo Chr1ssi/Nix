@@ -6,6 +6,24 @@ in
 {
   flake.modules.nixos.mywm =
     { pkgs, ... }:
+    let
+      # Beendet einen haengengebliebenen Picker und bricht nach 45 s ab, damit
+      # xdg-desktop-portal-wlr nicht ewig auf die Auswahl wartet und Anfragen blockiert.
+      screencastChooser = pkgs.writeShellScriptBin "screencast-chooser" ''
+        ${pkgs.procps}/bin/pkill -x fuzzel 2>/dev/null || true
+        exec ${pkgs.coreutils}/bin/timeout 45 ${pkgs.fuzzel}/bin/fuzzel --dmenu \
+          --prompt='  Teilen: ' \
+          --font='JetBrainsMono Nerd Font:size=14' \
+          --width=60 --lines=8 --line-height=32 \
+          --inner-pad=16 --horizontal-pad=24 --vertical-pad=16 \
+          --background-color=1e1e2ef2 --text-color=cdd6f4ff \
+          --prompt-color=89b4faff --input-color=cdd6f4ff \
+          --match-color=f5c2e7ff \
+          --selection-color=313244ff --selection-text-color=cdd6f4ff \
+          --selection-match-color=f5c2e7ff \
+          --border-width=2 --border-radius=14 --border-color=89b4fa80
+      '';
+    in
     {
       imports = [ inputs.mywm.nixosModules.default ];
 
@@ -22,7 +40,7 @@ in
         wlr.settings.screencast = {
           max_fps = 60;
 
-          chooser_cmd = "${pkgs.fuzzel}/bin/fuzzel --dmenu --prompt='Bildschirm oder Fenster freigeben: ' --font='JetBrainsMono Nerd Font:size=12' --width=80 --lines=12 --minimal-lines --inner-pad=8 --background-color=1e1e2eff --text-color=cdd6f4ff --prompt-color=89b4faff --match-color=f5c2e7ff --selection-color=313244ff --selection-text-color=cdd6f4ff --selection-match-color=f5c2e7ff --border-width=2 --border-radius=0 --border-color=89b4faff";
+          chooser_cmd = "${screencastChooser}/bin/screencast-chooser";
         };
       };
     };
