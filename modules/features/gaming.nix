@@ -3,6 +3,20 @@
 {
   flake.modules.nixos.gaming =
     { pkgs, ... }:
+    let
+      # Unter Wayland wartet Vesktop vor jeder Freigabe auf ein Thumbnail (1920x1080), das
+      # es danach gar nicht nutzt. Bei ruhigem Monitor liefert das Portal kein zweites Bild,
+      # dann haengt die Freigabe bis zum Timeout (~45 s). Groesse 0 ueberspringt das Thumbnail.
+      vesktop = pkgs.vesktop.overrideAttrs (old: {
+        postInstall = (old.postInstall or "") + ''
+          asar=$out/opt/Vesktop/resources/app.asar
+          ${pkgs.asar}/bin/asar extract "$asar" "$TMPDIR/vesktop-app"
+          substituteInPlace "$TMPDIR/vesktop-app/dist/js/main.js" \
+            --replace-fail 'let r=vy?1920:176' 'let r=vy?0:176'
+          ${pkgs.asar}/bin/asar pack "$TMPDIR/vesktop-app" "$asar"
+        '';
+      });
+    in
     {
       nixpkgs.config.allowUnfree = true;
 

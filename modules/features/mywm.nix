@@ -11,7 +11,7 @@ in
       # xdg-desktop-portal-wlr nicht ewig auf die Auswahl wartet und Anfragen blockiert.
       screencastChooser = pkgs.writeShellScriptBin "screencast-chooser" ''
         ${pkgs.procps}/bin/pkill -x fuzzel 2>/dev/null || true
-        exec ${pkgs.coreutils}/bin/timeout 45 ${pkgs.fuzzel}/bin/fuzzel --dmenu \
+        exec ${pkgs.coreutils}/bin/timeout 45 ${pkgs.fuzzel}/bin/fuzzel --dmenu --config=${pkgs.writeText "fuzzel-empty.ini" ""} \
           --prompt='  Teilen: ' \
           --font='JetBrainsMono Nerd Font:size=14' \
           --width=60 --lines=8 --line-height=32 \
