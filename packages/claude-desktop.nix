@@ -21,6 +21,8 @@
   libcap_ng,
   libseccomp,
   libsecret,
+  libGL,
+  addDriverRunpath,
   libxkbcommon,
   mesa,
   nspr,
@@ -125,6 +127,7 @@ stdenv.mkDerivation rec {
   preFixup = ''
     makeWrapper "$out/lib/claude-desktop/claude-desktop" "$out/bin/claude-desktop" \
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]} \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libGL ]}:${addDriverRunpath.driverLink}/lib" \
       --add-flags "--password-store=gnome-libsecret" \
       "''${gappsWrapperArgs[@]}"
   '';

@@ -19,6 +19,8 @@
   libdrm,
   libgbm,
   libsecret,
+  libGL,
+  addDriverRunpath,
   libusb1,
   libxkbcommon,
   mesa,
@@ -143,6 +145,7 @@ stdenv.mkDerivation rec {
           xdg-utils
         ]
       } \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libGL ]}:${addDriverRunpath.driverLink}/lib" \
       --add-flags "--password-store=gnome-libsecret" \
       "''${gappsWrapperArgs[@]}"
   '';

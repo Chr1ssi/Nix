@@ -8,7 +8,7 @@ in
     { config, pkgs, ... }:
 
     let
-      chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
+      claude-desktop = pkgs.callPackage ../../packages/claude-desktop.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
       toml = pkgs.formats.toml { };
       screenshot = pkgs.writeShellApplication {
@@ -128,9 +128,9 @@ in
             command = [ "${pkgs.zed-editor}/bin/zeditor" ];
           };
 
-          chatgpt = {
+          claude = {
             keys = [ "Super+c" ];
-            command = [ "${chatgpt}/bin/chatgpt" ];
+            command = [ "${claude-desktop}/bin/claude-desktop" ];
           };
 
           screenshot_full = {
