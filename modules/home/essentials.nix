@@ -10,6 +10,7 @@
     }:
 
     let
+      claude-desktop = pkgs.callPackage ../../packages/claude-desktop.nix { };
       chatgpt = pkgs.callPackage ../../packages/chatgpt-linux.nix { };
       helium = pkgs.callPackage ../../packages/helium.nix { };
 
@@ -299,6 +300,7 @@
         wl-clipboard
         libnotify
         helium
+        claude-desktop
         chatgpt
       ];
 

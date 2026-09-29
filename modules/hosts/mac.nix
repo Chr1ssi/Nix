@@ -35,6 +35,7 @@
           };
 
           casks = [
+            "claude"
             "obsidian"
             "the-unarchiver"
             "font-jetbrains-mono-nerd-font"
