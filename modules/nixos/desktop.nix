@@ -52,6 +52,13 @@ in
         autoStart = false;
       };
 
+      # mywm mirrors the current wallpaper and theme colors here (see
+      # programs.mywm.greeterDirectory); the initial wallpaper is only a seed.
+      systemd.tmpfiles.rules = [
+        "d /persist/mywm-greeter 0755 chris users -"
+        "C /persist/mywm-greeter/background 0644 chris users - ${../../wallpapers/wallhaven-1q2w63.jpg}"
+      ];
+
       services.gnome.gnome-keyring.enable = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
 
@@ -88,13 +95,15 @@ in
         };
 
         extraCss = ''
+          @import url("file:///persist/mywm-greeter/theme.css");
+
           window {
-            color: #cdd6f4;
+            color: @mywm_text;
           }
 
           frame.background {
-            background-color: rgba(30, 30, 46, 0.94);
-            border: 2px solid #89b4fa;
+            background-color: alpha(@mywm_bg, 0.94);
+            border: 2px solid @mywm_accent;
             border-radius: 0;
             box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
             padding: 12px;
@@ -103,9 +112,9 @@ in
           entry,
           passwordentry,
           combobox button {
-            background: #313244;
-            color: #cdd6f4;
-            border: 1px solid #45475a;
+            background: @mywm_field;
+            color: @mywm_text;
+            border: 1px solid @mywm_border;
             border-radius: 0;
             min-height: 42px;
           }
@@ -113,33 +122,33 @@ in
           entry:focus,
           passwordentry:focus,
           combobox button:focus {
-            border-color: #89b4fa;
-            box-shadow: 0 0 0 1px #89b4fa;
+            border-color: @mywm_accent;
+            box-shadow: 0 0 0 1px @mywm_accent;
           }
 
           button {
-            background: #313244;
-            color: #cdd6f4;
-            border: 1px solid #45475a;
+            background: @mywm_field;
+            color: @mywm_text;
+            border: 1px solid @mywm_border;
             border-radius: 0;
             min-height: 38px;
           }
 
           button:hover {
-            background: #45475a;
-            border-color: #89b4fa;
+            background: @mywm_hover;
+            border-color: @mywm_accent;
           }
 
           button.suggested-action {
-            background: #89b4fa;
-            color: #1e1e2e;
-            border-color: #89b4fa;
+            background: @mywm_accent;
+            color: @mywm_on_accent;
+            border-color: @mywm_accent;
           }
 
           button.destructive-action {
-            background: #313244;
-            color: #f38ba8;
-            border-color: #f38ba8;
+            background: @mywm_field;
+            color: @mywm_error;
+            border-color: @mywm_error;
           }
         '';
 
@@ -147,7 +156,7 @@ in
           GTK.application_prefer_dark_theme = true;
           appearance.greeting_msg = "Willkommen zurück!";
           background = {
-            path = ../../wallpapers/wallhaven-1q2w63.jpg;
+            path = "/persist/mywm-greeter/background";
             fit = "Cover";
           };
           widget.clock = {

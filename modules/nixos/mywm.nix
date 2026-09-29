@@ -6,7 +6,10 @@
     {
       imports = [ inputs.mywm.nixosModules.default ];
 
-      programs.mywm.enable = true;
+      programs.mywm = {
+        enable = true;
+        greeterDirectory = "/persist/mywm-greeter";
+      };
 
       xdg.portal = {
         config.river."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
