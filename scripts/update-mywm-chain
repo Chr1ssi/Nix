@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Propagate mywm-shell -> mywm -> nixos flake locks in dependency order.
+# Each repo's lock is updated and tested; it is only committed (and pushed with
+# --push) if the tests pass. On failure the lock file change is reverted.
+#
+# Usage: scripts/update-mywm-chain [--push]
+# Expects mywm-shell, mywm and nixos to be sibling directories.
+set -euo pipefail
+
+push=false
+[[ ${1:-} == --push ]] && push=true
+
+projects=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
+
+propagate() {
+    local repo=$1 message=$2
+    shift 2
+    local inputs=("$@")
+    cd "$projects/$repo"
+
+    if [[ -n $(git status --porcelain) ]]; then
+        echo "$repo: working tree is dirty, refusing to continue" >&2
+        exit 1
+    fi
+
+    echo "== $repo: updating ${inputs[*]}"
+    nix flake update "${inputs[@]}"
+    if git diff --quiet -- flake.lock; then
+        echo "$repo: lock already current"
+        return
+    fi
+
+    if ! nix flake check -L; then
+        git checkout -- flake.lock
+        echo "$repo: checks failed, lock reverted" >&2
+        exit 1
+    fi
+
+    git add flake.lock
+    git commit -q -m "$message
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+    if $push; then
+        git push
+    else
+        echo "$repo: committed locally (use --push to publish)"
+    fi
+}
+
+propagate mywm "Update mywm-shell input" mywm-shell
+propagate nixos "Update mywm inputs" mywm mywm-shell

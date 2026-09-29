@@ -3,7 +3,7 @@
 {
   # Single source of truth for the desktop's output names. Consumed by the
   # greeter, kanshi, the mywm config and the XWayland primary-output service.
-  options.flake.monitors = lib.mkOption {
+  options.monitors = lib.mkOption {
     type = lib.types.attrsOf lib.types.str;
     readOnly = true;
     default = {

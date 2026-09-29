@@ -148,10 +148,11 @@
 
       programs.kitty = {
         enable = true;
-        extraConfig = builtins.replaceStrings
-          [ "include themes/noctalia.conf" ]
-          [ "include ${config.xdg.stateHome}/mywm/kitty.conf" ]
-          (builtins.readFile ../../dotfiles/kitty/kitty.conf);
+        extraConfig =
+          builtins.replaceStrings
+            [ "include themes/noctalia.conf" ]
+            [ "include ${config.xdg.stateHome}/mywm/kitty.conf" ]
+            (builtins.readFile ../../dotfiles/kitty/kitty.conf);
       };
 
       gtk = {

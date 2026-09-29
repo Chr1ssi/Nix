@@ -115,8 +115,7 @@
       };
 
       fileSystems."/persist" = {
-        device =
-          "/dev/disk/by-uuid/a40769b6-2e4b-4b95-b1f9-6c7a5242f686";
+        device = "/dev/disk/by-uuid/a40769b6-2e4b-4b95-b1f9-6c7a5242f686";
 
         fsType = "btrfs";
 
@@ -151,8 +150,7 @@
       };
 
       fileSystems."/mnt/bigdata" = {
-        device =
-          "/dev/disk/by-uuid/4916da84-017d-4355-acdb-af132e025038";
+        device = "/dev/disk/by-uuid/4916da84-017d-4355-acdb-af132e025038";
 
         fsType = "ext4";
         options = [

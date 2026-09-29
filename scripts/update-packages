@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""Check (or apply) upstream updates for the hand-packaged apps in packages/.
+
+Usage: scripts/update-packages [--apply] [claude-desktop|chatgpt|helium ...]
+
+Without --apply this only reports current and latest versions.
+"""
+
+import base64
+import json
+import re
+import subprocess
+import sys
+import urllib.request
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+APT = {
+    "claude-desktop": (
+        "packages/claude-desktop.nix",
+        "https://downloads.claude.ai/claude-desktop/apt/stable",
+        "claude-desktop",
+    ),
+    "chatgpt": (
+        "packages/chatgpt-linux.nix",
+        "https://persistent.oaistatic.com/codex-app-prod/linux/deb",
+        "chatgpt",
+    ),
+}
+HELIUM_FILE = "packages/helium.nix"
+HELIUM_API = "https://api.github.com/repos/imputnet/helium-linux/releases/latest"
+
+
+def fetch(url):
+    request = urllib.request.Request(url, headers={"User-Agent": "update-packages"})
+    with urllib.request.urlopen(request, timeout=60) as response:
+        return response.read().decode()
+
+
+def sri(hex_digest):
+    return "sha256-" + base64.b64encode(bytes.fromhex(hex_digest)).decode()
+
+
+def version_key(version):
+    return [int(part) for part in re.findall(r"\d+", version)]
+
+
+def latest_apt(base, package):
+    index = fetch(f"{base}/dists/stable/main/binary-amd64/Packages")
+    stanzas = []
+    for block in index.split("\n\n"):
+        fields = dict(
+            line.split(": ", 1)
+            for line in block.splitlines()
+            if ": " in line and line[0] != " "
+        )
+        if fields.get("Package") == package:
+            stanzas.append(fields)
+    best = max(stanzas, key=lambda f: version_key(f["Version"]))
+    return best["Version"], sri(best["SHA256"])
+
+
+def latest_helium():
+    version = json.loads(fetch(HELIUM_API))["tag_name"]
+    url = (
+        f"https://github.com/imputnet/helium-linux/releases/download/{version}"
+        f"/helium-{version}-x86_64_linux.tar.xz"
+    )
+    out = subprocess.run(
+        ["nix", "store", "prefetch-file", "--json", url],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    return version, json.loads(out)["hash"]
+
+
+def current_version(text):
+    return re.search(r'^  version = "([^"]+)";', text, re.M).group(1)
+
+
+def rewrite(path, version, hash_):
+    text = path.read_text()
+    text = re.sub(
+        r'^(  version = ")[^"]+(";)', rf"\g<1>{version}\g<2>", text, count=1, flags=re.M
+    )
+    text = re.sub(
+        r'^(    hash = ")[^"]+(";)', rf"\g<1>{hash_}\g<2>", text, count=1, flags=re.M
+    )
+    path.write_text(text)
+
+
+def main():
+    args = sys.argv[1:]
+    apply = "--apply" in args
+    names = [a for a in args if not a.startswith("--")] or [*APT, "helium"]
+    for name in names:
+        if name == "helium":
+            file, (version, hash_) = HELIUM_FILE, latest_helium()
+        elif name in APT:
+            file, base, package = APT[name]
+            version, hash_ = latest_apt(base, package)
+        else:
+            sys.exit(f"unknown package: {name}")
+        path = ROOT / file
+        current = current_version(path.read_text())
+        newer = version_key(version) > version_key(current)
+        print(f"{name}: {current} -> {version} ({'update available' if newer else 'up to date'})")
+        if apply and newer:
+            rewrite(path, version, hash_)
+            print(f"  updated {file}")
+
+
+main()

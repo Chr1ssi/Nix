@@ -9,7 +9,12 @@
 
       calendar = pkgs.writeShellApplication {
         name = "mywm-calendar";
-        runtimeInputs = with pkgs; [ coreutils khal python3 vdirsyncer ];
+        runtimeInputs = with pkgs; [
+          coreutils
+          khal
+          python3
+          vdirsyncer
+        ];
         text = ''
           case "''${1:-app}" in
             app)
@@ -131,7 +136,11 @@
 
       calendarSetup = pkgs.writeShellApplication {
         name = "mywm-calendar-setup";
-        runtimeInputs = with pkgs; [ coreutils libsecret vdirsyncer ];
+        runtimeInputs = with pkgs; [
+          coreutils
+          libsecret
+          vdirsyncer
+        ];
         text = ''
           printf 'Apple-ID: '
           IFS= read -r apple_id
@@ -229,8 +238,14 @@
               "kind"
               "username"
             ];
-            collections = [ "from a" "from b" ];
-            metadata = [ "color" "displayname" ];
+            collections = [
+              "from a"
+              "from b"
+            ];
+            metadata = [
+              "color"
+              "displayname"
+            ];
             conflictResolution = "remote wins";
           };
         };
@@ -242,7 +257,10 @@
         icon = "x-office-calendar";
         terminal = false;
         exec = "${pkgs.kitty}/bin/kitty --class mywm-calendar --title Kalender ${calendar}/bin/mywm-calendar app";
-        categories = [ "Office" "Calendar" ];
+        categories = [
+          "Office"
+          "Calendar"
+        ];
         mimeType = [ "text/calendar" ];
       };
 
@@ -256,7 +274,10 @@
       };
 
       systemd.user.services.vdirsyncer.Unit = {
-        After = [ "network-online.target" "gnome-keyring-daemon.service" ];
+        After = [
+          "network-online.target"
+          "gnome-keyring-daemon.service"
+        ];
         Wants = [ "network-online.target" ];
       };
     };

@@ -7,12 +7,11 @@
 
       configPath = ".config/mozilla/firefox";
 
-      globalExtensions =
-        with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
-          ublock-origin
-          darkreader
-          bitwarden
-        ];
+      globalExtensions = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+        ublock-origin
+        darkreader
+        bitwarden
+      ];
 
       profiles.default = {
         id = 0;

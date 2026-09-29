@@ -1,7 +1,8 @@
 { inputs, ... }:
 
 {
-  perSystem = { pkgs, ... }:
+  perSystem =
+    { pkgs, ... }:
     let
       mywm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in

@@ -1,7 +1,7 @@
 { config, ... }:
 
 let
-  monitors = config.flake.monitors;
+  monitors = config.monitors;
 in
 {
   flake.modules.homeManager.mywm =
@@ -230,14 +230,6 @@ in
       home.packages = [
         screenshot
       ];
-
-      systemd.user.targets.mywm-session.Unit = {
-        Description = "mywm compositor session";
-        BindsTo = [ "graphical-session.target" ];
-        Wants = [ "graphical-session-pre.target" ];
-        After = [ "graphical-session-pre.target" ];
-        Before = [ "graphical-session.target" ];
-      };
 
       systemd.user.services = {
         easyeffects = {

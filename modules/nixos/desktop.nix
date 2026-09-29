@@ -1,7 +1,7 @@
 { config, ... }:
 
 let
-  monitors = config.flake.monitors;
+  monitors = config.monitors;
 in
 {
   flake.modules.nixos.desktop =

@@ -135,8 +135,13 @@ Eigene Nix-Derivations für Software, die nicht direkt oder nicht in der gewüns
 
 Aktuell gehören dazu unter anderem:
 
+- Claude Desktop
 - ChatGPT Linux
 - Helium
+
+Electron-/Chromium-Apps werden mit `--password-store=gnome-libsecret` gestartet, da die Session `XDG_CURRENT_DESKTOP=river` setzt und Chromium das Keyring-Backend sonst nicht erkennt. Claude Desktop läuft zusätzlich über XWayland (`--ozone-platform=x11`), weil die native Wayland-Variante beim ersten Start keine korrekte Fensterumrandung erhält.
+
+Versionen und Hashes werden mit `scripts/update-packages` geprüft; `--apply` schreibt sie in die Nix-Dateien.
 
 ### `dotfiles`
 
@@ -207,6 +212,22 @@ Zum Desktop gehören außerdem unter anderem:
 - Wallpaper-Integration
 
 Xwayland bleibt verfügbar, wenn Anwendungen es benötigen.
+
+Die Ausgabenamen (`main`, `top`, `side`) sind zentral in `modules/monitors.nix` definiert und werden von Greeter, Kanshi, mywm und dem XWayland-Dienst verwendet.
+
+Die Session selbst (Startskripte, `mywm-session.target`, Portal-Konfiguration) kommt aus dem NixOS-Modul des `mywm`-Flakes; hier werden nur Screencast-Chooser und Keyring-Portal ergänzt.
+
+Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für Portal, GTK4, Electron, Firefox), GTK- und Qt-Theme sowie `AppleInterfaceStyle = "Dark"` auf dem Mac.
+
+### Flake-Updates und Checks
+
+`nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `mywm-shell` oder `mywm` aktualisiert
+
+```sh
+scripts/update-mywm-chain --push
+```
+
+die Flake-Locks in Abhängigkeitsreihenfolge (mywm-shell → mywm → nixos), testet jeweils und pusht nur bei Erfolg.
 
 ---
 
