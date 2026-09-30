@@ -16,16 +16,6 @@
           ${pkgs.asar}/bin/asar pack "$TMPDIR/vesktop-app" "$asar"
         '';
       });
-      # Workaround: makeWrapper lehnt das --prefix NIX_LDFLAGS ' ' "<Wert>" in nixpkgs' lazarus
-      # ab, weil der Wert mit Leerzeichen beginnt/endet. Wert vorher trimmen.
-      lazarus-qt6 = pkgs.lazarus-qt6.overrideAttrs (old: {
-        postInstall =
-          builtins.replaceStrings
-            [ ''$(echo "$NIX_LDFLAGS" | sed -re 's/-rpath [^ ]+//g')'' ]
-            [ ''$(echo "$NIX_LDFLAGS" | sed -re 's/-rpath [^ ]+//g' -e 's/^ +//' -e 's/ +$//' -e 's/  +/ /g')'' ]
-            old.postInstall;
-      });
-      goverlay = pkgs.goverlay.override { inherit lazarus-qt6; };
     in
     {
       nixpkgs.config.allowUnfree = true;
@@ -42,7 +32,7 @@
         {
           home.packages = with pkgs; [
             faugus-launcher
-            goverlay
+            mangohud
             heroic
             prismlauncher
             vesktop
