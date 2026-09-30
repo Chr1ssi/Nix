@@ -121,6 +121,8 @@ transform = "270"
 [effects]
 corner_radius = 8
 animation_ms = 120
+inactive_opacity = 0.9
+blur = 4
 
 [input]
 accel_profile = "flat"
