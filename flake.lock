@@ -256,11 +256,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790798761,
-        "narHash": "sha256-tPY0S7+5YRhmEkQA3ePlEmnb38L5Y+lfZFZ5r8+iZ/I=",
+        "lastModified": 1790811229,
+        "narHash": "sha256-DL4ndVj734iHkIh2ntYTwiPbH198jnPZQN2dgJcg47k=",
         "ref": "refs/heads/master",
-        "rev": "860d296d2cb0895d367ce8422087e21ed75e10a1",
-        "revCount": 36,
+        "rev": "da8a0f52205ceff9c98750281991e451612da4c6",
+        "revCount": 40,
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       },
