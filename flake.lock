@@ -249,11 +249,11 @@
     "mywm-smithey": {
       "flake": false,
       "locked": {
-        "lastModified": 1790769349,
-        "narHash": "sha256-QS2iLGmPicZUegBMqjFSjQni0OfYmaVXKkPNQrbEQBY=",
+        "lastModified": 1790771535,
+        "narHash": "sha256-hF4Xn7k4jcoh/LIJ3jjgOP6Z20K4Zbqkv7mww7ut+wU=",
         "ref": "refs/heads/master",
-        "rev": "2096de06be9d0b135f6dbb13c3bc17f1c17732f5",
-        "revCount": 18,
+        "rev": "efd4add14839383fa58f337bf0f63b2dc027b530",
+        "revCount": 20,
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       },
