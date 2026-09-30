@@ -246,6 +246,22 @@
         "type": "github"
       }
     },
+    "mywm-smithey": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790766588,
+        "narHash": "sha256-NcMr0q2Yjr+pmD4cNRJJmM5IIn6Dt3XNytJ8owfstXs=",
+        "ref": "refs/heads/master",
+        "rev": "21c56e067baafaf78f004ebf22ce4be1770d9c25",
+        "revCount": 16,
+        "type": "git",
+        "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -395,6 +411,7 @@
         "import-tree": "import-tree",
         "mywm": "mywm",
         "mywm-shell": "mywm-shell",
+        "mywm-smithey": "mywm-smithey",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs_2"
       }

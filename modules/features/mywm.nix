@@ -108,9 +108,7 @@ in
           exit 1
         '';
       };
-    in
-    {
-      xdg.configFile."mywm/config.toml".source = toml.generate "mywm.toml" {
+      settings = {
         float_dialogs = true;
         # One fixed workspace per monitor, numbered in this order (main = 1, top = 2,
         # side = 3). Extra workspaces and the gaming workspace are created on demand.
@@ -244,6 +242,51 @@ in
           }
         ];
       };
+    in
+    {
+      xdg.configFile."mywm/config.toml".source = toml.generate "mywm.toml" settings;
+
+      # Same schema plus what the Smithay compositor does itself instead of kanshi.
+      xdg.configFile."mywm/smithey.toml".source = toml.generate "mywm-smithey.toml" (
+        settings
+        // {
+          # Super+f is the file manager here; the compositor's fullscreen default collides.
+          bindings = settings.bindings // {
+            toggle_fullscreen = [ "Super+Shift+f" ];
+          };
+          outputs = [
+            {
+              name = monitors.top;
+              mode = "2560x1080@60";
+              position = [
+                0
+                0
+              ];
+            }
+            {
+              name = monitors.main;
+              mode = "2560x1440@143.97";
+              position = [
+                0
+                1080
+              ];
+            }
+            {
+              name = monitors.side;
+              mode = "2560x1440@59.95";
+              position = [
+                2560
+                0
+              ];
+              transform = "270";
+            }
+          ];
+          vrr = {
+            enabled = true;
+            output = monitors.main;
+          };
+        }
+      );
 
       home.packages = [
         screenshot

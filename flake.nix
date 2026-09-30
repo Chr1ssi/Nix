@@ -41,6 +41,12 @@
       inputs.mywm-shell.follows = "mywm-shell";
     };
 
+    # Experimental Smithay compositor for mywm (private repository, no flake).
+    mywm-smithey = {
+      url = "git+ssh://git@github.com/Chr1ssi/MyWM-smithey.git";
+      flake = false;
+    };
+
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";

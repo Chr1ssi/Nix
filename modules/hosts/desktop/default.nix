@@ -24,6 +24,7 @@
       config.flake.modules.nixos.audio
       config.flake.modules.nixos.streamdeck
       config.flake.modules.nixos.mywm
+      config.flake.modules.nixos.mywm-smithey
 
       config.flake.modules.nixos.browser
       config.flake.modules.nixos.apps
