@@ -247,13 +247,20 @@
       }
     },
     "mywm-smithey": {
-      "flake": false,
+      "inputs": {
+        "mywm-shell": [
+          "mywm-shell"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1790773626,
-        "narHash": "sha256-IQgDmUAMrkoJmfaEdZX5ztiniqwe5zMao2GQYO5egVQ=",
+        "lastModified": 1790798761,
+        "narHash": "sha256-tPY0S7+5YRhmEkQA3ePlEmnb38L5Y+lfZFZ5r8+iZ/I=",
         "ref": "refs/heads/master",
-        "rev": "061b536989b27beda74c75cbcd9a2668b3347de3",
-        "revCount": 22,
+        "rev": "860d296d2cb0895d367ce8422087e21ed75e10a1",
+        "revCount": 36,
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       },

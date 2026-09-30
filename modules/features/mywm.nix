@@ -253,6 +253,9 @@ in
           # Super+f is the file manager here; the compositor's fullscreen default collides.
           bindings = settings.bindings // {
             toggle_fullscreen = [ "Super+Shift+f" ];
+            # Super+s / Super+Shift+s are the built-in screenshots here.
+            toggle_scratchpad = [ "Super+grave" ];
+            move_to_scratchpad = [ "Super+Shift+grave" ];
           };
           outputs = [
             {
