@@ -14,7 +14,10 @@
 
       # Runs inside the compositor once its Wayland socket exists (it is passed
       # as the startup command); the clients exit when the compositor does.
+      # The compositor keeps smithey.toml (MYWM_CONFIG from the session script).
       startup = pkgs.writeShellScript "mywm-smithey-startup" ''
+        # The River mywm helpers reject the compositor-only keys of smithey.toml.
+        export MYWM_CONFIG="''${XDG_CONFIG_HOME:-$HOME/.config}/mywm/config.toml"
         wallpaper_state="''${XDG_STATE_HOME:-$HOME/.local/state}/mywm/wallpaper.json"
         ${mywm}/bin/mywm --theme-from-state "$wallpaper_state" \
           || echo 'Warnung: Theme konnte nicht aus dem Wallpaper erzeugt werden.' >&2
