@@ -1,0 +1,119 @@
+# mywm (Smithay-Compositor) – Konfiguration der Smithey-Session.
+#
+# Wird nicht von Nix generiert: ~/.config/mywm/smithey.toml ist ein Symlink auf diese Datei im
+# Repo-Checkout (~/Projects/nixos/dotfiles/mywm/smithey.toml). Änderungen, auch aus dem
+# Einstellungsfenster (mywm-settings), landen direkt hier und gelten nach dem Neuladen
+# (Super+Shift+r) bzw. automatisch beim Speichern.
+# Monitornamen siehe modules/monitors.nix (main = DP-3, top = HDMI-A-1, side = DP-1).
+# Programme stehen ohne Pfad, sie kommen aus dem PATH der Sitzung (Benutzerprofil).
+
+# Ein fester Workspace pro Monitor, in dieser Reihenfolge nummeriert.
+workspace_outputs = ["DP-3", "HDMI-A-1", "DP-1"]
+async_outputs = ["DP-3"]
+float_dialogs = true
+gaming_output = "DP-3"
+game_app_id_prefixes = ["steam_app_", "gamescope"]
+terminal = ["kitty"]
+wallpaper_directory = "/home/chris/Pictures/Wallpapers"
+
+[vrr]
+enabled = true
+output = "DP-3"
+
+[idle]
+lock_after_seconds = 600
+monitor_off_after_seconds = 6000
+
+[keyboard]
+layout = "de"
+variant = ""
+options = ""
+
+[appearance]
+gaps_inner = 4
+gaps_outer = 4
+border_width = 2
+
+[bindings]
+reload = ["Super+Shift+r"]
+wallpaper = ["Super+Shift+w"]
+lock = ["Super+Escape"]
+terminal = ["Super+Return"]
+launcher = ["Super+Space"]
+close = ["Super+q"]
+exit = ["Super+m"]
+toggle_floating = ["Super+v"]
+# Super+f ist der Dateimanager (program_bindings), Vollbild deshalb mit Shift.
+toggle_fullscreen = ["Super+Shift+f"]
+# Super+s, Super+Shift+s und Super+Ctrl+s sind die eingebauten Screenshots.
+toggle_scratchpad = ["Super+grave"]
+move_to_scratchpad = ["Super+Shift+grave"]
+
+focus_output_left = ["Super+Alt+Left"]
+focus_output_right = ["Super+Alt+Right"]
+focus_output_up = ["Super+Alt+Up"]
+focus_output_down = ["Super+Alt+Down"]
+move_to_output_left = ["Super+Shift+Left"]
+move_to_output_right = ["Super+Shift+Right"]
+move_to_output_up = ["Super+Shift+Up"]
+move_to_output_down = ["Super+Shift+Down"]
+
+pointer_modifiers = "Super"
+
+focus_left = ["Super+h", "Super+Left"]
+focus_right = ["Super+l", "Super+Right"]
+move_left = ["Super+Shift+h"]
+move_right = ["Super+Shift+l"]
+
+workspace_previous = ["Super+Ctrl+Left", "Super+Ctrl+Up"]
+workspace_next = ["Super+Ctrl+Right", "Super+Ctrl+Down"]
+move_to_workspace_previous = ["Super+Ctrl+Shift+Up"]
+move_to_workspace_next = ["Super+Ctrl+Shift+Down"]
+
+workspace_modifiers = "Super"
+move_to_workspace_modifiers = "Super+Shift"
+
+[program_bindings.browser]
+keys = ["Super+b"]
+command = ["helium"]
+
+[program_bindings.file_manager]
+keys = ["Super+f"]
+command = ["nemo"]
+
+[program_bindings.zed_editor]
+keys = ["Super+e"]
+command = ["zeditor"]
+
+[program_bindings.claude]
+keys = ["Super+c"]
+command = ["claude-desktop"]
+
+[program_bindings.screenshot_full]
+keys = ["Super+Ctrl+Shift+p"]
+command = ["mywm-screenshot", "full"]
+
+[program_bindings.screenshot_region]
+keys = ["Super+Shift+p"]
+command = ["mywm-screenshot", "region"]
+
+[[rules]]
+dialog = true
+floating = true
+
+# Monitore (ersetzt kanshi).
+[[outputs]]
+name = "HDMI-A-1"
+mode = "2560x1080@60"
+position = [0, 0]
+
+[[outputs]]
+name = "DP-3"
+mode = "2560x1440@143.97"
+position = [0, 1080]
+
+[[outputs]]
+name = "DP-1"
+mode = "2560x1440@59.95"
+position = [2560, 0]
+transform = "270"

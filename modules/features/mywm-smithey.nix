@@ -10,6 +10,8 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
       mywm = inputs.mywm-smithey.packages.${system}.default;
+      # Needs an editable config: smithey.toml is linked to dotfiles/mywm (see the mywm module).
+      settings = inputs.mywm-smithey.packages.${system}.mywm-settings;
 
       launch = pkgs.writeShellScript "mywm-smithey-launch" ''
         export XDG_CURRENT_DESKTOP=mywm
@@ -38,7 +40,10 @@
           '';
     in
     {
-      environment.systemPackages = [ mywm ];
+      environment.systemPackages = [
+        mywm
+        settings
+      ];
       services.displayManager.sessionPackages = [ sessionPackage ];
 
       # XDG_CURRENT_DESKTOP=mywm: screen sharing goes through mywm-portal (the compositor

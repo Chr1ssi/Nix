@@ -246,50 +246,10 @@ in
     {
       xdg.configFile."mywm/config.toml".source = toml.generate "mywm.toml" settings;
 
-      # Same schema plus what the Smithay compositor does itself instead of kanshi.
-      xdg.configFile."mywm/smithey.toml".source = toml.generate "mywm-smithey.toml" (
-        settings
-        // {
-          # Super+f is the file manager here; the compositor's fullscreen default collides.
-          bindings = settings.bindings // {
-            toggle_fullscreen = [ "Super+Shift+f" ];
-            # Super+s / Super+Shift+s are the built-in screenshots here.
-            toggle_scratchpad = [ "Super+grave" ];
-            move_to_scratchpad = [ "Super+Shift+grave" ];
-          };
-          outputs = [
-            {
-              name = monitors.top;
-              mode = "2560x1080@60";
-              position = [
-                0
-                0
-              ];
-            }
-            {
-              name = monitors.main;
-              mode = "2560x1440@143.97";
-              position = [
-                0
-                1080
-              ];
-            }
-            {
-              name = monitors.side;
-              mode = "2560x1440@59.95";
-              position = [
-                2560
-                0
-              ];
-              transform = "270";
-            }
-          ];
-          vrr = {
-            enabled = true;
-            output = monitors.main;
-          };
-        }
-      );
+      # Smithay session config: a plain file in the repo, linked out of the store so the
+      # settings editor can write it and the compositor reloads it live.
+      xdg.configFile."mywm/smithey.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Projects/nixos/dotfiles/mywm/smithey.toml";
 
       home.packages = [
         screenshot
