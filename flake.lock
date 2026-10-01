@@ -258,14 +258,13 @@
       "locked": {
         "lastModified": 1790847082,
         "narHash": "sha256-K8wQNayD0IMUSdWJzkqYhA79BevGIJAdsm1dALQRjs4=",
-        "ref": "fix/cursor-diagnostics",
+        "ref": "refs/heads/master",
         "rev": "9af084d58d5b74eaf0136323a7c7573713461e2f",
         "revCount": 50,
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       },
       "original": {
-        "ref": "fix/cursor-diagnostics",
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       }

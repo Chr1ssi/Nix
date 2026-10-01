@@ -27,8 +27,6 @@
         export MYWM_SHELL_DIR=${mywm}/share/mywm/quickshell
         export MYWM_POLKIT_AGENT=${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
         export MYWM_GREETER_DIR=/persist/mywm-greeter
-        # Pointer focus changes in the log while the cursor reset is being tracked down.
-        export RUST_LOG="''${RUST_LOG:-info,cursor=debug}"
         export MYWM_CONFIG="''${XDG_CONFIG_HOME:-$HOME/.config}/mywm/smithey.toml"
         exec ${mywm}/bin/mywm-session
       '';
