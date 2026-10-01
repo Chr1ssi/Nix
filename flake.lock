@@ -258,14 +258,13 @@
       "locked": {
         "lastModified": 1790858908,
         "narHash": "sha256-bxJxlvaAwKqQS3I34S0+9ELbGWLnK/GfuEXIa77vr2I=",
-        "ref": "fix/dialog-size",
+        "ref": "refs/heads/master",
         "rev": "e6a03994351618052d063b80335f1c60e161e92f",
         "revCount": 60,
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       },
       "original": {
-        "ref": "fix/dialog-size",
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       }

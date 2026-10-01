@@ -43,7 +43,7 @@
 
     # Experimental Smithay compositor for mywm (private repository).
     mywm-smithey = {
-      url = "git+ssh://git@github.com/Chr1ssi/MyWM-smithey.git?ref=fix/dialog-size";
+      url = "git+ssh://git@github.com/Chr1ssi/MyWM-smithey.git";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.mywm-shell.follows = "mywm-shell";
     };
