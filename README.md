@@ -4,7 +4,7 @@ Meine deklarative Konfiguration für NixOS und macOS, aufgebaut mit **Nix Flakes
 
 Das Repository dient als zentrale Definition meiner Linux- und macOS-Systeme. Systemkonfiguration, Benutzerumgebung, Anwendungen, Dotfiles und eigene Pakete werden möglichst vollständig über Nix verwaltet.
 
-Der Desktop basiert auf meinem eigenen Wayland-Setup mit **River**, **mywm** und **Quickshell**.
+Der Desktop basiert auf meinem eigenen Wayland-Compositor **mywm** (Smithay) und **Quickshell**.
 
 ## Status
 
@@ -108,7 +108,7 @@ Aktuell gehören dazu unter anderem:
 - ChatGPT Linux
 - Helium
 
-Electron-/Chromium-Apps werden mit `--password-store=gnome-libsecret` gestartet, da die Session `XDG_CURRENT_DESKTOP=river` setzt und Chromium das Keyring-Backend sonst nicht erkennt. Claude Desktop läuft zusätzlich über XWayland (`--ozone-platform=x11`), weil die native Wayland-Variante beim ersten Start keine korrekte Fensterumrandung erhält.
+Electron-/Chromium-Apps werden mit `--password-store=gnome-libsecret` gestartet, da die Session `XDG_CURRENT_DESKTOP=mywm` setzt und Chromium das Keyring-Backend sonst nicht erkennt. Claude Desktop läuft zusätzlich über XWayland (`--ozone-platform=x11`), weil die native Wayland-Variante beim ersten Start keine korrekte Fensterumrandung erhält.
 
 Versionen und Hashes werden mit `scripts/update-packages` geprüft; `--apply` schreibt sie in die Nix-Dateien.
 
@@ -126,7 +126,7 @@ Persistente Laufzeitdaten, Accounts, Tokens und vergleichbare zustandsbehaftete 
 
 Der Desktop ist bewusst als schlankes Wayland-System aufgebaut.
 
-Die zentrale Komponente ist **River**, dessen Window-Management-Protokolle von meinem eigenen Window Manager **mywm** verwendet werden.
+Die zentrale Komponente ist mein eigener Compositor **mywm** auf Basis von Smithay.
 
 Die Desktop-Shell basiert auf **Quickshell**.
 
@@ -134,10 +134,11 @@ Die einzelnen Komponenten werden getrennt entwickelt und über die Flake als fes
 
 ### mywm
 
-`mywm` ist mein eigener Window Manager auf Basis der River-Protokolle.
+`mywm` ist mein eigener Wayland-Compositor auf Basis von Smithay (Repository `MyWM-Smithay`).
 
 Das Projekt übernimmt unter anderem:
 
+- Compositing (Direct Scanout, VRR, Tearing für Spiele) und Effekte
 - Window Management
 - Workspaces
 - Fokussteuerung
@@ -145,14 +146,17 @@ Das Projekt übernimmt unter anderem:
 - Output-Verwaltung
 - Integration mit der Desktop-Shell
 
-Die benutzerspezifische Konfiguration befindet sich in:
+Die Einbindung steht in `modules/features/mywm.nix`, die Konfiguration selbst in
+`dotfiles/mywm/config.toml`. Sie wird nicht von Nix generiert, sondern als Symlink nach
+`~/.config/mywm/config.toml` gelegt, damit das Einstellungsfenster (`mywm-settings`) sie direkt
+bearbeiten kann und der Compositor sie live neu lädt.
 
-```text
-modules/features/mywm.nix
-```
+Der Anwendungscode selbst wird nicht in diesem Repository gepflegt; das Repository wird als
+Flake-Input `mywm` eingebunden und liefert Paket und NixOS-Modul.
 
-Der Anwendungscode selbst wird nicht in diesem Repository gepflegt. Das Release `v0.1.0`
-wird als Flake-Input eingebunden und liefert das verwendete Nix-Paket.
+Im Greeter gibt es zwei Sitzungen: **mywm** für den Alltag (nur Warnungen und Fehler in
+`~/.local/state/mywm/compositor.log`) und **mywm (Dev)** zum Entwickeln (gesamte Ausgabe in
+`~/.local/state/mywm/session.log`, dazu alle 5 s Frame-Statistiken pro Monitor).
 
 ### Quickshell
 
@@ -177,26 +181,25 @@ Zum Desktop gehören außerdem unter anderem:
 - Polkit-Agent
 - Benachrichtigungen
 - Screen Lock
-- Kanshi
 - Wallpaper-Integration
 
 Xwayland bleibt verfügbar, wenn Anwendungen es benötigen.
 
-Die Ausgabenamen (`main`, `top`, `side`) sind zentral in `modules/monitors.nix` definiert und werden von Greeter, Kanshi, mywm und dem XWayland-Dienst verwendet.
+Die Ausgabenamen (`main`, `top`, `side`) sind zentral in `modules/monitors.nix` definiert und werden vom Greeter und dem XWayland-Dienst verwendet; die mywm-Konfiguration nennt sie ebenfalls (`[[outputs]]`).
 
-Die Session selbst (Startskripte, `mywm-session.target`, Portal-Konfiguration) kommt aus dem NixOS-Modul des `mywm`-Flakes; hier werden nur Screencast-Chooser und Keyring-Portal ergänzt.
+Die Session selbst (Startskripte, `mywm-session.target`, Portal-Konfiguration) kommt aus dem NixOS-Modul des `mywm`-Flakes; hier wird nur das Keyring-Portal ergänzt. Screen-Sharing läuft über `mywm-portal`: Der Compositor fragt selbst, welcher Monitor oder welches Fenster geteilt wird.
 
 Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für Portal, GTK4, Electron, Firefox), GTK- und Qt-Theme sowie `AppleInterfaceStyle = "Dark"` auf dem Mac.
 
 ### Flake-Updates und Checks
 
-`nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `mywm-shell` oder `mywm` aktualisiert
+`nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `mywm-shell` oder `MyWM-Smithay` aktualisiert
 
 ```sh
 scripts/update-mywm-chain --push
 ```
 
-die Flake-Locks in Abhängigkeitsreihenfolge (mywm-shell → mywm → nixos), testet jeweils und pusht nur bei Erfolg.
+die Flake-Locks in Abhängigkeitsreihenfolge (mywm-shell → MyWM-Smithay → nixos), testet jeweils und pusht nur bei Erfolg.
 
 ---
 

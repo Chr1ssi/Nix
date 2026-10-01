@@ -1,7 +1,7 @@
-# mywm (Smithay-Compositor) – Konfiguration der Smithay-Session.
+# mywm (Smithay-Compositor) – Konfiguration.
 #
-# Wird nicht von Nix generiert: ~/.config/mywm/smithay.toml ist ein Symlink auf diese Datei im
-# Repo-Checkout (~/Projects/nixos/dotfiles/mywm/smithay.toml). Änderungen, auch aus dem
+# Wird nicht von Nix generiert: ~/.config/mywm/config.toml ist ein Symlink auf diese Datei im
+# Repo-Checkout (~/Projects/nixos/dotfiles/mywm/config.toml). Änderungen, auch aus dem
 # Einstellungsfenster (mywm-settings), landen direkt hier und gelten nach dem Neuladen
 # (Super+Shift+r) bzw. automatisch beim Speichern.
 # Monitornamen siehe modules/monitors.nix (main = DP-3, top = HDMI-A-1, side = DP-1).

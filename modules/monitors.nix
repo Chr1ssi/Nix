@@ -2,7 +2,7 @@
 
 {
   # Single source of truth for the desktop's output names. Consumed by the
-  # greeter, kanshi, the mywm config and the XWayland primary-output service.
+  # greeter and the XWayland primary-output service (the mywm config in dotfiles/mywm names them too).
   options.monitors = lib.mkOption {
     type = lib.types.attrsOf lib.types.str;
     readOnly = true;

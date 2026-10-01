@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Propagate mywm-shell -> mywm -> nixos flake locks in dependency order.
+# Propagate mywm-shell -> MyWM-Smithay -> nixos flake locks in dependency order.
 # Each repo's lock is updated and tested; it is only committed (and pushed with
 # --push) if the tests pass. On failure the lock file change is reverted.
 #
 # Usage: scripts/update-mywm-chain [--push]
-# Expects mywm-shell, mywm and nixos to be sibling directories.
+# Expects mywm-shell, MyWM-Smithay and nixos to be sibling directories.
 set -euo pipefail
 
 push=false
@@ -47,5 +47,5 @@ Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
     fi
 }
 
-propagate mywm "Update mywm-shell input" mywm-shell
+propagate MyWM-Smithay "Update mywm-shell input" mywm-shell
 propagate nixos "Update mywm inputs" mywm mywm-shell
