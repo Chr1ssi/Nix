@@ -35,9 +35,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Smithay compositor for mywm (private repository).
+    # Smithay compositor for mywm.
     mywm = {
-      url = "git+ssh://git@github.com/Chr1ssi/MyWM-Smithay.git";
+      url = "github:Chr1ssi/MyWM-Smithay";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.mywm-shell.follows = "mywm-shell";
     };

@@ -213,17 +213,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1790889321,
-        "narHash": "sha256-n6OgmM2sZns9o+GOyJ5C/VKsq4+iK5gNseshqpqcDW8=",
-        "ref": "refs/heads/master",
-        "rev": "2714c51b3c72ca415efc529e2d63f57cc61b5b25",
-        "revCount": 74,
-        "type": "git",
-        "url": "ssh://git@github.com/Chr1ssi/MyWM-Smithay.git"
+        "lastModified": 1790889855,
+        "narHash": "sha256-0hvc3PzKQdVQ+yHRk1JeS+6ObNn9dkNaHxxFh9Vp/nE=",
+        "owner": "Chr1ssi",
+        "repo": "MyWM-Smithay",
+        "rev": "b91641a5c98741588e2122c6475c392662cc7034",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/Chr1ssi/MyWM-Smithay.git"
+        "owner": "Chr1ssi",
+        "repo": "MyWM-Smithay",
+        "type": "github"
       }
     },
     "mywm-shell": {
