@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  # Experimental second session: the Smithay compositor from MyWM-Smithay. Its own NixOS
+  # Second session: the Smithay compositor from MyWM-Smithay. Its own NixOS
   # module is not imported because it defines programs.mywm and the session "mywm" like the
   # River mywm module does; this takes the packages and adds a separate session. The
   # `mywm` module still provides mywm-session.target, Xwayland and the swaylock PAM service.
@@ -39,7 +39,7 @@
             mkdir -p $out/share/wayland-sessions
             cat > $out/share/wayland-sessions/mywm-smithay.desktop <<EOF
             [Desktop Entry]
-            Name=mywm (Smithay, experimentell)
+            Name=mywm (Smithay)
             Comment=Eigener Smithay-Compositor mit der mywm-Quickshell-Oberflaeche
             Exec=${launch}
             Type=Application
