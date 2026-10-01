@@ -14,6 +14,13 @@
       settings = inputs.mywm-smithey.packages.${system}.mywm-settings;
 
       launch = pkgs.writeShellScript "mywm-smithey-launch" ''
+        # Everything the session prints (also errors of the helpers before the compositor
+        # has the screen) goes to a file: the previous session's stays as session.log.1.
+        state="''${XDG_STATE_HOME:-$HOME/.local/state}/mywm"
+        mkdir -p "$state"
+        mv -f "$state/session.log" "$state/session.log.1" 2>/dev/null
+        exec > "$state/session.log" 2>&1
+        echo "$(date --iso-8601=ns) session launch, pid $$"
         export XDG_CURRENT_DESKTOP=mywm
         export XDG_SESSION_DESKTOP=mywm-smithey
         export XDG_SESSION_TYPE=wayland
