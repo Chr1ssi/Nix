@@ -256,15 +256,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790857356,
-        "narHash": "sha256-PydAAxgWfw43oiYtu9WolCe9uxYMfCxGG+tPqBHvvsE=",
-        "ref": "refs/heads/master",
-        "rev": "2217a9409081ea8ec9b02180ea572221d15a44b3",
-        "revCount": 58,
+        "lastModified": 1790858471,
+        "narHash": "sha256-O+ky2zgY3UuYo79I/d2bTvIJtVV8j6enA11bLWiDl7Q=",
+        "ref": "fix/dialog-size",
+        "rev": "f6f0cce5e2c8b8e2ddcef149559cdccf96d6b81f",
+        "revCount": 59,
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       },
       "original": {
+        "ref": "fix/dialog-size",
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       }
