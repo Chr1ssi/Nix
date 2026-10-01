@@ -213,15 +213,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790893606,
-        "narHash": "sha256-Bd/FEOQMwzdvalSbdF3kpA/mrHKzjmVXY1HAoZBUEwU=",
+        "lastModified": 1790895193,
+        "narHash": "sha256-2StUFb0KmLPzgWSGr2+3B12MexWS79j777wi0oEj+W8=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "93b8bc3192c27ddea2c7a1ab9b83b9c6d9092a52",
+        "rev": "bc4fce51ed806e12b69f05de63866ae62a790e99",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
+        "ref": "hw/async-capture-readback",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
