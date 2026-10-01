@@ -126,3 +126,6 @@ blur = 4
 
 [input]
 accel_profile = "flat"
+
+[render]
+force_tearing = true
