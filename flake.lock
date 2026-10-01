@@ -258,14 +258,13 @@
       "locked": {
         "lastModified": 1790857356,
         "narHash": "sha256-PydAAxgWfw43oiYtu9WolCe9uxYMfCxGG+tPqBHvvsE=",
-        "ref": "diag/redraw-timing",
+        "ref": "refs/heads/master",
         "rev": "2217a9409081ea8ec9b02180ea572221d15a44b3",
         "revCount": 58,
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       },
       "original": {
-        "ref": "diag/redraw-timing",
         "type": "git",
         "url": "ssh://git@github.com/Chr1ssi/MyWM-smithey.git"
       }
