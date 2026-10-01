@@ -27,6 +27,8 @@
         export MYWM_SHELL_DIR=${mywm}/share/mywm/quickshell
         export MYWM_POLKIT_AGENT=${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
         export MYWM_GREETER_DIR=/persist/mywm-greeter
+        # Every 5 s per output: frames, CPU render time and frames slower than the refresh interval.
+        export RUST_LOG="''${RUST_LOG:-info,perf=debug}"
         export MYWM_CONFIG="''${XDG_CONFIG_HOME:-$HOME/.config}/mywm/smithey.toml"
         exec ${mywm}/bin/mywm-session
       '';
