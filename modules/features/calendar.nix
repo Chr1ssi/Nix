@@ -174,9 +174,7 @@
       home.packages = with pkgs; [
         calendar
         calendarSetup
-        khal
         libsecret
-        vdirsyncer
       ];
 
       programs.khal = {

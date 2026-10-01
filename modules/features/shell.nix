@@ -7,6 +7,24 @@ let
     la = "eza -a";
     cat = "bat";
   };
+
+  # Shared by fish and zsh; Home Manager hooks zoxide and fzf into every enabled shell.
+  common =
+    { pkgs, ... }:
+    {
+      programs.zoxide.enable = true;
+      programs.fzf.enable = true;
+      programs.bat.enable = true;
+
+      home.packages = with pkgs; [
+        fastfetch
+        eza
+        btop
+        tree
+        file
+        which
+      ];
+    };
 in
 {
   # NixOS hosts use fish, the Mac uses zsh (see hosts/mac.nix).
@@ -22,6 +40,8 @@ in
   flake.modules.homeManager.fish =
     { pkgs, ... }:
     {
+      imports = [ common ];
+
       programs.fish = {
         enable = true;
 
@@ -33,68 +53,29 @@ in
         '';
       };
 
-      programs.zoxide = {
-        enable = true;
-        enableFishIntegration = true;
-      };
-
-      programs.fzf = {
-        enable = true;
-        enableFishIntegration = true;
-      };
-
-      programs.bat.enable = true;
-
       home.packages = with pkgs; [
-        fastfetch
-        eza
-        btop
-        tree
-        file
-        which
         pciutils
         usbutils
       ];
     };
 
-  flake.modules.homeManager.zsh =
-    { pkgs, ... }:
-    {
-      programs.zsh = {
+  flake.modules.homeManager.zsh = {
+    imports = [ common ];
+
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestion = {
         enable = true;
-        enableCompletion = true;
-        autosuggestion = {
-          enable = true;
-          strategy = [ "history" ];
-        };
-        syntaxHighlighting.enable = true;
-
-        shellAliases = aliases;
-
-        initContent = ''
-          fastfetch
-        '';
+        strategy = [ "history" ];
       };
+      syntaxHighlighting.enable = true;
 
-      programs.zoxide = {
-        enable = true;
-        enableZshIntegration = true;
-      };
+      shellAliases = aliases;
 
-      programs.fzf = {
-        enable = true;
-        enableZshIntegration = true;
-      };
-
-      programs.bat.enable = true;
-
-      home.packages = with pkgs; [
+      initContent = ''
         fastfetch
-        eza
-        btop
-        tree
-        file
-        which
-      ];
+      '';
     };
+  };
 }

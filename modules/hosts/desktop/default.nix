@@ -47,21 +47,21 @@
 
         networking.hostName = "ChrisNixOS";
 
-        home-manager.users.chris = {
-          imports = [
-            config.flake.modules.homeManager.theming
-            config.flake.modules.homeManager.terminal
-            config.flake.modules.homeManager.file-manager
-            config.flake.modules.homeManager.firefox
-            config.flake.modules.homeManager.starship
-            config.flake.modules.homeManager.calendar
-            config.flake.modules.homeManager.obsidian
-          ];
+        home-manager.users.chris =
+          { pkgs, ... }:
+          {
+            imports = [
+              config.flake.modules.homeManager.theming
+              config.flake.modules.homeManager.terminal
+              config.flake.modules.homeManager.file-manager
+              config.flake.modules.homeManager.firefox
+              config.flake.modules.homeManager.starship
+              config.flake.modules.homeManager.calendar
+              config.flake.modules.homeManager.obsidian
+            ];
 
-          home.packages = [
-            inputs.nixpkgs.legacyPackages.x86_64-linux.onlyoffice-desktopeditors
-          ];
-        };
+            home.packages = [ pkgs.onlyoffice-desktopeditors ];
+          };
 
         system.stateVersion = "26.05";
       }
