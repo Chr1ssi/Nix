@@ -1,19 +1,19 @@
 { inputs, ... }:
 
 {
-  # Experimental second session: the Smithay compositor from MyWM-smithey. Its own NixOS
+  # Experimental second session: the Smithay compositor from MyWM-Smithay. Its own NixOS
   # module is not imported because it defines programs.mywm and the session "mywm" like the
   # River mywm module does; this takes the packages and adds a separate session. The
   # `mywm` module still provides mywm-session.target, Xwayland and the swaylock PAM service.
-  flake.modules.nixos.mywm-smithey =
+  flake.modules.nixos.mywm-smithay =
     { pkgs, ... }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      mywm = inputs.mywm-smithey.packages.${system}.default;
-      # Needs an editable config: smithey.toml is linked to dotfiles/mywm (see the mywm module).
-      settings = inputs.mywm-smithey.packages.${system}.mywm-settings;
+      mywm = inputs.mywm-smithay.packages.${system}.default;
+      # Needs an editable config: smithay.toml is linked to dotfiles/mywm (see the mywm module).
+      settings = inputs.mywm-smithay.packages.${system}.mywm-settings;
 
-      launch = pkgs.writeShellScript "mywm-smithey-launch" ''
+      launch = pkgs.writeShellScript "mywm-smithay-launch" ''
         # Everything the session prints (also errors of the helpers before the compositor
         # has the screen) goes to a file: the previous session's stays as session.log.1.
         state="''${XDG_STATE_HOME:-$HOME/.local/state}/mywm"
@@ -22,22 +22,22 @@
         exec > "$state/session.log" 2>&1
         echo "$(date --iso-8601=ns) session launch, pid $$"
         export XDG_CURRENT_DESKTOP=mywm
-        export XDG_SESSION_DESKTOP=mywm-smithey
+        export XDG_SESSION_DESKTOP=mywm-smithay
         export XDG_SESSION_TYPE=wayland
         export MYWM_SHELL_DIR=${mywm}/share/mywm/quickshell
         export MYWM_POLKIT_AGENT=${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
         export MYWM_GREETER_DIR=/persist/mywm-greeter
         # Every 5 s per output: frames, CPU render time and frames slower than the refresh interval.
         export RUST_LOG="''${RUST_LOG:-info,perf=debug}"
-        export MYWM_CONFIG="''${XDG_CONFIG_HOME:-$HOME/.config}/mywm/smithey.toml"
+        export MYWM_CONFIG="''${XDG_CONFIG_HOME:-$HOME/.config}/mywm/smithay.toml"
         exec ${mywm}/bin/mywm-session
       '';
 
       sessionPackage =
-        pkgs.runCommand "mywm-smithey-wayland-session" { passthru.providedSessions = [ "mywm-smithey" ]; }
+        pkgs.runCommand "mywm-smithay-wayland-session" { passthru.providedSessions = [ "mywm-smithay" ]; }
           ''
             mkdir -p $out/share/wayland-sessions
-            cat > $out/share/wayland-sessions/mywm-smithey.desktop <<EOF
+            cat > $out/share/wayland-sessions/mywm-smithay.desktop <<EOF
             [Desktop Entry]
             Name=mywm (Smithay, experimentell)
             Comment=Eigener Smithay-Compositor mit der mywm-Quickshell-Oberflaeche

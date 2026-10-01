@@ -248,8 +248,8 @@ in
 
       # Smithay session config: a plain file in the repo, linked out of the store so the
       # settings editor can write it and the compositor reloads it live.
-      xdg.configFile."mywm/smithey.toml".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Projects/nixos/dotfiles/mywm/smithey.toml";
+      xdg.configFile."mywm/smithay.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Projects/nixos/dotfiles/mywm/smithay.toml";
 
       home.packages = [
         screenshot
