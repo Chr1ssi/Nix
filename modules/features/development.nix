@@ -93,7 +93,11 @@
           # Language servers come from nixpkgs instead of Zed's downloads.
           lsp = {
             nixd.binary.path = "${pkgs.nixd}/bin/nixd";
-            nil.binary.path = "${pkgs.nil}/bin/nil";
+            nil = {
+              binary.path = "${pkgs.nil}/bin/nil";
+              # Fetch missing flake inputs without asking.
+              settings.nix.flake.autoArchive = true;
+            };
             rust-analyzer.binary.path = "${pkgs.rust-analyzer}/bin/rust-analyzer";
             tombi.binary.path = "${pkgs.tombi}/bin/tombi";
             lua-language-server.binary.path = "${pkgs.lua-language-server}/bin/lua-language-server";
