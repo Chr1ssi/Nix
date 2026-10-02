@@ -48,7 +48,7 @@ in
         shellAliases = aliases;
 
         interactiveShellInit = ''
-          fastfetch
+          fastfetch -c screenfetch.jsonc
           type -q enable_transience; and enable_transience
         '';
       };
