@@ -31,6 +31,12 @@
     {
       programs.git.enable = true;
 
+      # Sets JAVA_HOME as well.
+      programs.java = {
+        enable = true;
+        package = pkgs.jdk21;
+      };
+
       home.sessionVariables = {
         EDITOR = "vis";
         VISUAL = "vis";
@@ -146,6 +152,7 @@
         rust-analyzer
         python3
         nodejs
+        gradle
         nil
         nixfmt
         unzip
