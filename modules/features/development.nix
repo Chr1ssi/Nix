@@ -47,6 +47,10 @@
         extensions = [
           "nix"
           "toml"
+          "tombi"
+          "lua"
+          "java"
+          "kotlin"
         ];
 
         userSettings = {
@@ -69,14 +73,37 @@
             dark = "Ayu Dark";
           };
 
-          languages.Nix.language_servers = [
-            "nixd"
-            "nil"
-          ];
+          languages = {
+            Nix.language_servers = [
+              "nixd"
+              "nil"
+            ];
+            Python.language_servers = [
+              "basedpyright"
+              "ruff"
+            ];
+          };
 
+          # Language servers come from nixpkgs instead of Zed's downloads.
           lsp = {
             nixd.binary.path = "${pkgs.nixd}/bin/nixd";
             nil.binary.path = "${pkgs.nil}/bin/nil";
+            rust-analyzer.binary.path = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+            tombi.binary.path = "${pkgs.tombi}/bin/tombi";
+            lua-language-server.binary.path = "${pkgs.lua-language-server}/bin/lua-language-server";
+            basedpyright.binary = {
+              path = "${pkgs.basedpyright}/bin/basedpyright-langserver";
+              arguments = [ "--stdio" ];
+            };
+            ruff.binary = {
+              path = "${pkgs.ruff}/bin/ruff";
+              arguments = [ "server" ];
+            };
+            jdtls.settings = {
+              java_home = "${pkgs.jdk21}/lib/openjdk";
+              jdtls_launcher = "${pkgs.jdt-language-server}/bin/jdtls";
+              jdk_auto_download = false;
+            };
           };
         };
 
@@ -89,6 +116,8 @@
           cargo
           python3
           nodejs
+          # Kotlin's language server is a JVM app downloaded by the extension.
+          jdk21
         ];
       };
 
