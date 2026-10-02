@@ -15,6 +15,7 @@ gaming_output = "DP-3"
 game_app_id_prefixes = ["steam_app_", "gamescope"]
 terminal = ["kitty"]
 wallpaper_directory = "/home/chris/Pictures/Wallpapers"
+screenshot_directory = "/home/chris/Pictures/Screenshots"
 
 [vrr]
 enabled = true
@@ -32,7 +33,7 @@ options = ""
 [appearance]
 gaps_inner = 4
 gaps_outer = 4
-border_width = 2
+border_width = 3
 
 [bindings]
 reload = ["Super+Shift+r"]
@@ -89,14 +90,6 @@ command = ["zeditor"]
 keys = ["Super+c"]
 command = ["claude-desktop"]
 
-[program_bindings.screenshot_full]
-keys = ["Super+Ctrl+Shift+p"]
-command = ["mywm-screenshot", "full"]
-
-[program_bindings.screenshot_region]
-keys = ["Super+Shift+p"]
-command = ["mywm-screenshot", "region"]
-
 [[rules]]
 dialog = true
 floating = true
@@ -119,13 +112,14 @@ position = [2560, 0]
 transform = "270"
 
 [effects]
-corner_radius = 8
+corner_radius = 10
 animation_ms = 120
 inactive_opacity = 0.9
-blur = 4
+blur = 8
 
 [input]
 accel_profile = "flat"
 
 [render]
 force_tearing = true
+late_scheduling = true
