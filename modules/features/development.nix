@@ -4,28 +4,42 @@
   flake.modules.nixos.development = {
     nixpkgs.config.allowUnfree = true;
 
-    # LazyVim/Mason downloads conventional Linux binaries.
+    # Zed extensions download conventional Linux binaries (language servers).
     programs.nix-ld.enable = true;
 
     home-manager.sharedModules = [ config.flake.modules.homeManager.development ];
   };
 
   flake.modules.homeManager.development =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { lib, pkgs, ... }:
+    let
+      visPlugins = {
+        vis-cursors = pkgs.fetchFromGitHub {
+          owner = "erf";
+          repo = "vis-cursors";
+          rev = "ddea23c7a19f70316bc3431efbade49aca39f474";
+          hash = "sha256-ij/78EEKnZ+XVIgIkXqFzsD4L3Xbz8bjqBLhLCRcdBA=";
+        };
+        vis-fzf-open = pkgs.fetchFromGitHub {
+          owner = "guillaumecherel";
+          repo = "vis-fzf-open";
+          rev = "d190b233e4a89e92837e065594e70988dc758444";
+          hash = "sha256-MRsdjI5zjhZhwZO1rppKpIxRjSujG3ZVg2fSg612rPY=";
+        };
+      };
+    in
     {
       programs.git.enable = true;
 
-      programs.neovim = {
-        enable = true;
-        defaultEditor = true;
-        viAlias = true;
-        vimAlias = true;
+      home.sessionVariables = {
+        EDITOR = "vis";
+        VISUAL = "vis";
       };
+
+      xdg.configFile = {
+        "vis/visrc.lua".source = ../../dotfiles/vis/visrc.lua;
+      }
+      // lib.mapAttrs' (name: src: lib.nameValuePair "vis/plugins/${name}" { source = src; }) visPlugins;
 
       programs.zed-editor = {
         enable = true;
@@ -84,39 +98,14 @@
           email = "mail@christoph-keil.com";
         };
 
-        core.editor = "nvim";
+        core.editor = "vis";
       };
-
-      xdg.configFile."nvim/init.lua".source = ../../dotfiles/nvim/init.lua;
-
-      xdg.configFile."nvim/lua" = {
-        source = ../../dotfiles/nvim/lua;
-        recursive = true;
-      };
-
-      xdg.configFile."nvim/stylua.toml".source = ../../dotfiles/nvim/stylua.toml;
-
-      home.activation.seedLazyVim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        run mkdir -p \
-          ${lib.escapeShellArg "${config.xdg.configHome}/nvim"} \
-          ${lib.escapeShellArg "${config.xdg.stateHome}/nvim"}
-
-        if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/nvim/lazyvim.json"} ]; then
-          run install -m 644 \
-            ${../../dotfiles/nvim/lazyvim.json} \
-            ${lib.escapeShellArg "${config.xdg.configHome}/nvim/lazyvim.json"}
-        fi
-
-        if [ ! -e ${lib.escapeShellArg "${config.xdg.stateHome}/nvim/lazy-lock.json"} ]; then
-          run install -m 644 \
-            ${../../dotfiles/nvim/lazy-lock.json} \
-            ${lib.escapeShellArg "${config.xdg.stateHome}/nvim/lazy-lock.json"}
-        fi
-      '';
 
       home.packages = with pkgs; [
         inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default
         inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop
+        vis
+        fzf
         ripgrep
         fd
         jq
@@ -130,7 +119,6 @@
         nodejs
         nil
         nixfmt
-        tree-sitter
         unzip
       ];
     };
