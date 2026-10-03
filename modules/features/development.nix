@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ config, ... }:
 
 {
   flake.modules.nixos.development = {
@@ -30,6 +30,31 @@
     in
     {
       programs.git.enable = true;
+
+      programs.opencode = {
+        enable = true;
+
+        settings = {
+          autoupdate = false;
+          model = "llamacpp/qwen3.5-9b-q5";
+          small_model = "llamacpp/qwen3.5-9b-q5";
+
+          # llama.cpp server on the LAN (OpenAI-compatible API).
+          provider.llamacpp = {
+            npm = "@ai-sdk/openai-compatible";
+            name = "llama.cpp";
+            options.baseURL = "http://192.168.178.3:8089/v1";
+            models."qwen3.5-9b-q5" = {
+              name = "Qwen3.5 9B (Q5)";
+              tool_call = true;
+              limit = {
+                context = 65536;
+                output = 8192;
+              };
+            };
+          };
+        };
+      };
 
       # Sets JAVA_HOME as well.
       programs.java = {
@@ -140,26 +165,28 @@
         core.editor = "vis";
       };
 
-      home.packages = with pkgs; [
-        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default
-        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop
-        vis
-        fzf
-        ripgrep
-        fd
-        jq
-        gcc
-        gnumake
-        pkg-config
-        rustc
-        cargo
-        rust-analyzer
-        python3
-        nodejs
-        gradle
-        nil
-        nixfmt
-        unzip
-      ];
+      home.packages =
+        with pkgs;
+        [
+          vis
+          fzf
+          ripgrep
+          fd
+          jq
+          gcc
+          gnumake
+          pkg-config
+          rustc
+          cargo
+          rust-analyzer
+          python3
+          nodejs
+          gradle
+          nil
+          nixfmt
+          unzip
+        ]
+        # The Mac gets the desktop app as a Homebrew cask (see hosts/mac.nix).
+        ++ lib.optionals stdenv.hostPlatform.isLinux [ opencode-desktop ];
     };
 }

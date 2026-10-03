@@ -40,6 +40,7 @@
             "the-unarchiver"
             "font-jetbrains-mono-nerd-font"
             "homebrew-app"
+            "opencode-desktop"
 
             {
               name = "darrylmorley/whatcable/whatcable";

@@ -122,9 +122,9 @@
                 command = "zeditor";
               };
               "9" = streamDeckButton {
-                text = "HERMES";
-                icon = "hermes";
-                command = "hermes";
+                text = "OPENCODE";
+                icon = "opencode";
+                command = "opencode-desktop";
               };
               "10" = streamDeckButton {
                 text = "BEREICH";
@@ -181,7 +181,7 @@
         path = "${papirus}/64x64/apps/zed.svg";
         from = "#4f4f4f|#2f2f2f";
       };
-      xdg.dataFile."streamdeck-icons/hermes.svg".source = lightIcon {
+      xdg.dataFile."streamdeck-icons/opencode.svg".source = lightIcon {
         path = "${papirus}/64x64/apps/gnome-robots.svg";
         from = "#4f4f4f|#2f2f2f";
       };
