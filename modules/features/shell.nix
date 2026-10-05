@@ -18,6 +18,19 @@ let
 
       home.packages = with pkgs; [
         fastfetch
+        # Unreleased main: `---` separators and keypress passthrough fixes.
+        (fetch.overrideAttrs (old: {
+          version = "2.3.0-unstable-2026-09-21";
+          src = fetchFromGitHub {
+            owner = "areofyl";
+            repo = "fetch";
+            rev = "7b19d22c2d8e4b7b2295cc625c9fdf87adcabbcd";
+            hash = "sha256-gCiEaSiMQND+auhMDCiSdLzj5CXvmYBltEAMRj73szc=";
+          };
+          meta = old.meta // {
+            changelog = "https://github.com/areofyl/fetch/commits/main";
+          };
+        }))
         eza
         btop
         tree
@@ -109,13 +122,32 @@ in
           };
       };
 
+      # The same sections for fetch; it has no headings, `---` is a blank line.
+      xdg.configFile."fetch/config".text = ''
+        os
+        kernel
+        uptime
+        packages
+        ---
+        shell
+        wm
+        theme
+        font
+        ---
+        display
+        cpu
+        gpu
+        memory
+        disk
+      '';
+
       programs.fish = {
         enable = true;
 
         shellAliases = aliases;
 
         interactiveShellInit = ''
-          fastfetch
+          fetch
           type -q enable_transience; and enable_transience
         '';
       };
@@ -141,7 +173,7 @@ in
       shellAliases = aliases;
 
       initContent = ''
-        fastfetch
+        fetch
       '';
     };
   };
