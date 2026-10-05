@@ -21,7 +21,6 @@
         ];
 
         nixpkgs.config.allowUnfree = true;
-        nixpkgs.overlays = [ config.flake.overlays.local ];
 
         users.users.chris.home = "/Users/chris";
         users.users.chris.shell = "/bin/zsh";
