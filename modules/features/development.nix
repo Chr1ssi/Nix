@@ -31,6 +31,10 @@
     {
       programs.git.enable = true;
 
+      programs.gh.enable = true;
+
+      programs.claude-code.enable = true;
+
       programs.opencode = {
         enable = true;
 

@@ -1,25 +1,40 @@
 { ... }:
 
 {
+  # Modelled on https://github.com/Sin-cy/dotfiles (starship/.config/starship).
   flake.modules.homeManager.starship = {
     programs.starship = {
       enable = true;
 
       settings = {
-        add_newline = true;
-        command_timeout = 800;
-        scan_timeout = 30;
+        add_newline = false;
+        command_timeout = 500;
+        scan_timeout = 100;
+        follow_symlinks = false;
 
-        format = "$username$hostname$directory$git_branch$git_status$nix_shell$rust$nodejs$python$golang$container$line_break$character";
-        right_format = "$status$cmd_duration$jobs$time";
+        format = "$directory\${custom.giturl}$git_branch\${custom.git_worktree}$git_status$line_break$character";
+        right_format = "$all";
 
         palette = "catppuccin_mocha";
         palettes.catppuccin_mocha = {
+          crust = "#11111b";
+          mantle = "#181825";
+          base = "#1e1e2e";
+          overlay2 = "#9399b2";
+          overlay1 = "#7f849c";
+          overlay0 = "#6c7086";
+          surface2 = "#585b70";
+          surface1 = "#45475a";
+          surface0 = "#313244";
+          text = "#cdd6f4";
+          subtext1 = "#bac2de";
+          subtext0 = "#a6adc8";
           rosewater = "#f5e0dc";
           flamingo = "#f2cdcd";
           pink = "#f5c2e7";
           mauve = "#cba6f7";
           red = "#f38ba8";
+          maroon = "#eba0ac";
           peach = "#fab387";
           yellow = "#f9e2af";
           green = "#a6e3a1";
@@ -28,107 +43,103 @@
           sapphire = "#74c7ec";
           blue = "#89b4fa";
           lavender = "#b4befe";
-          text = "#cdd6f4";
-          subtext0 = "#a6adc8";
-          surface1 = "#45475a";
-        };
-
-        character = {
-          success_symbol = "[❯](bold green)";
-          error_symbol = "[❯](bold red)";
-          vimcmd_symbol = "[❮](bold mauve)";
         };
 
         directory = {
-          format = "[󰉋  $path]($style)[$read_only]($read_only_style) ";
-          style = "bold blue";
-          read_only = " 󰌾";
+          style = "teal";
+          format = "[ $path ]($style)";
           truncation_length = 4;
-          truncate_to_repo = false;
+          substitutions = {
+            "Documents" = "󰈙 ";
+            "Downloads" = " ";
+            "Music" = " ";
+            "Pictures" = " ";
+            "Projects" = "󰲋 ";
+          };
+        };
+
+        line_break.disabled = true;
+
+        character = {
+          success_symbol = "[ ](bold fg:green)";
+          error_symbol = "[✘ ](bold fg:red)";
+          vimcmd_symbol = "[: ](bold fg:yellow)";
+        };
+
+        # The snippets use bash syntax; without `shell` starship would run them
+        # in $STARSHIP_SHELL, i.e. fish.
+        custom.giturl = {
+          description = "Display symbol for remote Git server";
+          command = ''
+            GIT_REMOTE=$(command git ls-remote --get-url 2> /dev/null)
+            if [[ "$GIT_REMOTE" =~ "github" ]]; then
+                GIT_REMOTE_SYMBOL=" "
+            elif [[ "$GIT_REMOTE" =~ "gitlab" ]]; then
+                GIT_REMOTE_SYMBOL=" "
+            elif [[ "$GIT_REMOTE" =~ "bitbucket" ]]; then
+                GIT_REMOTE_SYMBOL=" "
+            elif [[ "$GIT_REMOTE" =~ "git" ]]; then
+                GIT_REMOTE_SYMBOL=" "
+            else
+                GIT_REMOTE_SYMBOL=" "
+            fi
+            echo "$GIT_REMOTE_SYMBOL "
+          '';
+          when = "git rev-parse --is-inside-work-tree 2> /dev/null";
+          shell = [
+            "bash"
+            "--noprofile"
+            "--norc"
+          ];
+          format = "$output";
+          require_repo = true;
+          ignore_timeout = true;
         };
 
         git_branch = {
-          format = "on [$symbol$branch(:$remote_branch)]($style) ";
-          symbol = " ";
-          style = "bold mauve";
-          truncation_length = 28;
+          symbol = "[](base) ";
+          style = "fg:lavender bg:base";
+          format = "  [$symbol$branch]($style)[](base)";
+        };
+
+        custom.git_worktree = {
+          description = "Show indicator when inside a git worktree";
+          command = ''
+            common_dir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+            git_dir=$(git rev-parse --path-format=absolute --git-dir 2>/dev/null)
+            if [ "$common_dir" != "$git_dir" ]; then
+                echo "⛓ "
+            fi
+          '';
+          when = "git rev-parse --is-inside-work-tree >/dev/null 2>&1";
+          shell = [
+            "bash"
+            "--noprofile"
+            "--norc"
+          ];
+          format = " ([$output ]($style))";
+          style = "bold green";
+          require_repo = true;
+          ignore_timeout = true;
         };
 
         git_status = {
-          format = "([$all_status$ahead_behind]($style) )";
-          style = "bold peach";
-          conflicted = "=\${count}";
-          ahead = "⇡\${count}";
-          behind = "⇣\${count}";
-          diverged = "⇕⇡\${ahead_count}⇣\${behind_count}";
-          untracked = "?\${count}";
-          stashed = "*\${count}";
-          modified = "!\${count}";
-          staged = "+\${count}";
-          renamed = "»\${count}";
-          deleted = "✘\${count}";
+          format = "[$untracked$staged$modified$renamed$conflicted$ahead_behind ]($style)";
+          staged = "[+](green)";
+          modified = "[!](yellow)";
+          renamed = "[»](blue)";
+          deleted = "[-](red)";
+          untracked = "[?](red)";
+          stashed = "[≡](lavender)";
+          conflicted = "[✖](red bold)";
+          ahead = "[⇡\${count}](teal)";
+          behind = "[⇣\${count}](peach)";
+          diverged = "[⇕⇡\${ahead_count}⇣\${behind_count}](mauve)";
         };
 
-        nix_shell = {
-          format = "via [$symbol$state( \\($name\\))]($style) ";
-          symbol = "󱄅 ";
-          style = "bold sky";
-          heuristic = true;
-        };
-
-        rust = {
-          format = "via [$symbol($version )]($style)";
-          symbol = " ";
-          style = "bold peach";
-          version_format = "\${major}.\${minor}";
-        };
-
-        nodejs = {
-          format = "via [$symbol($version )]($style)";
-          symbol = " ";
-          style = "bold green";
-          version_format = "\${major}.\${minor}";
-        };
-
-        python = {
-          format = "via [$symbol$pyenv_prefix($version )(\\($virtualenv\\) )]($style)";
-          symbol = " ";
-          style = "bold yellow";
-          version_format = "\${major}.\${minor}";
-        };
-
-        golang = {
-          format = "via [$symbol($version )]($style)";
-          symbol = " ";
-          style = "bold sapphire";
-          version_format = "\${major}.\${minor}";
-        };
-
-        container = {
-          format = "in [$symbol$name]($style) ";
-          symbol = " ";
-          style = "bold red";
-        };
-
-        username = {
-          format = "[$user]($style)@";
-          style_user = "bold lavender";
-          style_root = "bold red";
-          show_always = false;
-        };
-
-        hostname = {
-          format = "[$hostname]($style) ";
-          style = "bold lavender";
-          ssh_only = true;
-        };
-
-        status = {
-          disabled = false;
-          format = "[$symbol$status]($style) ";
-          symbol = "✘ ";
-          style = "bold red";
-        };
+        username.disabled = true;
+        time.disabled = true;
+        os.disabled = true;
 
         cmd_duration = {
           min_time = 2000;
@@ -136,17 +147,67 @@
           style = "bold yellow";
         };
 
-        jobs = {
-          format = "[$symbol$number]($style) ";
-          symbol = "󰜎 ";
-          style = "bold blue";
+        nix_shell = {
+          format = "[ $symbol$state( \\($name\\)) ]($style)";
+          symbol = "󱄅 ";
+          style = "bold sky";
+          heuristic = true;
         };
 
-        time = {
-          disabled = false;
-          format = "[$time]($style)";
-          style = "subtext0";
-          time_format = "%H:%M";
+        nodejs = {
+          symbol = "";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        bun.detect_files = [
+          "bun.lock"
+          "bun.lockb"
+        ];
+
+        c = {
+          symbol = " ";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        rust = {
+          symbol = "";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        golang = {
+          symbol = "";
+          format = "[ $symbol( $version) ]($style)";
+          detect_files = [ "go.mod" ];
+        };
+
+        php = {
+          symbol = "";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        java = {
+          symbol = " ";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        kotlin = {
+          symbol = "";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        haskell = {
+          symbol = "";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        python = {
+          symbol = "";
+          format = "[ $symbol( $version) ]($style)";
+        };
+
+        docker_context = {
+          symbol = "";
+          format = "[ $symbol( $context) ]($style)";
         };
       };
     };
