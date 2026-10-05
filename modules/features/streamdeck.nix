@@ -27,19 +27,20 @@
         pkgs.runCommand "streamdeck-icon.svg" { } "sed -E 's/${from}/#cdd6f4/Ig' ${path} > $out";
       papirus = "${pkgs.papirus-icon-theme}/share/icons/Papirus";
 
-      streamDeckIcon = name: "${config.xdg.dataHome}/streamdeck-icons/${name}.svg";
+      streamDeckIcon = file: "${config.xdg.dataHome}/streamdeck-icons/${file}";
       streamDeckButton =
         {
           text,
           icon,
           command,
+          iconFile ? "${icon}.svg",
           backgroundColor ? "#1e1e2e",
         }:
         {
           state = 0;
           states."0" = {
             inherit text command;
-            icon = streamDeckIcon icon;
+            icon = streamDeckIcon iconFile;
             keys = "";
             write = "";
             brightness_change = 0;
@@ -124,6 +125,7 @@
               "9" = streamDeckButton {
                 text = "OPENCODE";
                 icon = "opencode";
+                iconFile = "opencode.png";
                 command = "opencode-desktop";
               };
               "10" = streamDeckButton {
@@ -177,14 +179,10 @@
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/net.imput.helium.svg";
       xdg.dataFile."streamdeck-icons/steam.svg".source =
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/steam.svg";
-      xdg.dataFile."streamdeck-icons/zed.svg".source = lightIcon {
-        path = "${papirus}/64x64/apps/zed.svg";
-        from = "#4f4f4f|#2f2f2f";
-      };
-      xdg.dataFile."streamdeck-icons/opencode.svg".source = lightIcon {
-        path = "${papirus}/64x64/apps/gnome-robots.svg";
-        from = "#4f4f4f|#2f2f2f";
-      };
+      xdg.dataFile."streamdeck-icons/zed.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/zed.svg";
+      xdg.dataFile."streamdeck-icons/opencode.png".source =
+        "${pkgs.opencode-desktop}/share/icons/hicolor/128x128/apps/opencode-desktop.png";
       xdg.dataFile."streamdeck-icons/screenshot-region.svg".source = lightIcon {
         path = "${papirus}/24x24/actions/image-crop.svg";
         from = "#444444";
