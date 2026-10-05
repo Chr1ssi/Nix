@@ -8,6 +8,10 @@ let
     cat = "bat";
   };
 
+  # Play once instead of looping until a key is pressed. Key restore types the
+  # pressed key back via pynput, which does not reach Wayland terminals.
+  anifetchArgs = "example.mp4 --loop 1 --no-input-restore";
+
   # Shared by fish and zsh; Home Manager hooks zoxide and fzf into every enabled shell.
   common =
     { pkgs, ... }:
@@ -18,6 +22,7 @@ let
 
       home.packages = with pkgs; [
         fastfetch
+        local.anifetch
         eza
         btop
         tree
@@ -48,7 +53,7 @@ in
         shellAliases = aliases;
 
         interactiveShellInit = ''
-          fastfetch -c screenfetch.jsonc
+          anifetch ${anifetchArgs} -c ${pkgs.fastfetch}/share/fastfetch/presets/screenfetch.jsonc
           type -q enable_transience; and enable_transience
         '';
       };
@@ -74,7 +79,7 @@ in
       shellAliases = aliases;
 
       initContent = ''
-        fastfetch
+        anifetch ${anifetchArgs}
       '';
     };
   };
