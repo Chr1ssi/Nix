@@ -15,7 +15,7 @@
             pad = "25x25";
           };
           colors-dark = {
-            alpha = 0.6;
+            alpha = 0.8;
             foreground = "cdd6f4";
             background = "1e1e2e";
             selection-foreground = "cdd6f4";
