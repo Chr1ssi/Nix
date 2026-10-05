@@ -254,7 +254,7 @@
         comment = "iCloud-Kalender mit khal";
         icon = "x-office-calendar";
         terminal = false;
-        exec = "${pkgs.kitty}/bin/kitty --class mywm-calendar --title Kalender ${calendar}/bin/mywm-calendar app";
+        exec = "${pkgs.foot}/bin/foot --app-id mywm-calendar --title Kalender ${calendar}/bin/mywm-calendar app";
         categories = [
           "Office"
           "Calendar"

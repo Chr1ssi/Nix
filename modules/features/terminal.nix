@@ -1,12 +1,11 @@
 { ... }:
 
 {
-  # kitty's theme include comes from mywm on Linux; macOS has no mywm.
+  # foot on Linux, kitty on macOS, where foot (Wayland-only) does not run.
   flake.modules.homeManager.terminal =
     { config, pkgs, ... }:
     {
-      # foot is Wayland-only, so it is just for testing on Linux. Its colors
-      # come from the theme mywm renders from the wallpaper.
+      # Colors come from the theme mywm renders from the wallpaper.
       programs.foot = {
         enable = pkgs.stdenv.hostPlatform.isLinux;
         settings = {
@@ -20,15 +19,9 @@
       };
 
       programs.kitty = {
-        enable = true;
+        enable = pkgs.stdenv.hostPlatform.isDarwin;
         extraConfig =
-          builtins.replaceStrings
-            [ "include themes/noctalia.conf" ]
-            [
-              (
-                if pkgs.stdenv.hostPlatform.isDarwin then "" else "include ${config.xdg.stateHome}/mywm/kitty.conf"
-              )
-            ]
+          builtins.replaceStrings [ "include themes/noctalia.conf" ] [ "" ]
             (builtins.readFile ../../dotfiles/kitty/kitty.conf);
       };
     };
