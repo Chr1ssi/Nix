@@ -2,7 +2,7 @@
 
 let
   aliases = {
-    ls = "eza";
+    ls = "eza -T";
     ll = "eza -la";
     la = "eza -a";
     cat = "bat";
