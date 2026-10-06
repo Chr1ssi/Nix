@@ -145,15 +145,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791292438,
-        "narHash": "sha256-++enU+oU2TWNWigA3gj88P6fWZN1m+RkCgI/1d8vYWM=",
+        "lastModified": 1791311628,
+        "narHash": "sha256-y4ewdfq+KU4yb5KujMOWYOtP/wRwJaKK87aYZTXsRw8=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "d3d1db9395a5419fb0cc1d610516f81b5b133124",
+        "rev": "d0622a0b7c4975a85dad09c5e238ebf3304d2762",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
+        "ref": "hw/wine-wayland-games",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
