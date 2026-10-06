@@ -170,10 +170,6 @@ in
       syntaxHighlighting.enable = true;
 
       shellAliases = aliases;
-
-      initContent = ''
-        fetch
-      '';
     };
   };
 }
