@@ -147,7 +147,6 @@ in
         shellAliases = aliases;
 
         interactiveShellInit = ''
-          fetch
           type -q enable_transience; and enable_transience
         '';
       };
