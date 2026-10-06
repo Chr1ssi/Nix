@@ -20,9 +20,9 @@
 
       programs.kitty = {
         enable = pkgs.stdenv.hostPlatform.isDarwin;
-        extraConfig =
-          builtins.replaceStrings [ "include themes/noctalia.conf" ] [ "" ]
-            (builtins.readFile ../../dotfiles/kitty/kitty.conf);
+        extraConfig = builtins.replaceStrings [ "include themes/noctalia.conf" ] [ "" ] (
+          builtins.readFile ../../dotfiles/kitty/kitty.conf
+        );
       };
     };
 }
