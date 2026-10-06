@@ -20,7 +20,10 @@
     {
       nixpkgs.config.allowUnfree = true;
 
-      programs.steam.enable = true;
+      programs.steam = {
+        enable = true;
+        extraCompatPackages = [ pkgs.proton-ge-bin ];
+      };
 
       hardware.graphics.enable32Bit = true;
       services.pipewire.alsa.support32Bit = true;
@@ -59,18 +62,6 @@
               run install -m 644 \
                 ${../../dotfiles/MangoHud/MangoHud.conf} \
                 ${lib.escapeShellArg "${config.xdg.configHome}/MangoHud/MangoHud.conf"}
-            fi
-
-            if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/blacklist.conf"} ]; then
-              run install -m 644 \
-                ${../../dotfiles/goverlay/blacklist.conf} \
-                ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/blacklist.conf"}
-            fi
-
-            if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/goverlay.conf"} ]; then
-              run install -m 644 \
-                ${../../dotfiles/goverlay/goverlay.conf} \
-                ${lib.escapeShellArg "${config.xdg.configHome}/goverlay/goverlay.conf"}
             fi
           '';
         };
