@@ -9,7 +9,6 @@
 
 # Ein fester Workspace pro Monitor, in dieser Reihenfolge nummeriert.
 workspace_outputs = ["DP-3", "HDMI-A-1", "DP-1"]
-async_outputs = ["DP-3"]
 float_dialogs = true
 gaming_output = "DP-3"
 game_app_id_prefixes = ["steam_app_", "gamescope"]
@@ -121,5 +120,4 @@ blur = 8
 accel_profile = "flat"
 
 [render]
-force_tearing = true
 late_scheduling = true

@@ -32,7 +32,7 @@
 
     # Smithay compositor for mywm.
     mywm = {
-      url = "github:Chr1ssi/MyWM-Smithay";
+      url = "github:Chr1ssi/MyWM-Smithay/hw/remove-tearing";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.mywm-shell.follows = "mywm-shell";
     };

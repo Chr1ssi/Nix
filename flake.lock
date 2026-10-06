@@ -145,15 +145,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791311628,
-        "narHash": "sha256-y4ewdfq+KU4yb5KujMOWYOtP/wRwJaKK87aYZTXsRw8=",
+        "lastModified": 1791319394,
+        "narHash": "sha256-WCJrabyu2USfgN41DHW013jCowUVqKlnIE1xWetnRr4=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "d0622a0b7c4975a85dad09c5e238ebf3304d2762",
+        "rev": "dabfc4d0597ed658bff732f5885b9345b5f73da6",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
+        "ref": "hw/remove-tearing",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
