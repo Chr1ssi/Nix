@@ -145,15 +145,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791311628,
-        "narHash": "sha256-y4ewdfq+KU4yb5KujMOWYOtP/wRwJaKK87aYZTXsRw8=",
+        "lastModified": 1791312817,
+        "narHash": "sha256-yZpjo0xxgOe+pbCTERabavrPlR0tmTi4sgXalgZNbzw=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "d0622a0b7c4975a85dad09c5e238ebf3304d2762",
+        "rev": "cb46d92d56b2d1f4fbfa82bbbd9a6aa8d46af0a6",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
+        "ref": "hw/tearing-after-vrr",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
