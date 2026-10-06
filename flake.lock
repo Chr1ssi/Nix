@@ -154,7 +154,6 @@
       },
       "original": {
         "owner": "Chr1ssi",
-        "ref": "hw/wine-wayland-games",
         "repo": "MyWM-Smithay",
         "type": "github"
       }

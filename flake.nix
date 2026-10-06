@@ -32,7 +32,7 @@
 
     # Smithay compositor for mywm.
     mywm = {
-      url = "github:Chr1ssi/MyWM-Smithay/hw/wine-wayland-games";
+      url = "github:Chr1ssi/MyWM-Smithay";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.mywm-shell.follows = "mywm-shell";
     };
