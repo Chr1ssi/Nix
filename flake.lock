@@ -154,7 +154,6 @@
       },
       "original": {
         "owner": "Chr1ssi",
-        "ref": "hw/keyboard-leds",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
