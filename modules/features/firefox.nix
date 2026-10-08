@@ -11,6 +11,9 @@
         ublock-origin
         darkreader
         bitwarden
+        consent-o-matic
+        sponsorblock
+        privacy-badger
       ];
 
       profiles.default = {

@@ -14,6 +14,10 @@
         "gebbhagfogifgggkldgodflihgfeippi" # Return YouTube Dislike
         "nngceckbapebfimnlniiiahkandclblb" # Bitwarden Password Manager
         "omkfmpieigblcllmkgbflkikinpkodlk" # enhanced-h264ify
+        "mdjildafknihdffpkfmmpnpoiajfjnjd" # Consent-O-Matic
+        "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock for YouTube
+        "ndpmhjnlfkgfalaieeneneenijondgag" # YouTube Anti Translate
+        "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
       ];
     };
   };
