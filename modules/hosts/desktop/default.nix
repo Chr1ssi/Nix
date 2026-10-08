@@ -29,6 +29,7 @@
       config.flake.modules.nixos.apps
       config.flake.modules.nixos.development
       config.flake.modules.nixos.gaming
+      config.flake.modules.nixos.virtualisation
 
       {
         boot.loader = {

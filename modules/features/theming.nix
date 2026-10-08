@@ -8,13 +8,13 @@
         enable = true;
 
         theme = {
-          name = "adw-gtk3";
-          package = pkgs.adw-gtk3;
+          name = "Nordic-darker";
+          package = pkgs.nordic;
         };
 
         iconTheme = {
-          name = "Papirus-Dark";
-          package = pkgs.papirus-icon-theme;
+          name = "Slot-Nord-Dark-Colorize-Icons";
+          package = pkgs.local.slot-nord-dark-colorize-icons;
         };
 
         gtk3.extraConfig = {
@@ -42,8 +42,23 @@
 
       qt = {
         enable = true;
-        platformTheme.name = "adwaita";
-        style.name = "adwaita-dark";
+        platformTheme.name = "qtct";
+        style.name = "kvantum";
+
+        kvantum = {
+          enable = true;
+          themes = [ pkgs.nordic ];
+          settings.General.theme = "Nordic-Darker";
+        };
+
+        qt5ctSettings.Appearance = {
+          style = "kvantum";
+          icon_theme = config.gtk.iconTheme.name;
+        };
+        qt6ctSettings.Appearance = {
+          style = "kvantum";
+          icon_theme = config.gtk.iconTheme.name;
+        };
       };
 
       home.pointerCursor = {

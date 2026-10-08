@@ -7,6 +7,9 @@
       claude-desktop = final.callPackage ../../packages/claude-desktop.nix { };
       chatgpt-linux = final.callPackage ../../packages/chatgpt-linux.nix { };
       helium = final.callPackage ../../packages/helium.nix { };
+      slot-nord-dark-colorize-icons =
+        final.callPackage ../../packages/slot-nord-dark-colorize-icons.nix
+          { };
     };
   };
 }
