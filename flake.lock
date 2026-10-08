@@ -145,16 +145,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791319394,
-        "narHash": "sha256-WCJrabyu2USfgN41DHW013jCowUVqKlnIE1xWetnRr4=",
+        "lastModified": 1791435880,
+        "narHash": "sha256-uE+alYOwHRLqTxI9cOEDGtUGvMwC0uXMaB2iMt4COfw=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "dabfc4d0597ed658bff732f5885b9345b5f73da6",
+        "rev": "2b1aa00a73ac1b51e4506bdc7937f440ee2cb3fe",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
-        "ref": "hw/remove-tearing",
+        "ref": "hw/keyboard-leds",
         "repo": "MyWM-Smithay",
         "type": "github"
       }

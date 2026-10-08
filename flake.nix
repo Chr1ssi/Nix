@@ -32,7 +32,7 @@
 
     # Smithay compositor for mywm.
     mywm = {
-      url = "github:Chr1ssi/MyWM-Smithay/hw/remove-tearing";
+      url = "github:Chr1ssi/MyWM-Smithay/hw/keyboard-leds";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.mywm-shell.follows = "mywm-shell";
     };
