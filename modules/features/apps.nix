@@ -15,7 +15,6 @@
         mpv
         imv
         local.claude-desktop
-        local.chatgpt-linux
       ];
     };
 }

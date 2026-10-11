@@ -79,7 +79,6 @@ Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager
 │
 ├── packages/
 │   ├── helium.nix
-│   ├── chatgpt-linux.nix
 │   └── ...
 │
 ├── dotfiles/
@@ -105,7 +104,6 @@ Eigene Nix-Derivations (als `pkgs.local.<name>` über `modules/packages/local.ni
 Aktuell gehören dazu unter anderem:
 
 - Claude Desktop
-- ChatGPT Linux
 - Helium
 
 Electron-/Chromium-Apps werden mit `--password-store=gnome-libsecret` gestartet, da die Session `XDG_CURRENT_DESKTOP=mywm` setzt und Chromium das Keyring-Backend sonst nicht erkennt. Claude Desktop läuft zusätzlich über XWayland (`--ozone-platform=x11`), weil die native Wayland-Variante beim ersten Start keine korrekte Fensterumrandung erhält.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check (or apply) upstream updates for the hand-packaged apps in packages/.
 
-Usage: scripts/update-packages [--apply] [claude-desktop|chatgpt|helium ...]
+Usage: scripts/update-packages [--apply] [claude-desktop|helium ...]
 
 Without --apply this only reports current and latest versions.
 """
@@ -20,11 +20,6 @@ APT = {
         "packages/claude-desktop.nix",
         "https://downloads.claude.ai/claude-desktop/apt/stable",
         "claude-desktop",
-    ),
-    "chatgpt": (
-        "packages/chatgpt-linux.nix",
-        "https://persistent.oaistatic.com/codex-app-prod/linux/deb",
-        "chatgpt",
     ),
 }
 HELIUM_FILE = "packages/helium.nix"
