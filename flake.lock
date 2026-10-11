@@ -154,7 +154,6 @@
       },
       "original": {
         "owner": "Chr1ssi",
-        "ref": "hw/fifo-commit-timing",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
