@@ -145,15 +145,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791753409,
-        "narHash": "sha256-D8iKLjBqDBv+cWhQDRmzW56sgjbfXlhoApHkniYuCiw=",
+        "lastModified": 1791754703,
+        "narHash": "sha256-h/Gyuw/yCHKK+20R7MoCoeOrSKAMzEoM01/zjhTw5Hk=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "f7efa5b5019005042c4c3efa84b5fdf3c25016b9",
+        "rev": "54597ba1aa466d43e0335aec2e340896b27e6737",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
+        "ref": "hw/fifo-commit-timing",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
