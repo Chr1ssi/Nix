@@ -47,11 +47,11 @@
 
 stdenv.mkDerivation rec {
   pname = "claude-desktop";
-  version = "2.9939.4";
+  version = "2.31226.1";
 
   src = fetchurl {
     url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
-    hash = "sha256-PP3bI78pEeBeJ7TtOFa455XflGQ7LDW1nesxfPmVvKA=";
+    hash = "sha256-Wpvr38sd9s44dns3Pzp/q/dxVqLd2KP10Elh2lveMF4=";
   };
 
   nativeBuildInputs = [
