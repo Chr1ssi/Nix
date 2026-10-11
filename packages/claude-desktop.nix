@@ -28,6 +28,7 @@
   nspr,
   nss,
   pango,
+  pipewire,
   systemd,
   util-linux,
   vulkan-loader,
@@ -87,6 +88,7 @@ stdenv.mkDerivation rec {
     nspr
     nss
     pango
+    pipewire
     stdenv.cc.cc.lib
     systemd
     util-linux
