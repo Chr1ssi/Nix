@@ -50,6 +50,10 @@ toggle_scratchpad = ["Super+grave"]
 move_to_scratchpad = ["Super+Shift+grave"]
 focus_urgent = ["Super+u"]
 toggle_sticky = ["Super+p"]
+# Dynamischer Stream (beim Teilen D): fokussiertes Fenster, fokussierter Monitor, nichts.
+cast_window = ["Super+Ctrl+w"]
+cast_monitor = ["Super+Ctrl+o"]
+cast_clear = ["Super+Ctrl+x"]
 
 focus_output_left = ["Super+Alt+Left"]
 focus_output_right = ["Super+Alt+Right"]
