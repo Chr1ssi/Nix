@@ -48,6 +48,8 @@ toggle_fullscreen = ["Super+Shift+f"]
 # Super+s, Super+Shift+s und Super+Ctrl+s sind die eingebauten Screenshots.
 toggle_scratchpad = ["Super+grave"]
 move_to_scratchpad = ["Super+Shift+grave"]
+focus_urgent = ["Super+u"]
+toggle_sticky = ["Super+p"]
 
 focus_output_left = ["Super+Alt+Left"]
 focus_output_right = ["Super+Alt+Right"]
@@ -84,10 +86,12 @@ command = ["nemo"]
 [program_bindings.zed_editor]
 keys = ["Super+e"]
 command = ["zeditor"]
+app_id = "dev.zed.Zed"
 
 [program_bindings.claude]
 keys = ["Super+c"]
 command = ["claude-desktop"]
+app_id = "com.anthropic.Claude"
 
 [program_bindings.volume_up]
 keys = ["XF86AudioRaiseVolume"]
