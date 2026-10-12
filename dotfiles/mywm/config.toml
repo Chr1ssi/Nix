@@ -78,6 +78,7 @@ move_to_workspace_modifiers = "Super+Shift"
 [program_bindings.browser]
 keys = ["Super+b"]
 command = ["helium"]
+app_id = "helium"
 
 [program_bindings.file_manager]
 keys = ["Super+f"]
