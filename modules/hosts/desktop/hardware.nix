@@ -58,6 +58,10 @@
         enable = true;
       };
 
+      # Realtek USB Bluetooth (0bda:a725); the shell's command center switches it and its devices.
+      # Its pairings live in /var/lib/bluetooth (kept by impermanence).
+      hardware.bluetooth.enable = true;
+
       # Apply the lighting once at boot instead of keeping the SDK server
       # and tray application running for the entire session.
       systemd.services.openrgb = {

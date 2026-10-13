@@ -11,8 +11,6 @@ in
 
     programs.mywm = {
       enable = true;
-      # Second session "mywm (Dev)": session log and frame statistics for compositor work.
-      devSession = true;
       greeterDirectory = "/persist/mywm-greeter";
     };
 
