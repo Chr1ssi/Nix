@@ -21,6 +21,7 @@
 
       config.flake.modules.nixos.desktop
       config.flake.modules.nixos.greeter
+      config.flake.modules.nixos.boot-theme
       config.flake.modules.nixos.audio
       config.flake.modules.nixos.streamdeck
       config.flake.modules.nixos.mywm
