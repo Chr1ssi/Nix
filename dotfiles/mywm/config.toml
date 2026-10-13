@@ -46,8 +46,8 @@ toggle_floating = ["Super+v"]
 # Super+f ist der Dateimanager (program_bindings), Vollbild deshalb mit Shift.
 toggle_fullscreen = ["Super+Shift+f"]
 # Super+s, Super+Shift+s und Super+Ctrl+s sind die eingebauten Screenshots.
-toggle_scratchpad = ["Super+equal"]
-move_to_scratchpad = ["Super+Shift+grave"]
+toggle_scratchpad = ["Super+dead_acute"]
+move_to_scratchpad = ["Super+Shift+dead_acute"]
 focus_urgent = ["Super+u"]
 toggle_sticky = ["Super+p"]
 # Dynamischer Stream (beim Teilen D): fokussiertes Fenster, fokussierter Monitor, nichts.
@@ -78,7 +78,8 @@ move_to_workspace_next = ["Super+Ctrl+Shift+Down"]
 
 workspace_modifiers = "Super"
 move_to_workspace_modifiers = "Super+Shift"
-column_grow = ["Super+bracketright"]
+column_grow = ["Super+plus"]
+color_picker = ["Super+Shift+c"]
 
 [program_bindings.browser]
 keys = ["Super+b"]
