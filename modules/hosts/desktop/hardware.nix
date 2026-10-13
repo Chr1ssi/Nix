@@ -40,6 +40,14 @@
         "nvidia"
       ];
 
+      # Early KMS: the driver (and its GSP firmware) in the initrd, so Plymouth has the GPU at once. Plymouth
+      # ignores the firmware framebuffer (simpledrm) and would otherwise wait until the session starts.
+      boot.initrd.kernelModules = [
+        "nvidia"
+        "nvidia_modeset"
+        "nvidia_drm"
+      ];
+
       hardware.nvidia = {
         modesetting.enable = true;
         open = true;

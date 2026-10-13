@@ -55,9 +55,9 @@
       # Messages only when something goes wrong; Plymouth shows the rest.
       boot.consoleLogLevel = 3;
       boot.initrd.verbose = false;
+      # "splash" comes with Plymouth.
       boot.kernelParams = [
         "quiet"
-        "splash"
         "udev.log_level=3"
         "systemd.show_status=auto"
       ];
