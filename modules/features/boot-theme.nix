@@ -6,12 +6,10 @@
     let
       # The boot menu cannot follow wallpaper changes (it is written to the EFI partition at rebuild time), so it
       # keeps this picture and the colors mywm generated from it (~/.local/state/mywm/theme.json at the time).
-      wallpaper =
-        pkgs.runCommand "limine-wallpaper.jpg" { nativeBuildInputs = [ pkgs.imagemagick ]; }
-          ''
-            magick ${../../wallpapers/wallhaven-q6omvd.jpg} -resize 2560x1440^ -gravity center -extent 2560x1440 \
-              -blur 0x14 -fill black -colorize 45% -quality 92 $out
-          '';
+      wallpaper = pkgs.runCommand "limine-wallpaper.jpg" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+        magick ${../../wallpapers/wallhaven-q6omvd.jpg} -resize 2560x1440^ -gravity center -extent 2560x1440 \
+          -blur 0x14 -fill black -colorize 45% -quality 92 $out
+      '';
       colors = {
         surface = "111413";
         container = "262827";
