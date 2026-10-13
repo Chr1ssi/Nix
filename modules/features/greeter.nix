@@ -1,27 +1,11 @@
-{ config, ... }:
-
-let
-  monitors = config.monitors;
-in
 {
+  # greetd with mywm's own login screen (mywm-shell's greeter.qml on `mywm-compositor --greeter`), in the look of
+  # the lock screen.
   flake.modules.nixos.greeter =
     { pkgs, ... }:
     let
-      greeterInit = pkgs.writeShellScript "greetd-river-init" ''
-        ${pkgs.wlr-randr}/bin/wlr-randr --output ${monitors.main} --on --mode 2560x1440@143.973Hz --pos 0,0 --scale 1
-        ${pkgs.wlr-randr}/bin/wlr-randr --output ${monitors.side} --off
-        ${pkgs.wlr-randr}/bin/wlr-randr --output ${monitors.top} --off
-
-        ${pkgs.river-classic}/bin/riverctl keyboard-layout de
-        ${pkgs.river-classic}/bin/riverctl set-repeat 50 300
-        ${pkgs.river-classic}/bin/riverctl input 'pointer-*' accel-profile flat
-        ${pkgs.river-classic}/bin/riverctl input 'pointer-*' pointer-accel 0.0
-        ${pkgs.river-classic}/bin/riverctl default-layout rivertile
-        ${pkgs.river-classic}/bin/rivertile -view-padding 0 -outer-padding 0 &
-
-        ${pkgs.regreet}/bin/regreet
-        ${pkgs.river-classic}/bin/riverctl exit
-      '';
+      # The session's own configuration: the login screen uses its monitors, keyboard and input.
+      session = builtins.fromTOML (builtins.readFile ../../dotfiles/mywm/config.toml);
     in
     {
       # mywm mirrors the current wallpaper and theme colors here (see
@@ -33,95 +17,17 @@ in
 
       security.pam.services.greetd.enableGnomeKeyring = true;
 
-      services.greetd = {
+      programs.mywm.greeter = {
         enable = true;
-
-        settings.default_session = {
-          command = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.river-classic}/bin/river -no-xwayland -c ${greeterInit}";
-
-          user = "greeter";
-        };
-      };
-
-      services.displayManager.regreet = {
-        enable = true;
-
-        iconTheme = {
-          name = "Papirus-Dark";
-          package = pkgs.papirus-icon-theme;
-        };
-
-        extraCss = ''
-          @import url("file:///persist/mywm-greeter/theme.css");
-
-          window {
-            color: @mywm_text;
-          }
-
-          frame.background {
-            background-color: alpha(@mywm_bg, 0.94);
-            border: 2px solid @mywm_accent;
-            border-radius: 0;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
-            padding: 12px;
-          }
-
-          entry,
-          passwordentry,
-          combobox button {
-            background: @mywm_field;
-            color: @mywm_text;
-            border: 1px solid @mywm_border;
-            border-radius: 0;
-            min-height: 42px;
-          }
-
-          entry:focus,
-          passwordentry:focus,
-          combobox button:focus {
-            border-color: @mywm_accent;
-            box-shadow: 0 0 0 1px @mywm_accent;
-          }
-
-          button {
-            background: @mywm_field;
-            color: @mywm_text;
-            border: 1px solid @mywm_border;
-            border-radius: 0;
-            min-height: 38px;
-          }
-
-          button:hover {
-            background: @mywm_hover;
-            border-color: @mywm_accent;
-          }
-
-          button.suggested-action {
-            background: @mywm_accent;
-            color: @mywm_on_accent;
-            border-color: @mywm_accent;
-          }
-
-          button.destructive-action {
-            background: @mywm_field;
-            color: @mywm_error;
-            border-color: @mywm_error;
-          }
-        '';
-
+        user = "chris";
         settings = {
-          GTK.application_prefer_dark_theme = true;
-          appearance.greeting_msg = "Willkommen zurück!";
-          background = {
-            path = "/persist/mywm-greeter/background";
-            fit = "Cover";
-          };
-          widget.clock = {
-            format = "%a, %d. %b  %H:%M";
-            resolution = "1s";
-            locale = "de_DE";
-            timezone = "Europe/Berlin";
-          };
+          inherit (session) keyboard input outputs;
+        };
+        # The cursor of the session (home-manager's pointerCursor), which the greeter user does not have.
+        environment = {
+          XCURSOR_THEME = "Bibata-Modern-Ice";
+          XCURSOR_SIZE = "24";
+          XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons";
         };
       };
     };
