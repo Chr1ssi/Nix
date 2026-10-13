@@ -18,6 +18,9 @@
 
       services.gnome.gnome-keyring.enable = true;
 
+      # Apps that ignore the request to quit (the Claude desktop app did) held up shutdown for the default 90 s.
+      systemd.user.settings.Manager.DefaultTimeoutStopSec = "10s";
+
       fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
         noto-fonts

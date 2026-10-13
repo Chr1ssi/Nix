@@ -69,6 +69,8 @@
       # Realtek USB Bluetooth (0bda:a725); the shell's command center switches it and its devices.
       # Its pairings live in /var/lib/bluetooth (kept by impermanence).
       hardware.bluetooth.enable = true;
+      # It stops answering once USB autosuspend sends it to sleep (tx timeouts, then a reset as hci1, hci2, …).
+      boot.extraModprobeConfig = "options btusb enable_autosuspend=0";
 
       # Apply the lighting once at boot instead of keeping the SDK server
       # and tray application running for the entire session.

@@ -55,9 +55,11 @@
       # Messages only when something goes wrong; Plymouth shows the rest.
       boot.consoleLogLevel = 3;
       boot.initrd.verbose = false;
-      # "splash" comes with Plymouth.
+      # "splash" comes with Plymouth. It draws on the firmware's framebuffer too (simpledrm) until the GPU driver
+      # is up, instead of a black screen for those seconds.
       boot.kernelParams = [
         "quiet"
+        "plymouth.use-simpledrm"
         "udev.log_level=3"
         "systemd.show_status=auto"
       ];
