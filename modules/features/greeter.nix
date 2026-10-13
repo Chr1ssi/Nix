@@ -20,8 +20,14 @@
       programs.mywm.greeter = {
         enable = true;
         user = "chris";
+        # workspace_outputs: the card goes to the monitor with workspace 1.
         settings = {
-          inherit (session) keyboard input outputs;
+          inherit (session)
+            keyboard
+            input
+            outputs
+            workspace_outputs
+            ;
         };
         # The cursor of the session (home-manager's pointerCursor), which the greeter user does not have.
         environment = {
