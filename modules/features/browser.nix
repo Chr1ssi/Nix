@@ -79,6 +79,12 @@ in
             "media.gmp-manager.updateEnabled" = true;
             "media.eme.require-app-approval" = false;
 
+            # LibreWolf's "Enable the OpenH264 plugin" (WebRTC H.264, e.g.
+            # Discord screen sharing; fetched by the plugin downloader above)
+            # and "Enable JXL (JPEG XL) support".
+            "media.gmp-gmpopenh264.enabled" = true;
+            "image.jxl.enabled" = true;
+
             # Stay signed in: keep cookies and site data on shutdown
             # (LibreWolf already keeps the history).
             "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
