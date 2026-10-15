@@ -248,7 +248,7 @@ explizit persistentem Laufzeitzustand
 
 ### ungoogled-chromium
 
-Nur zum Konfigurieren und Flashen von Maus und Tastatur über WebHID. Eine udev-Regel gibt dem Empfänger der ROG-SpeedNova-Maus `uaccess`; die Keychron-Tastatur bekommt ihn schon über die OpenRGB-Regeln.
+Nur zum Konfigurieren und Flashen von Maus und Tastatur über WebHID. Eine udev-Regel (`70-asus-hidraw-uaccess.rules`, muss vor `73-seat-late.rules` liegen) gibt allen ASUS-HID-Geräten `uaccess`, also Maus per Kabel, Dongle und Firmware-Update-Modus; die Keychron-Tastatur bekommt ihn schon über die OpenRGB-Regeln.
 
 ---
 

@@ -9,15 +9,23 @@ let
   };
 in
 {
-  flake.modules.nixos.browser = {
-    home-manager.sharedModules = [ config.flake.modules.homeManager.browser ];
+  flake.modules.nixos.browser =
+    { pkgs, ... }:
+    {
+      home-manager.sharedModules = [ config.flake.modules.homeManager.browser ];
 
-    # Lets the logged-in user's Chromium reach the ROG SpeedNova mouse via
-    # WebHID (the Keychron keyboard already gets uaccess from OpenRGB's rules).
-    services.udev.extraRules = ''
-      KERNEL=="hidraw*", ATTRS{idVendor}=="0b05", ATTRS{idProduct}=="1ad0", TAG+="uaccess"
-    '';
-  };
+      # Lets the logged-in user's Chromium reach ASUS mice via WebHID (GearLink):
+      # the ROG SpeedNova receiver, the ROG Harpe II Ace on its cable and any
+      # other ASUS product ID (firmware update mode). The Keychron keyboard
+      # already gets uaccess from OpenRGB's rules. Must sort before
+      # 73-seat-late.rules, which grants the access; extraRules (99-local) is
+      # too late.
+      services.udev.packages = [
+        (pkgs.writeTextDir "lib/udev/rules.d/70-asus-hidraw-uaccess.rules" ''
+          KERNEL=="hidraw*", ATTRS{idVendor}=="0b05", TAG+="uaccess"
+        '')
+      ];
+    };
 
   flake.modules.homeManager.browser =
     { pkgs, ... }:
