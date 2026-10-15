@@ -94,7 +94,7 @@ in
             "widget.transparent-windows" = true;
             "browser.compactmode.show" = true;
             "browser.uidensity" = 1;
-            "browser.toolbars.bookmarks.visibility" = "newtab";
+            "browser.toolbars.bookmarks.visibility" = "always";
             # The layout below is rewritten on every start; without this,
             # buttons missing from it would be added back each time (add-on
             # buttons then stay in the extensions menu).
@@ -129,6 +129,40 @@ in
           };
 
           userChrome = ../../dotfiles/librewolf/userChrome.css;
+
+          # Re-imported on every start: bookmarks added in the browser are
+          # gone after a restart.
+          bookmarks = {
+            force = true;
+            settings = [
+              {
+                name = "Bookmarks Toolbar";
+                toolbar = true;
+                bookmarks = [
+                  {
+                    name = "Homepage";
+                    url = "https://homepage.christoph-keil.com";
+                  }
+                  {
+                    name = "Youtube";
+                    url = "https://youtube.com";
+                  }
+                  {
+                    name = "GitHub";
+                    url = "https://github.com";
+                  }
+                  {
+                    name = "Reddit";
+                    url = "https://reddit.com";
+                  }
+                  {
+                    name = "NixOS Search";
+                    url = "https://search.nixos.org/";
+                  }
+                ];
+              }
+            ];
+          };
         };
       };
 
