@@ -16,6 +16,9 @@
       services.gvfs.enable = true;
       services.udisks2.enable = true;
 
+      # On by default for graphical systems. Nothing here reads aloud; Vesktop only started it (~75 MB) to list voices.
+      services.speechd.enable = false;
+
       services.gnome.gnome-keyring.enable = true;
 
       # Apps that ignore the request to quit (the Claude desktop app did) held up shutdown for the default 90 s.

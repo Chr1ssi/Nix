@@ -19,11 +19,17 @@
 
       nix.optimise.automatic = true;
 
+      # Builds get only the CPU and disk time nothing else wants, so the desktop stays responsive during a rebuild.
+      nix.daemonCPUSchedPolicy = "idle";
+      nix.daemonIOSchedClass = "idle";
+
       networking.networkmanager.enable = true;
 
       services.openssh = {
         enable = true;
         openFirewall = true;
+        # Started by the socket on the first connection instead of running all the time.
+        startWhenNeeded = true;
       };
 
       time.timeZone = "Europe/Berlin";

@@ -165,5 +165,14 @@
         algorithm = "zstd";
         memoryPercent = 50;
       };
+
+      # The kernel defaults assume swap on a disk. zram only costs a decompression, so swap earlier, read back one
+      # page per fault instead of 8, and skip the watermark boost that reclaims extra memory after fragmentation.
+      boot.kernel.sysctl = {
+        "vm.swappiness" = 180;
+        "vm.page-cluster" = 0;
+        "vm.watermark_boost_factor" = 0;
+        "vm.watermark_scale_factor" = 125;
+      };
     };
 }

@@ -1,79 +1,135 @@
 { config, ... }:
 
 {
-  flake.modules.nixos.audio = {
-    home-manager.sharedModules = [ config.flake.modules.homeManager.audio ];
-
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      pulse.enable = true;
-    };
-  };
-
-  flake.modules.homeManager.audio =
+  flake.modules.nixos.audio =
     { pkgs, ... }:
-
     let
-      loadEasyEffectsPreset = pkgs.writeShellApplication {
-        name = "load-easyeffects-preset";
-        runtimeInputs = with pkgs; [
-          coreutils
-          easyeffects
-        ];
-        text = ''
-          for _ in {1..100}; do
-            if [[ -S "''${XDG_RUNTIME_DIR}/EasyEffectsServer" ]]; then
-              break
-            fi
-            sleep 0.1
-          done
-
-          if [[ ! -S "''${XDG_RUNTIME_DIR}/EasyEffectsServer" ]]; then
-            echo "Easy Effects IPC socket did not become ready; leaving audio service running" >&2
-            exit 0
-          fi
-
-          for attempt in {1..3}; do
-            if timeout 10s easyeffects --load-preset "Wave3 Clean"; then
-              exit 0
-            fi
-            echo "Could not load Easy Effects preset (attempt $attempt/3)" >&2
-            sleep 1
-          done
-
-          echo "Giving up loading the Easy Effects preset; leaving audio service running" >&2
-        '';
+      biquad = name: label: control: {
+        type = "builtin";
+        inherit name label control;
       };
     in
     {
-      xdg.dataFile."easyeffects/input/Wave3 Clean.json".source =
-        ../../dotfiles/easyeffects/input/Wave3-Clean.json;
+      home-manager.sharedModules = [ config.flake.modules.homeManager.audio ];
 
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        pulse.enable = true;
+
+        # The Wave:3 as the source "Wave:3 Clean": noise suppression, then a voice EQ. This used to be EasyEffects'
+        # input preset; PipeWire runs the same chain without a GUI process, and only while something records.
+        extraConfig.pipewire."90-wave3-clean"."context.modules" = [
+          {
+            name = "libpipewire-module-filter-chain";
+            args = {
+              "node.description" = "Wave:3 Clean";
+              "media.name" = "Wave:3 Clean";
+              # The graph is mono; PipeWire runs one copy per channel.
+              "audio.channels" = 2;
+              "audio.position" = [
+                "FL"
+                "FR"
+              ];
+              "filter.graph" = {
+                nodes = [
+                  {
+                    type = "ladspa";
+                    name = "rnnoise";
+                    plugin = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+                    label = "noise_suppressor_mono";
+                    # Threshold 0 = no voice gate, only the denoising (EasyEffects had its VAD off).
+                    control."VAD Threshold (%)" = 0;
+                  }
+                  # -1 dB in front of the EQ.
+                  (biquad "trim" "linear" { Mult = 0.891; })
+                  # Two sections for the 24 dB/oct high-pass (EasyEffects' slope x2).
+                  (biquad "rumble1" "bq_highpass" {
+                    Freq = 70.0;
+                    Q = 0.7;
+                  })
+                  (biquad "rumble2" "bq_highpass" {
+                    Freq = 70.0;
+                    Q = 0.7;
+                  })
+                  (biquad "body" "bq_lowshelf" {
+                    Freq = 120.0;
+                    Q = 0.7;
+                    Gain = 2.0;
+                  })
+                  (biquad "mud" "bq_peaking" {
+                    Freq = 280.0;
+                    Q = 1.0;
+                    Gain = -1.5;
+                  })
+                  (biquad "presence" "bq_peaking" {
+                    Freq = 3500.0;
+                    Q = 0.9;
+                    Gain = 1.5;
+                  })
+                  (biquad "air" "bq_highshelf" {
+                    Freq = 9000.0;
+                    Q = 0.7;
+                    Gain = 0.5;
+                  })
+                ];
+                links = [
+                  {
+                    output = "rnnoise:Output";
+                    input = "trim:In";
+                  }
+                  {
+                    output = "trim:Out";
+                    input = "rumble1:In";
+                  }
+                  {
+                    output = "rumble1:Out";
+                    input = "rumble2:In";
+                  }
+                  {
+                    output = "rumble2:Out";
+                    input = "body:In";
+                  }
+                  {
+                    output = "body:Out";
+                    input = "mud:In";
+                  }
+                  {
+                    output = "mud:Out";
+                    input = "presence:In";
+                  }
+                  {
+                    output = "presence:Out";
+                    input = "air:In";
+                  }
+                ];
+              };
+              "capture.props" = {
+                "node.name" = "capture.wave3_clean";
+                "target.object" = "alsa_input.usb-Elgato_Elgato_Wave_3_MK.2_AD0JH55010ALJB-00.analog-stereo";
+                # Never the default source instead (no Wave:3, e.g. in the VM).
+                "node.dont-fallback" = true;
+                # The microphone and the filters only run while an application records from "Wave:3 Clean".
+                "node.passive" = true;
+              };
+              "playback.props" = {
+                "node.name" = "wave3_clean";
+                "media.class" = "Audio/Source";
+                # Above the hardware sources (the Wave:3 has 2109), so it is the default microphone.
+                "priority.session" = 2500;
+              };
+            };
+          }
+        ];
+      };
+    };
+
+  flake.modules.homeManager.audio =
+    { pkgs, ... }:
+    {
       home.packages = with pkgs; [
-        easyeffects
         pavucontrol
         playerctl
       ];
-
-      systemd.user.services = {
-        easyeffects = {
-          Unit = {
-            Description = "Easy Effects audio processing";
-            PartOf = [ "graphical-session.target" ];
-            After = [
-              "graphical-session.target"
-              "pipewire.service"
-            ];
-          };
-          Service = {
-            ExecStart = "${pkgs.easyeffects}/bin/easyeffects --service-mode --hide-window";
-            ExecStartPost = "${loadEasyEffectsPreset}/bin/load-easyeffects-preset";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-      };
     };
 }
