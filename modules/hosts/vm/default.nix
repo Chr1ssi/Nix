@@ -42,7 +42,6 @@
           config.flake.modules.homeManager.theming
           config.flake.modules.homeManager.terminal
           config.flake.modules.homeManager.file-manager
-          config.flake.modules.homeManager.firefox
         ];
 
         system.stateVersion = "26.05";

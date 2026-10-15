@@ -108,9 +108,9 @@
                 command = "vesktop";
               };
               "6" = streamDeckButton {
-                text = "HELIUM";
-                icon = "helium";
-                command = "helium";
+                text = "LIBREWOLF";
+                icon = "librewolf";
+                command = "librewolf";
               };
               "7" = streamDeckButton {
                 text = "STEAM";
@@ -175,8 +175,8 @@
       };
       xdg.dataFile."streamdeck-icons/vesktop.svg".source =
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/vesktop.svg";
-      xdg.dataFile."streamdeck-icons/helium.svg".source =
-        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/net.imput.helium.svg";
+      xdg.dataFile."streamdeck-icons/librewolf.svg".source =
+        "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/librewolf.svg";
       xdg.dataFile."streamdeck-icons/steam.svg".source =
         "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/steam.svg";
       xdg.dataFile."streamdeck-icons/zed.svg".source =

@@ -56,7 +56,6 @@
               config.flake.modules.homeManager.theming
               config.flake.modules.homeManager.terminal
               config.flake.modules.homeManager.file-manager
-              config.flake.modules.homeManager.firefox
               config.flake.modules.homeManager.starship
               config.flake.modules.homeManager.calendar
               config.flake.modules.homeManager.obsidian
