@@ -79,7 +79,8 @@
 
       # mywm's Quickshell (bar, launcher, wallpaper picker, lock screen) on NVIDIA's EGL only: glvnd would also
       # load Mesa and LLVM into every instance for a fallback this GPU never needs (measured: 5.3 MB less
-      # private memory per instance, a launcher start 17 ms sooner). Programs the launcher starts inherit it.
+      # private memory per instance, a launcher start 17 ms sooner). The launcher removes it for the apps it
+      # starts (Wine/Proton finds no EGL config with it).
       programs.mywm.package = options.programs.mywm.package.default.override {
         quickshell = pkgs.symlinkJoin {
           name = "quickshell-nvidia-egl";
