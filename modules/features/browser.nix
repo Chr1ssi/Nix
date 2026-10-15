@@ -44,15 +44,15 @@ in
             "gdpr@cavi.au.dk" = amoExtension "consent-o-matic";
             "jid1-MnnxcxisBPnSXQ@jetpack" = amoExtension "privacy-badger17";
             # Stands in for "Defaults for YouTube", which has no Firefox build,
-            # and also covers SponsorBlock, h264ify, Return YouTube Dislike and
-            # YouTube Anti Translate.
+            # and also covers h264ify, Return YouTube Dislike and YouTube Anti
+            # Translate.
             "{3c6bf0cc-3ae2-42fb-9993-0d33104fdcaf}" = amoExtension "youtube-addon";
+            "sponsorBlocker@ajay.app" = amoExtension "sponsorblock";
 
             # Previously force-installed; "blocked" also removes them from the
             # existing profile, which dropping them from this list would not.
             "{762f9885-5a13-4abd-9c77-433dcd38b8fd}".installation_mode = "blocked"; # Return YouTube Dislike
             "{9a41dee2-b924-4161-a971-7fb35c053a4a}".installation_mode = "blocked"; # enhanced-h264ify
-            "sponsorBlocker@ajay.app".installation_mode = "blocked"; # SponsorBlock
             "youtube-anti-translate-mv3@namakeingo.co.uk".installation_mode = "blocked"; # YouTube Anti Translate
           };
         };
