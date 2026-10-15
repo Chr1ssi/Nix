@@ -65,7 +65,51 @@ in
             "media.gmp-widevinecdm.enabled" = true;
             "media.gmp-manager.updateEnabled" = true;
             "media.eme.require-app-approval" = false;
+
+            # Stay signed in: keep cookies and site data on shutdown
+            # (LibreWolf already keeps the history).
+            "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+
+            # Compact, clean UI; the styling is in userChrome.css.
+            "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+            "widget.transparent-windows" = true;
+            "browser.compactmode.show" = true;
+            "browser.uidensity" = 1;
+            "browser.toolbars.bookmarks.visibility" = "newtab";
+            # The layout below is rewritten on every start; without this,
+            # buttons missing from it would be added back each time (add-on
+            # buttons then stay in the extensions menu).
+            "browser.uiCustomization.autoAdd" = false;
+            "browser.uiCustomization.state" = builtins.toJSON {
+              placements = {
+                nav-bar = [
+                  "back-button"
+                  "forward-button"
+                  "stop-reload-button"
+                  "urlbar-container"
+                  "downloads-button"
+                  "unified-extensions-button"
+                ];
+                TabsToolbar = [
+                  "tabbrowser-tabs"
+                  "new-tab-button"
+                ];
+                vertical-tabs = [ ];
+                PersonalToolbar = [ "personal-bookmarks" ];
+                toolbar-menubar = [ "menubar-items" ];
+                widget-overflow-fixed-list = [ ];
+                unified-extensions-area = [ ];
+              };
+              seen = [ ];
+              dirtyAreaCache = [ ];
+              # CustomizableUI's kVersion in LibreWolf 156; an older value
+              # would run migrations that add buttons back.
+              currentVersion = 26;
+              newElementCount = 0;
+            };
           };
+
+          userChrome = ../../dotfiles/librewolf/userChrome.css;
         };
       };
 

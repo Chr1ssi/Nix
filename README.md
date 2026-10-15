@@ -78,7 +78,7 @@ Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager
 │   └── checks.nix
 │
 ├── packages/
-│   ├── helium.nix
+│   ├── claude-desktop.nix
 │   └── ...
 │
 ├── dotfiles/
@@ -93,7 +93,7 @@ Die Konfiguration folgt dem *dendritic pattern*: `flake-parts` und `import-tree`
 - **`features/`**: ein Feature pro Datei, zum Beispiel `audio`, `streamdeck`, `greeter`, `mywm`, `theming`, `terminal`, `shell`, `development`, `gaming`. Hat ein Feature sowohl einen NixOS- als auch einen Home-Manager-Teil, hängt das NixOS-Modul den Home-Manager-Teil selbst über `home-manager.sharedModules` ein. Der Host importiert dann nur `nixos.<feature>`.
 - **`hosts/`**: `desktop/` und `vm/` enthalten neben der Host-Definition auch Hardware und Storage bzw. Disko; `mac.nix` ist die nix-darwin-Konfiguration. Hosts wählen Features aus und setzen hostspezifische Werte.
 - **Shell:** `features/shell.nix` enthält `fish` (NixOS, inklusive Login-Shell) und `zsh` (macOS). Gemeinsame Aliase stehen an einer Stelle.
-- **Reine Home-Manager-Features** (`theming`, `terminal`, `file-manager`, `firefox`, `starship`, `calendar`, `obsidian`) werden vom Host direkt unter `home-manager.users.chris.imports` aufgeführt.
+- **Reine Home-Manager-Features** (`theming`, `terminal`, `file-manager`, `starship`, `calendar`, `obsidian`) werden vom Host direkt unter `home-manager.users.chris.imports` aufgeführt.
 
 Home Manager wird über die jeweilige NixOS- bzw. nix-darwin-Konfiguration eingebunden. Ein separater `home-manager switch` ist daher nicht notwendig.
 
@@ -104,7 +104,6 @@ Eigene Nix-Derivations (als `pkgs.local.<name>` über `modules/packages/local.ni
 Aktuell gehören dazu unter anderem:
 
 - Claude Desktop
-- Helium
 
 Electron-/Chromium-Apps werden mit `--password-store=gnome-libsecret` gestartet, da die Session `XDG_CURRENT_DESKTOP=mywm` setzt und Chromium das Keyring-Backend sonst nicht erkennt. Claude Desktop läuft zusätzlich über XWayland (`--ozone-platform=x11`), weil die native Wayland-Variante beim ersten Start keine korrekte Fensterumrandung erhält.
 
@@ -187,7 +186,7 @@ Die Ausgabenamen (`main`, `top`, `side`) sind zentral in `modules/monitors.nix` 
 
 Die Session selbst (Startskripte, `mywm-session.target`, Portal-Konfiguration) kommt aus dem NixOS-Modul des `mywm`-Flakes; hier wird nur das Keyring-Portal ergänzt. Screen-Sharing läuft über `mywm-portal`: Der Compositor fragt selbst, welcher Monitor oder welches Fenster geteilt wird.
 
-Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für Portal, GTK4, Electron, Firefox), GTK- und Qt-Theme sowie `AppleInterfaceStyle = "Dark"` auf dem Mac.
+Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für Portal, GTK4, Electron, LibreWolf), GTK- und Qt-Theme sowie `AppleInterfaceStyle = "Dark"` auf dem Mac.
 
 ### Flake-Updates und Checks
 
@@ -237,27 +236,19 @@ explizit persistentem Laufzeitzustand
 
 ## Browser
 
-### Helium
+### LibreWolf
 
-**Helium** ist der primäre Browser und als Standardbrowser für HTTP, HTTPS und HTML registriert.
+**LibreWolf** ist der primäre Browser und als Standardbrowser für HTTP, HTTPS und HTML registriert (`modules/features/browser.nix`, Super+B).
 
-Da Helium nicht alle DRM-/Widevine-Anwendungsfälle unterstützt, wird zusätzlich Firefox installiert.
+- **Add-ons** werden per Policy von addons.mozilla.org erzwungen installiert und aktualisieren sich selbst; uBlock Origin bringt LibreWolf mit.
+- **DRM** (Widevine) ist aktiviert, ebenso der Download des Widevine-Moduls.
+- **Dark Mode:** Statt RFP läuft FPP mit allen Zielen außer `CSSPrefersColorScheme`, damit Webseiten das dunkle Farbschema sehen.
+- **Angemeldet bleiben:** Cookies und Websitedaten werden beim Beenden nicht gelöscht.
+- **Oberfläche:** kompakt, mit festem Toolbar-Layout (`browser.uiCustomization.state`) und `dotfiles/librewolf/userChrome.css`: durchscheinender Rahmen in den GTK-Farben, abgerundete Ecken, Seite als Karte, keine Fensterknöpfe.
 
-### Firefox
+### ungoogled-chromium
 
-Firefox dient hauptsächlich als Fallback für DRM-geschützte Streaming-Dienste wie Netflix.
-
-Helium bleibt trotzdem der Standardbrowser des Systems.
-
-Das Helium-Paket wird lokal über
-
-```text
-packages/helium.nix
-```
-
-gebaut.
-
-Dabei wird das offizielle Linux-Binary in eine Nix-Derivation integriert und für NixOS gepatcht.
+Nur zum Konfigurieren und Flashen von Maus und Tastatur über WebHID. Eine udev-Regel gibt dem Empfänger der ROG-SpeedNova-Maus `uaccess`; die Keychron-Tastatur bekommt ihn schon über die OpenRGB-Regeln.
 
 ---
 

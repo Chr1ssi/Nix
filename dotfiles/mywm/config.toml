@@ -83,8 +83,8 @@ color_picker = ["Super+Shift+c"]
 
 [program_bindings.browser]
 keys = ["Super+b"]
-command = ["helium"]
-app_id = "helium"
+command = ["librewolf"]
+app_id = "librewolf"
 
 [program_bindings.file_manager]
 keys = ["Super+f"]

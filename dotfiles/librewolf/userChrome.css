@@ -1,0 +1,60 @@
+/* LibreWolf frame: compact, rounded and translucent, so mywm's blurred
+ * wallpaper shows through. The colors stay the system (GTK) ones, which mywm
+ * generates from the wallpaper. */
+
+:root {
+  --lw-radius: 8px;
+  --lw-gap: 6px;
+
+  --toolbarbutton-border-radius: var(--lw-radius) !important;
+  --tab-border-radius: var(--lw-radius) !important;
+  --urlbar-border-radius: var(--lw-radius) !important;
+
+  background-color: color-mix(
+    in srgb,
+    var(--toolbox-background-color, ActiveCaption) 75%,
+    transparent
+  ) !important;
+}
+
+body,
+#navigator-toolbox,
+#titlebar,
+#TabsToolbar,
+#PersonalToolbar,
+#browser,
+#tabbrowser-tabpanels {
+  background: transparent !important;
+  border: none !important;
+}
+
+#nav-bar {
+  background-color: color-mix(
+    in srgb,
+    var(--toolbar-background-color) 50%,
+    transparent
+  ) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* The page as a rounded card inside the frame. */
+#tabbrowser-tabbox {
+  margin: 0 var(--lw-gap) var(--lw-gap) !important;
+  border-radius: var(--lw-radius) !important;
+  overflow: clip !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* mywm tiles the window: no minimize/maximize/close buttons. */
+.titlebar-buttonbox-container,
+.titlebar-spacer {
+  display: none !important;
+}
+
+/* Fewer icons in the URL bar. */
+#star-button-box,
+#tracking-protection-icon-container {
+  display: none !important;
+}
