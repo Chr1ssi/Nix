@@ -63,6 +63,20 @@
         NVD_BACKEND = "direct";
       };
 
+      # Video decoding on the GPU in LibreWolf. Firefox blocklists NVIDIA for it, and nvidia-vaapi-driver only
+      # works outside the media (RDD) process sandbox (tested: GPU decoding needs both). The sandbox stays on
+      # for everything else.
+      home-manager.users.chris.programs.librewolf = {
+        package = pkgs.librewolf.overrideAttrs (old: {
+          makeWrapperArgs = old.makeWrapperArgs ++ [
+            "--set"
+            "MOZ_DISABLE_RDD_SANDBOX"
+            "1"
+          ];
+        });
+        profiles.default.settings."media.hardware-video-decoding.force-enabled" = true;
+      };
+
       # mywm's Quickshell (bar, launcher, wallpaper picker, lock screen) on NVIDIA's EGL only: glvnd would also
       # load Mesa and LLVM into every instance for a fallback this GPU never needs (measured: 5.3 MB less
       # private memory per instance, a launcher start 17 ms sooner). Programs the launcher starts inherit it.
