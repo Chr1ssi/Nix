@@ -41,6 +41,7 @@
             "font-jetbrains-mono-nerd-font"
             "homebrew-app"
             "opencode-desktop"
+            "zed"
 
             {
               name = "darrylmorley/whatcable/whatcable";

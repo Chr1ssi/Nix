@@ -78,6 +78,9 @@
 
       programs.zed-editor = {
         enable = true;
+        # The Mac gets Zed as a Homebrew cask (see hosts/mac.nix): nixpkgs often
+        # has no cached aarch64-darwin build, so it would compile from source.
+        package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin null;
 
         extensions = [
           "nix"
@@ -146,18 +149,23 @@
           };
         };
 
-        extraPackages = with pkgs; [
-          nixd
-          nil
-          nixfmt
-          rust-analyzer
-          rustc
-          cargo
-          python3
-          nodejs
-          # Kotlin's language server is a JVM app downloaded by the extension.
-          jdk21
-        ];
+        # Needs the Nix package to wrap; on the Mac, Zed picks these up from the
+        # login shell's PATH (home.packages) instead.
+        extraPackages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (
+          with pkgs;
+          [
+            nixd
+            nil
+            nixfmt
+            rust-analyzer
+            rustc
+            cargo
+            python3
+            nodejs
+            # Kotlin's language server is a JVM app downloaded by the extension.
+            jdk21
+          ]
+        );
       };
 
       programs.git.settings = {
