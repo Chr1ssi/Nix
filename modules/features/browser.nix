@@ -32,15 +32,20 @@ in
           # uBlock Origin is already installed by LibreWolf's policies.json.
           ExtensionSettings = {
             "addon@darkreader.org" = amoExtension "darkreader";
-            "{762f9885-5a13-4abd-9c77-433dcd38b8fd}" = amoExtension "return-youtube-dislikes";
             "{446900e4-71c2-419f-a6a7-df9c091e268b}" = amoExtension "bitwarden-password-manager";
-            "{9a41dee2-b924-4161-a971-7fb35c053a4a}" = amoExtension "enhanced-h264ify";
             "gdpr@cavi.au.dk" = amoExtension "consent-o-matic";
-            "sponsorBlocker@ajay.app" = amoExtension "sponsorblock";
             "jid1-MnnxcxisBPnSXQ@jetpack" = amoExtension "privacy-badger17";
-            "youtube-anti-translate-mv3@namakeingo.co.uk" = amoExtension "youtube-anti-translate-mv3";
-            # Stands in for "Defaults for YouTube", which has no Firefox build.
+            # Stands in for "Defaults for YouTube", which has no Firefox build,
+            # and also covers SponsorBlock, h264ify, Return YouTube Dislike and
+            # YouTube Anti Translate.
             "{3c6bf0cc-3ae2-42fb-9993-0d33104fdcaf}" = amoExtension "youtube-addon";
+
+            # Previously force-installed; "blocked" also removes them from the
+            # existing profile, which dropping them from this list would not.
+            "{762f9885-5a13-4abd-9c77-433dcd38b8fd}".installation_mode = "blocked"; # Return YouTube Dislike
+            "{9a41dee2-b924-4161-a971-7fb35c053a4a}".installation_mode = "blocked"; # enhanced-h264ify
+            "sponsorBlocker@ajay.app".installation_mode = "blocked"; # SponsorBlock
+            "youtube-anti-translate-mv3@namakeingo.co.uk".installation_mode = "blocked"; # YouTube Anti Translate
           };
         };
 
