@@ -22,8 +22,7 @@ body,
 #titlebar,
 #TabsToolbar,
 #PersonalToolbar,
-#browser,
-#tabbrowser-tabpanels {
+#browser {
   background: transparent !important;
   border: none !important;
 }
