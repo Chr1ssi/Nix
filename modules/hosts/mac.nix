@@ -91,8 +91,6 @@
               config.flake.modules.homeManager.starship
               config.flake.modules.homeManager.development
               config.flake.modules.homeManager.obsidian
-
-              ({ pkgs, ... }: { home.packages = [ pkgs.chatgpt ]; })
             ];
           };
         };
