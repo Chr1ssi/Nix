@@ -109,6 +109,9 @@
                 "target.object" = "alsa_input.usb-Elgato_Elgato_Wave_3_MK.2_AD0JH55010ALJB-00.analog-stereo";
                 # Never the default source instead (no Wave:3, e.g. in the VM).
                 "node.dont-fallback" = true;
+                # Wait unlinked until the Wave:3 is there. Without it WirePlumber destroys the stream when PipeWire
+                # starts before the ALSA nodes exist (at login), and the whole filter is gone until a restart.
+                "node.linger" = true;
                 # The microphone and the filters only run while an application records from "Wave:3 Clean".
                 "node.passive" = true;
               };
