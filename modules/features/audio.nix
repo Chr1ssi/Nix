@@ -17,14 +17,16 @@
         alsa.enable = true;
         pulse.enable = true;
 
-        # The Wave:3 as the source "Wave:3 Clean": noise suppression, then a voice EQ. This used to be EasyEffects'
-        # input preset; PipeWire runs the same chain without a GUI process, and only while something records.
-        extraConfig.pipewire."90-wave3-clean"."context.modules" = [
+        # Noise suppression, then a voice EQ (tuned for the Wave:3), on whichever microphone is the default: a
+        # WirePlumber smart filter sits between the default source and every application recording from "default".
+        # This used to be EasyEffects' input preset; PipeWire runs the same chain without a GUI process, and only
+        # while something records.
+        extraConfig.pipewire."90-mic-filter"."context.modules" = [
           {
             name = "libpipewire-module-filter-chain";
             args = {
-              "node.description" = "Wave:3 Clean";
-              "media.name" = "Wave:3 Clean";
+              "node.description" = "Mic Filter";
+              "media.name" = "Mic Filter";
               # The graph is mono; PipeWire runs one copy per channel.
               "audio.channels" = 2;
               "audio.position" = [
@@ -105,21 +107,20 @@
                 ];
               };
               "capture.props" = {
-                "node.name" = "capture.wave3_clean";
-                "target.object" = "alsa_input.usb-Elgato_Elgato_Wave_3_MK.2_AD0JH55010ALJB-00.analog-stereo";
-                # Never the default source instead (no Wave:3, e.g. in the VM).
-                "node.dont-fallback" = true;
-                # Wait unlinked until the Wave:3 is there. Without it WirePlumber destroys the stream when PipeWire
-                # starts before the ALSA nodes exist (at login), and the whole filter is gone until a restart.
+                "node.name" = "capture.mic_filter";
+                # Wait unlinked while there is no microphone yet. Without it WirePlumber destroys the stream when
+                # PipeWire starts before the ALSA nodes exist (at login), and the whole filter is gone until a restart.
                 "node.linger" = true;
-                # The microphone and the filters only run while an application records from "Wave:3 Clean".
+                # The microphone and the filters only run while an application records.
                 "node.passive" = true;
               };
               "playback.props" = {
-                "node.name" = "wave3_clean";
+                "node.name" = "mic_filter";
                 "media.class" = "Audio/Source";
-                # Above the hardware sources (the Wave:3 has 2109), so it is the default microphone.
-                "priority.session" = 2500;
+                # No filter.smart.target: the filter follows the default source and moves along when it changes.
+                # It never becomes the default itself.
+                "filter.smart" = true;
+                "filter.smart.name" = "mic-filter";
               };
             };
           }

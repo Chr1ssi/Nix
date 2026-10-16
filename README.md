@@ -173,7 +173,7 @@ Das Session-Setup kümmert sich anschließend um die benötigten Wayland-Kompone
 Zum Desktop gehören außerdem unter anderem:
 
 - PipeWire
-- PipeWire-Filter `Wave:3 Clean` (Rauschunterdrückung und EQ fürs Mikrofon)
+- PipeWire-Filter `Mic Filter` (Rauschunterdrückung und EQ auf dem jeweils gewählten Mikrofon)
 - xdg-desktop-portals
 - Polkit-Agent
 - Benachrichtigungen
