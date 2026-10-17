@@ -71,6 +71,11 @@
 
           loginwindow.GuestEnabled = false;
 
+          # Recommended by AeroSpace: one Space across all displays, and Mission Control
+          # grouping windows by app so AeroSpace's tiny off-screen windows stay usable.
+          spaces.spans-displays = true;
+          dock.expose-group-apps = true;
+
           NSGlobalDomain = {
             AppleICUForce24HourTime = true;
             AppleInterfaceStyle = "Dark";
@@ -93,6 +98,7 @@
               config.flake.modules.homeManager.starship
               config.flake.modules.homeManager.development
               config.flake.modules.homeManager.obsidian
+              config.flake.modules.homeManager.aerospace
             ];
           };
         };

@@ -61,6 +61,8 @@ nix-darwin-Konfiguration für den Apple-Silicon-Mac. Home Manager verwaltet dort
 
 Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager Apps`, damit Spotlight mit vollständigen App-Bundles arbeiten kann. Die nix-darwin-Aktivierung verlinkt diese Apps zusätzlich direkt nach `/Applications`, ohne dort vorhandene fremde Apps zu überschreiben. Der von nix-darwin erzeugte Ordner `/Applications/Nix Apps` wird entfernt, solange er leer ist.
 
+Als Tiling-Window-Manager läuft **AeroSpace** (`modules/features/aerospace.nix`), gestartet über einen launchd-Agent von Home Manager. Die Tastenbelegung lehnt sich an die mywm-Konfiguration an, wobei Ctrl+Option die Rolle von Super übernimmt (Option allein würde auf dem deutschen Layout Zeichen wie `@` und `[ ]` belegen, Cmd kollidiert mit App-Shortcuts). Beim ersten Start fragt macOS nach der Bedienungshilfen-Berechtigung für AeroSpace.
+
 ---
 
 ## Repository-Struktur
