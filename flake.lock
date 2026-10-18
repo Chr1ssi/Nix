@@ -132,7 +132,6 @@
       },
       "original": {
         "owner": "Chr1ssi",
-        "ref": "hw/capture-readback-timer",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
