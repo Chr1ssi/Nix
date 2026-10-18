@@ -123,15 +123,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792325801,
-        "narHash": "sha256-6IJBjGsJbBuZPaQAflYkZGn6eEewl2+lRxOSeDFAF5g=",
+        "lastModified": 1792327513,
+        "narHash": "sha256-z1jOX5furD2P/qdJ/8A8BGfljvVL3t2bmtpohE2itVk=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "37122dda5d92714d4a33ddb17db05246ed0c7526",
+        "rev": "3849de419c282884292513f2b4e52b16a7f3c88a",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
+        "ref": "hw/rotated-capture",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
