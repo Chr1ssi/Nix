@@ -123,15 +123,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792327513,
-        "narHash": "sha256-z1jOX5furD2P/qdJ/8A8BGfljvVL3t2bmtpohE2itVk=",
+        "lastModified": 1792329404,
+        "narHash": "sha256-FeiQdcUVQHbUR043Kv11ccULLBvM/YCEjQ6gUY837qk=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "3849de419c282884292513f2b4e52b16a7f3c88a",
+        "rev": "2d9902a29cf785463e08c72a0ca52ff42b1524d1",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
+        "ref": "hw/capture-readback-timer",
         "repo": "MyWM-Smithay",
         "type": "github"
       }
