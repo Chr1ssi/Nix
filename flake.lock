@@ -176,26 +176,6 @@
         "type": "github"
       }
     },
-    "nixdatifier": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792411000,
-        "narHash": "sha256-fU59bJ0gnTBKCWM5BBuMfAbZ9UB4qBqSPZQt7L3U2Ho=",
-        "owner": "Muddyblack",
-        "repo": "nixdatifier",
-        "rev": "6eb061e18ac5a3593b918aa6ff80e24b5b43354f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Muddyblack",
-        "repo": "nixdatifier",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1768564909,
@@ -253,7 +233,6 @@
         "mywm": "mywm",
         "mywm-shell": "mywm-shell",
         "nix-darwin": "nix-darwin",
-        "nixdatifier": "nixdatifier",
         "nixpkgs": "nixpkgs_2"
       }
     }
