@@ -28,6 +28,7 @@
 
       config.flake.modules.nixos.browser
       config.flake.modules.nixos.apps
+      config.flake.modules.nixos.nixdatifier
       config.flake.modules.nixos.development
       config.flake.modules.nixos.gaming
       config.flake.modules.nixos.virtualisation

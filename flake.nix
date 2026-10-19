@@ -25,6 +25,12 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    # Tray app for NixOS generations, package diffs and flake updates.
+    nixdatifier = {
+      url = "github:Muddyblack/nixdatifier";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     mywm-shell = {
       url = "github:Chr1ssi/mywm-shell";
       inputs.nixpkgs.follows = "nixpkgs";
