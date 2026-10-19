@@ -2,7 +2,7 @@
 
 {
   flake.modules.nixos.nixdatifier =
-    { config, ... }:
+    { config, pkgs, ... }:
     let
       nixdatifier = config.programs.nixdatifier.package;
     in
@@ -14,6 +14,18 @@
         # The module's autostart is an /etc/xdg/autostart entry, and mywm's session never starts
         # xdg-desktop-autostart.target; the user service below starts it instead.
         autostart = false;
+        # Muddyblack/nixdatifier#38: the flake update check glues the run helper's path onto
+        # NIXDATIFIER_IGNORE_INPUTS='…', so bash fails with "cached: command not found".
+        # --replace-fail stops the build once upstream changes that line; drop the patch then.
+        package =
+          inputs.nixdatifier.packages.${pkgs.stdenv.hostPlatform.system}.nixdatifier.overrideAttrs
+            (old: {
+              postPatch = (old.postPatch or "") + ''
+                chmod -R u+w ../package
+                substituteInPlace ../package/contents/ui/Engine.qml \
+                  --replace-fail 'shq(root.settings.ignoredInputs || "");' 'shq(root.settings.ignoredInputs || "") + " ";'
+              '';
+            });
       };
 
       # A Home Manager unit, because a NixOS user unit pins a minimal PATH: the helpers need the
