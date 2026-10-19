@@ -51,7 +51,13 @@ in
     };
 
   flake.modules.homeManager.fish =
-    { pkgs, ... }:
+    { pkgs, osConfig, ... }:
+    let
+      # The desktop's hostname differs from its flake attribute, the VM's matches.
+      host = { ChrisNixOS = "desktop"; }.${osConfig.networking.hostName} or osConfig.networking.hostName;
+      flake = "~/Projects/nixos";
+      rebuild = action: "sudo nixos-rebuild ${action} --flake ${flake}#${host}";
+    in
     {
       imports = [ common ];
 
@@ -145,6 +151,19 @@ in
         enable = true;
 
         shellAliases = aliases;
+
+        # Abbreviations expand in place, so the full command is visible and lands in the history.
+        shellAbbrs = {
+          nrs = rebuild "switch";
+          nrb = rebuild "boot";
+          nrt = rebuild "test";
+          nfu = "nix flake update --flake ${flake}";
+          nfc = "nix flake check ${flake}";
+          ngc = "sudo nix-collect-garbage --delete-older-than 7d";
+          nup = "${flake}/scripts/update-packages --apply";
+          nmc = "${flake}/scripts/update-mywm-chain --push";
+          scu = "systemctl --user";
+        };
 
         interactiveShellInit = ''
           type -q enable_transience; and enable_transience
