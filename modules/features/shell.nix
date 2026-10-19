@@ -61,90 +61,81 @@ in
     {
       imports = [ common ];
 
-      # The modules of fastfetch's screenfetch preset, grouped into sections.
       programs.fastfetch = {
         enable = true;
-        settings =
-          let
-            section = name: {
-              type = "custom";
-              format = "── ${name} ──";
-              outputColor = "bold_keys";
+        settings = {
+          "$schema" = "https://raw.githubusercontent.com/fastfetch-cli/fastfetch/2.66.0/doc/json_schema.json";
+          logo.type = "auto";
+          display = {
+            size = {
+              maxPrefix = "MB";
+              ndigits = 0;
+              spaceBeforeUnit = "never";
             };
-          in
-          {
-            display = {
-              separator = " ";
-              key = {
-                width = 15;
-                paddingLeft = 2;
-              };
+            freq = {
+              ndigits = 3;
+              spaceBeforeUnit = "never";
             };
-            modules = [
-              "title"
-              (section "System")
-              "os"
-              "kernel"
-              "uptime"
-              {
-                type = "packages";
-                format = "{all}";
-              }
-              "break"
-              (section "Software")
-              "shell"
-              {
-                type = "de";
-                key = "DE";
-              }
-              {
-                type = "wm";
-                key = "WM";
-              }
-              "wmtheme"
-              {
-                type = "terminalfont";
-                key = "Font";
-              }
-              "break"
-              (section "Hardware")
-              {
-                type = "display";
-                key = "Resolution";
-                compactType = "original";
-              }
-              "cpu"
-              "gpu"
-              {
-                type = "memory";
-                key = "RAM";
-              }
-              {
-                type = "disk";
-                key = "Disk";
-                folders = "/";
-              }
-            ];
           };
+          modules = [
+            "title"
+            "separator"
+            "os"
+            "host"
+            {
+              type = "kernel";
+              format = "{release}";
+            }
+            "uptime"
+            {
+              type = "packages";
+              combined = true;
+            }
+            "separator"
+            "wm"
+            "icons"
+            "shell"
+            "terminal"
+            {
+              type = "terminalfont";
+              format = "{/name}{-}{/}{name}{?size} {size}{?}";
+            }
+            "separator"
+            "cpu"
+            {
+              type = "gpu";
+              key = "GPU";
+              format = "{name}";
+            }
+            {
+              type = "memory";
+              format = "{used} / {total}";
+            }
+            "break"
+            "colors"
+          ];
+        };
       };
 
-      # The same sections for fetch; it has no headings, `---` is a blank line.
+      # The same modules for fetch. It draws the title and its underline itself, `---` is only a
+      # blank line, and `colors` brings its own blank line in front.
       xdg.configFile."fetch/config".text = ''
         os
+        host
         kernel
         uptime
         packages
         ---
-        shell
         wm
-        theme
+        icons
+        shell
+        terminal
         font
         ---
-        display
         cpu
         gpu
         memory
-        disk
+        colors
       '';
 
       programs.fish = {
