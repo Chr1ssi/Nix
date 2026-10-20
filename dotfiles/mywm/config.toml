@@ -140,6 +140,7 @@ corner_radius = 10
 animation_ms = 120
 inactive_opacity = 0.9
 blur = 8
+shadow = 2
 
 [input]
 accel_profile = "flat"
