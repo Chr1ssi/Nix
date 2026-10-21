@@ -4,7 +4,7 @@ Meine deklarative Konfiguration für NixOS und macOS, aufgebaut mit **Nix Flakes
 
 Das Repository dient als zentrale Definition meiner Linux- und macOS-Systeme. Systemkonfiguration, Benutzerumgebung, Anwendungen, Dotfiles und eigene Pakete werden möglichst vollständig über Nix verwaltet.
 
-Der Desktop basiert auf meinem eigenen Wayland-Compositor **mywm** (Smithay) und **Quickshell**.
+Der Desktop basiert auf meinem eigenen Wayland-Compositor **mywm** (Smithay), der die Desktop-Shell selbst mitbringt.
 
 ## Status
 
@@ -13,7 +13,7 @@ NixOS läuft produktiv als Hauptsystem auf meinem Desktop und hat das frühere C
 ### iCloud-Kalender
 
 Der Desktop synchronisiert iCloud-Kalender alle fünf Minuten mit `vdirsyncer`.
-`khal` stellt die Kalender-App bereit; Datum und Uhrzeit in der Quickshell-Bar
+`khal` stellt die Kalender-App bereit; Datum und Uhrzeit in der Bar
 öffnen zusätzlich eine Monats- und Terminübersicht. Nach dem ersten Rebuild wird
 das Konto einmalig eingerichtet:
 
@@ -127,7 +127,7 @@ Der Desktop ist bewusst als schlankes Wayland-System aufgebaut.
 
 Die zentrale Komponente ist mein eigener Compositor **mywm** auf Basis von Smithay.
 
-Die Desktop-Shell basiert auf **Quickshell**.
+Die Desktop-Shell (Bar, Launcher, Wallpaper-Picker, Sperr- und Anmeldebildschirm, Benachrichtigungen, Tray) zeichnet der Compositor selbst (`builtin_shell = true`); Quickshell bleibt nur als Rückfallebene.
 
 Die einzelnen Komponenten werden getrennt entwickelt und über die Flake als feste Inputs eingebunden.
 
@@ -157,14 +157,14 @@ Im Greeter gibt es zwei Sitzungen: **mywm** für den Alltag (nur Warnungen und F
 `~/.local/state/mywm/compositor.log`) und **mywm (Dev)** zum Entwickeln (gesamte Ausgabe in
 `~/.local/state/mywm/session.log`, dazu alle 5 s Frame-Statistiken pro Monitor).
 
-### Quickshell
+### Eingebaute Shell und Quickshell
 
-Quickshell stellt die grafische Desktop-Shell bereit.
+Die Desktop-Shell ist in den Compositor integriert und läuft über `builtin_shell = true`
+in `dotfiles/mywm/config.toml` und `programs.mywm.greeter.builtin` in `modules/features/greeter.nix`.
 
-Dazu gehören Desktop-Komponenten wie Bar, Launcher und weitere UI-Elemente.
-
-Die Shell wird unabhängig vom NixOS-Repository entwickelt und von der `mywm`-Flake
-als gepinnter Input eingebunden.
+Die Quickshell-Shell (`mywm-shell`) wird weiter als Input eingebunden und ist über
+`builtin_shell = false` (und ohne `greeter.builtin`) als Rückfallebene wählbar.
+Sie wird unabhängig vom NixOS-Repository entwickelt und von der `mywm`-Flake als gepinnter Input eingebunden.
 
 ### Session
 

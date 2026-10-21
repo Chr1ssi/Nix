@@ -1,6 +1,6 @@
 {
-  # greetd with mywm's own login screen (mywm-shell's greeter.qml on `mywm-compositor --greeter`), in the look of
-  # the lock screen.
+  # greetd with mywm's own login screen (drawn by `mywm-compositor --greeter` itself, no Quickshell), in the look
+  # of the lock screen.
   flake.modules.nixos.greeter =
     { pkgs, ... }:
     let
@@ -19,6 +19,7 @@
 
       programs.mywm.greeter = {
         enable = true;
+        builtin = true;
         user = "chris";
         # workspace_outputs: the card goes to the monitor with workspace 1.
         settings = {
