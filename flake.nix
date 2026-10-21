@@ -25,16 +25,10 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
-    mywm-shell = {
-      url = "github:Chr1ssi/mywm-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Smithay compositor for mywm.
     mywm = {
       url = "github:Chr1ssi/MyWM-Smithay";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.mywm-shell.follows = "mywm-shell";
     };
   };
 

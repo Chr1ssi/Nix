@@ -127,7 +127,7 @@ Der Desktop ist bewusst als schlankes Wayland-System aufgebaut.
 
 Die zentrale Komponente ist mein eigener Compositor **mywm** auf Basis von Smithay.
 
-Die Desktop-Shell (Bar, Launcher, Wallpaper-Picker, Sperr- und Anmeldebildschirm, Benachrichtigungen, Tray) zeichnet der Compositor selbst (`builtin_shell = true`); Quickshell bleibt nur als Rückfallebene.
+Die Desktop-Shell (Bar, Launcher, Wallpaper-Picker, Sperr- und Anmeldebildschirm, Benachrichtigungen, Tray) zeichnet der Compositor selbst (`builtin_shell = true`).
 
 Die einzelnen Komponenten werden getrennt entwickelt und über die Flake als feste Inputs eingebunden.
 
@@ -157,14 +157,11 @@ Im Greeter gibt es zwei Sitzungen: **mywm** für den Alltag (nur Warnungen und F
 `~/.local/state/mywm/compositor.log`) und **mywm (Dev)** zum Entwickeln (gesamte Ausgabe in
 `~/.local/state/mywm/session.log`, dazu alle 5 s Frame-Statistiken pro Monitor).
 
-### Eingebaute Shell und Quickshell
+### Eingebaute Shell
 
-Die Desktop-Shell ist in den Compositor integriert und läuft über `builtin_shell = true`
-in `dotfiles/mywm/config.toml` und `programs.mywm.greeter.builtin` in `modules/features/greeter.nix`.
-
-Die Quickshell-Shell (`mywm-shell`) wird weiter als Input eingebunden und ist über
-`builtin_shell = false` (und ohne `greeter.builtin`) als Rückfallebene wählbar.
-Sie wird unabhängig vom NixOS-Repository entwickelt und von der `mywm`-Flake als gepinnter Input eingebunden.
+Die Desktop-Shell ist in den Compositor integriert. Sie wird über `builtin_shell = true` in
+`dotfiles/mywm/config.toml` eingeschaltet (der Compositor-Standard) und kommt mit dem `mywm`-Input.
+Quickshell ist nicht mehr Teil der Konfiguration.
 
 ### Session
 
@@ -192,13 +189,13 @@ Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für P
 
 ### Flake-Updates und Checks
 
-`nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `mywm-shell` oder `MyWM-Smithay` aktualisiert
+`nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `MyWM-Smithay` aktualisiert
 
 ```sh
 scripts/update-mywm-chain --push
 ```
 
-die Flake-Locks in Abhängigkeitsreihenfolge (mywm-shell → MyWM-Smithay → nixos), testet jeweils und pusht nur bei Erfolg.
+den Flake-Lock (nixos), testet ihn und pusht nur bei Erfolg.
 
 ---
 
@@ -350,7 +347,7 @@ Die Konfiguration verwendet Nix Flakes.
 
 Neben nixpkgs und Home Manager werden auch die eigenen Desktop-Projekte als Inputs eingebunden.
 
-Dadurch benötigt ein normaler System-Build keine benachbarten Git-Checkouts von `mywm` oder der Quickshell-Konfiguration.
+Dadurch benötigt ein normaler System-Build keine benachbarten Git-Checkouts von `mywm`.
 
 Änderungen an diesen Projekten werden erst übernommen, wenn der entsprechende Flake-Input aktualisiert wird.
 

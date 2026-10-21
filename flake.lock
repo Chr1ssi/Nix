@@ -115,44 +115,21 @@
     },
     "mywm": {
       "inputs": {
-        "mywm-shell": [
-          "mywm-shell"
-        ],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1792557375,
-        "narHash": "sha256-FfXjpgTHP9DAulp5B0RlszxILBYEoAeu5C1Q7dFeN2s=",
+        "lastModified": 1792590872,
+        "narHash": "sha256-Nm5CMEEWV8X7XLERWrB6CdXcjFDQMzUZ/TSM9D+xhEo=",
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "rev": "89d36c3f37d5ec5fd5c91809826ef19787ec0826",
+        "rev": "df4882727d6a18e29381267cc576ca04d3c5ee15",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
         "repo": "MyWM-Smithay",
-        "type": "github"
-      }
-    },
-    "mywm-shell": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792435928,
-        "narHash": "sha256-DD5jIaVOIq2bqT/ctgvx2r6Ypar6EIbYUhjuHNKcNcQ=",
-        "owner": "Chr1ssi",
-        "repo": "mywm-shell",
-        "rev": "c74b7324023b2e92fb91fc5a8ec1c555b70e9aaa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Chr1ssi",
-        "repo": "mywm-shell",
         "type": "github"
       }
     },
@@ -231,7 +208,6 @@
         "impermanence": "impermanence",
         "import-tree": "import-tree",
         "mywm": "mywm",
-        "mywm-shell": "mywm-shell",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs_2"
       }
