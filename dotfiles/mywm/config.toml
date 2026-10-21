@@ -140,12 +140,11 @@ transform = "270"
 [effects]
 corner_radius = 10
 animation_ms = 120
-inactive_opacity = 0.9
-blur = 8
-shadow = 2
+blur = 4
+shadow = 0
 
 [input]
 accel_profile = "flat"
 
 [render]
-late_scheduling = true
+late_scheduling = false
