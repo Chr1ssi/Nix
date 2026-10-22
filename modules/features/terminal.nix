@@ -10,7 +10,7 @@
         enable = pkgs.stdenv.hostPlatform.isLinux;
         settings = {
           main = {
-            font = "JetBrainsMono Nerd Font Mono:size=11";
+            font = "IosevkaTerm Nerd Font Mono:size=11";
             pad = "25x25";
             include = "${config.xdg.stateHome}/mywm/foot.ini";
           };

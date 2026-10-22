@@ -25,10 +25,13 @@
       systemd.user.settings.Manager.DefaultTimeoutStopSec = "10s";
 
       fonts.packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
+        nerd-fonts.iosevka-term
         noto-fonts
         noto-fonts-color-emoji
       ];
+
+      # The system font: mywm's shell and settings app, and GTK/Qt apps, ask fontconfig for "Sans Serif".
+      fonts.fontconfig.defaultFonts.sansSerif = [ "IosevkaTerm Nerd Font Propo" ];
     };
 
   flake.modules.homeManager.desktop =

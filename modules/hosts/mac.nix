@@ -39,7 +39,7 @@
             "claude"
             "obsidian"
             "the-unarchiver"
-            "font-jetbrains-mono-nerd-font"
+            "font-iosevka-term-nerd-font"
             "homebrew-app"
             "opencode-desktop"
             "zed"
