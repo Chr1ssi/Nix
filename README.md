@@ -61,7 +61,7 @@ nix-darwin-Konfiguration für den Apple-Silicon-Mac. Home Manager verwaltet dort
 
 Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager Apps`, damit Spotlight mit vollständigen App-Bundles arbeiten kann. Die nix-darwin-Aktivierung verlinkt diese Apps zusätzlich direkt nach `/Applications`, ohne dort vorhandene fremde Apps zu überschreiben. Der von nix-darwin erzeugte Ordner `/Applications/Nix Apps` wird entfernt, solange er leer ist.
 
-Als Tiling-Window-Manager läuft **AeroSpace** (`modules/features/aerospace.nix`), gestartet über einen launchd-Agent von Home Manager. Die Tastenbelegung lehnt sich an die mywm-Konfiguration an, wobei Ctrl+Option die Rolle von Super übernimmt (Option allein würde auf dem deutschen Layout Zeichen wie `@` und `[ ]` belegen, Cmd kollidiert mit App-Shortcuts). Beim ersten Start fragt macOS nach der Bedienungshilfen-Berechtigung für AeroSpace.
+Als Window-Manager läuft **OmniWM** (`modules/features/omniwm.nix`) mit seinem Niri-Layout, also scrollenden Spalten wie mywm. Die linke Option-Taste übernimmt die Rolle von Super, die Belegung folgt der mywm-Konfiguration; die rechte Option-Taste bleibt für Zeichen wie `@`, `€` und `[ ]`. Die Einstellungen liegen wie bei mywm als normale Datei in `dotfiles/omniwm/settings.toml`; Änderungen aus dem OmniWM-Einstellungsfenster landen direkt dort. Programme und Screenshots startet **skhd**, weil OmniWM selbst keine Programme starten kann. Beim ersten Start fragt macOS nach Bedienungshilfen und Eingabeüberwachung für OmniWM sowie nach Bedienungshilfen (und für Screenshots Bildschirmaufnahme) für skhd.
 
 ---
 
