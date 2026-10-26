@@ -7,8 +7,6 @@
       fileSystems."/persist".neededForBoot = true;
 
       boot.initrd.systemd = {
-        enable = true;
-
         extraBin = {
           btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
           date = "${pkgs.coreutils}/bin/date";
