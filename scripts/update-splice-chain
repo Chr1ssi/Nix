@@ -4,7 +4,7 @@
 # --push) if the tests pass. On failure the lock file change is reverted.
 #
 # Usage: scripts/update-splice-chain [--push]
-# Expects MyWM-Smithay and nixos to be sibling directories.
+# Expects splice-compositor and nixos to be sibling directories.
 set -euo pipefail
 
 push=false

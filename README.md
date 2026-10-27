@@ -133,7 +133,7 @@ Die einzelnen Komponenten werden getrennt entwickelt und über die Flake als fes
 
 ### splice
 
-`splice` ist mein eigener Wayland-Compositor auf Basis von Smithay (Repository `MyWM-Smithay`).
+`splice` ist mein eigener Wayland-Compositor auf Basis von Smithay (Repository `Splice-Compositor`).
 
 Das Projekt übernimmt unter anderem:
 
@@ -189,7 +189,7 @@ Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für P
 
 ### Flake-Updates und Checks
 
-`nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `MyWM-Smithay` aktualisiert
+`nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `Splice-Compositor` aktualisiert
 
 ```sh
 scripts/update-splice-chain --push

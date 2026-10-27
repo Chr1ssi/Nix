@@ -199,16 +199,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1793133097,
-        "narHash": "sha256-hBtLsb1zK8BtGjJO2kr3CmYpHeOiPYDoSeEfeZRoXHo=",
+        "lastModified": 1793135033,
+        "narHash": "sha256-GAAoXpCl+5/1BaUsPfQwstB/c2N6nJgsNvh5O4iVa9I=",
         "owner": "Chr1ssi",
-        "repo": "MyWM-Smithay",
-        "rev": "724e8c9bd5f3862640a06012e6a087031415bd90",
+        "repo": "Splice-Compositor",
+        "rev": "e27b892d9e2c4f22de503b928ce52e6087766149",
         "type": "github"
       },
       "original": {
         "owner": "Chr1ssi",
-        "repo": "MyWM-Smithay",
+        "repo": "Splice-Compositor",
         "type": "github"
       }
     }

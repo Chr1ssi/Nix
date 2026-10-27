@@ -27,7 +27,7 @@
 
     # Smithay compositor for splice.
     splice = {
-      url = "github:Chr1ssi/MyWM-Smithay";
+      url = "github:Chr1ssi/Splice-Compositor";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
