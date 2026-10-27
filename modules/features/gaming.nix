@@ -35,7 +35,7 @@
           };
 
           xdg.configFile."vesktop/settings/quickCss.css" = {
-            source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.stateHome}/mywm/vesktop.css";
+            source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.stateHome}/splice/vesktop.css";
             force = true;
           };
 

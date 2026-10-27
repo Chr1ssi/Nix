@@ -4,7 +4,7 @@ Meine deklarative Konfiguration für NixOS und macOS, aufgebaut mit **Nix Flakes
 
 Das Repository dient als zentrale Definition meiner Linux- und macOS-Systeme. Systemkonfiguration, Benutzerumgebung, Anwendungen, Dotfiles und eigene Pakete werden möglichst vollständig über Nix verwaltet.
 
-Der Desktop basiert auf meinem eigenen Wayland-Compositor **mywm** (Smithay), der die Desktop-Shell selbst mitbringt.
+Der Desktop basiert auf meinem eigenen Wayland-Compositor **splice** (Smithay), der die Desktop-Shell selbst mitbringt.
 
 ## Status
 
@@ -18,7 +18,7 @@ Der Desktop synchronisiert iCloud-Kalender alle fünf Minuten mit `vdirsyncer`.
 das Konto einmalig eingerichtet:
 
 ```sh
-mywm-calendar-setup
+splice-calendar-setup
 ```
 
 Der Befehl erwartet eine Apple-ID und ein app-spezifisches Passwort. Beide
@@ -53,7 +53,7 @@ Sie enthält neben der gemeinsamen Basis die für den realen Desktop benötigten
 
 Testsystem für die Entwicklung und Validierung der Konfiguration.
 
-Die VM wird verwendet, um Änderungen an NixOS, Home Manager, mywm und der Persistence zu testen, ohne das produktive Desktop-System zu beeinflussen.
+Die VM wird verwendet, um Änderungen an NixOS, Home Manager, splice und der Persistence zu testen, ohne das produktive Desktop-System zu beeinflussen.
 
 ### `mac`
 
@@ -61,7 +61,7 @@ nix-darwin-Konfiguration für den Apple-Silicon-Mac. Home Manager verwaltet dort
 
 Home Manager kopiert Nix-Anwendungen zunächst nach `~/Applications/Home Manager Apps`, damit Spotlight mit vollständigen App-Bundles arbeiten kann. Die nix-darwin-Aktivierung verlinkt diese Apps zusätzlich direkt nach `/Applications`, ohne dort vorhandene fremde Apps zu überschreiben. Der von nix-darwin erzeugte Ordner `/Applications/Nix Apps` wird entfernt, solange er leer ist.
 
-Als Window-Manager läuft **OmniWM** (`modules/features/omniwm.nix`) mit seinem Niri-Layout, also scrollenden Spalten wie mywm. Die linke Option-Taste übernimmt die Rolle von Super, die Belegung folgt der mywm-Konfiguration; die rechte Option-Taste bleibt für Zeichen wie `@`, `€` und `[ ]`. Die Einstellungen liegen wie bei mywm als normale Datei in `dotfiles/omniwm/settings.toml`; Änderungen aus dem OmniWM-Einstellungsfenster landen direkt dort. Programme und Screenshots startet **skhd**, weil OmniWM selbst keine Programme starten kann. Beim ersten Start fragt macOS nach Bedienungshilfen und Eingabeüberwachung für OmniWM sowie nach Bedienungshilfen (und für Screenshots Bildschirmaufnahme) für skhd.
+Als Window-Manager läuft **OmniWM** (`modules/features/omniwm.nix`) mit seinem Niri-Layout, also scrollenden Spalten wie splice. Die linke Option-Taste übernimmt die Rolle von Super, die Belegung folgt der splice-Konfiguration; die rechte Option-Taste bleibt für Zeichen wie `@`, `€` und `[ ]`. Die Einstellungen liegen wie bei splice als normale Datei in `dotfiles/omniwm/settings.toml`; Änderungen aus dem OmniWM-Einstellungsfenster landen direkt dort. Programme und Screenshots startet **skhd**, weil OmniWM selbst keine Programme starten kann. Beim ersten Start fragt macOS nach Bedienungshilfen und Eingabeüberwachung für OmniWM sowie nach Bedienungshilfen (und für Screenshots Bildschirmaufnahme) für skhd.
 
 ---
 
@@ -92,7 +92,7 @@ Als Window-Manager läuft **OmniWM** (`modules/features/omniwm.nix`) mit seinem 
 
 Die Konfiguration folgt dem *dendritic pattern*: `flake-parts` und `import-tree` laden jede Datei unter `modules/` automatisch, und jede Datei registriert ihre Teile unter `flake.modules.<klasse>.<name>`.
 
-- **`features/`**: ein Feature pro Datei, zum Beispiel `audio`, `streamdeck`, `greeter`, `mywm`, `theming`, `terminal`, `shell`, `development`, `gaming`. Hat ein Feature sowohl einen NixOS- als auch einen Home-Manager-Teil, hängt das NixOS-Modul den Home-Manager-Teil selbst über `home-manager.sharedModules` ein. Der Host importiert dann nur `nixos.<feature>`.
+- **`features/`**: ein Feature pro Datei, zum Beispiel `audio`, `streamdeck`, `greeter`, `splice`, `theming`, `terminal`, `shell`, `development`, `gaming`. Hat ein Feature sowohl einen NixOS- als auch einen Home-Manager-Teil, hängt das NixOS-Modul den Home-Manager-Teil selbst über `home-manager.sharedModules` ein. Der Host importiert dann nur `nixos.<feature>`.
 - **`hosts/`**: `desktop/` und `vm/` enthalten neben der Host-Definition auch Hardware und Storage bzw. Disko; `mac.nix` ist die nix-darwin-Konfiguration. Hosts wählen Features aus und setzen hostspezifische Werte.
 - **Shell:** `features/shell.nix` enthält `fish` (NixOS, inklusive Login-Shell) und `zsh` (macOS). Gemeinsame Aliase stehen an einer Stelle.
 - **Reine Home-Manager-Features** (`theming`, `terminal`, `file-manager`, `starship`, `calendar`, `obsidian`) werden vom Host direkt unter `home-manager.users.chris.imports` aufgeführt.
@@ -107,7 +107,7 @@ Aktuell gehören dazu unter anderem:
 
 - Claude Desktop
 
-Electron-/Chromium-Apps werden mit `--password-store=gnome-libsecret` gestartet, da die Session `XDG_CURRENT_DESKTOP=mywm` setzt und Chromium das Keyring-Backend sonst nicht erkennt. Claude Desktop läuft zusätzlich über XWayland (`--ozone-platform=x11`), weil die native Wayland-Variante beim ersten Start keine korrekte Fensterumrandung erhält.
+Electron-/Chromium-Apps werden mit `--password-store=gnome-libsecret` gestartet, da die Session `XDG_CURRENT_DESKTOP=splice` setzt und Chromium das Keyring-Backend sonst nicht erkennt. Claude Desktop läuft zusätzlich über XWayland (`--ozone-platform=x11`), weil die native Wayland-Variante beim ersten Start keine korrekte Fensterumrandung erhält.
 
 Versionen und Hashes werden mit `scripts/update-packages` geprüft; `--apply` schreibt sie in die Nix-Dateien.
 
@@ -125,15 +125,15 @@ Persistente Laufzeitdaten, Accounts, Tokens und vergleichbare zustandsbehaftete 
 
 Der Desktop ist bewusst als schlankes Wayland-System aufgebaut.
 
-Die zentrale Komponente ist mein eigener Compositor **mywm** auf Basis von Smithay.
+Die zentrale Komponente ist mein eigener Compositor **splice** auf Basis von Smithay.
 
 Die Desktop-Shell (Bar, Launcher, Wallpaper-Picker, Sperr- und Anmeldebildschirm, Benachrichtigungen, Tray) zeichnet der Compositor selbst (`builtin_shell = true`).
 
 Die einzelnen Komponenten werden getrennt entwickelt und über die Flake als feste Inputs eingebunden.
 
-### mywm
+### splice
 
-`mywm` ist mein eigener Wayland-Compositor auf Basis von Smithay (Repository `MyWM-Smithay`).
+`splice` ist mein eigener Wayland-Compositor auf Basis von Smithay (Repository `MyWM-Smithay`).
 
 Das Projekt übernimmt unter anderem:
 
@@ -145,22 +145,22 @@ Das Projekt übernimmt unter anderem:
 - Output-Verwaltung
 - Integration mit der Desktop-Shell
 
-Die Einbindung steht in `modules/features/mywm.nix`, die Konfiguration selbst in
-`dotfiles/mywm/config.toml`. Sie wird nicht von Nix generiert, sondern als Symlink nach
-`~/.config/mywm/config.toml` gelegt, damit das Einstellungsfenster (`mywm-settings`) sie direkt
+Die Einbindung steht in `modules/features/splice.nix`, die Konfiguration selbst in
+`dotfiles/splice/config.toml`. Sie wird nicht von Nix generiert, sondern als Symlink nach
+`~/.config/splice/config.toml` gelegt, damit das Einstellungsfenster (`splice-settings`) sie direkt
 bearbeiten kann und der Compositor sie live neu lädt.
 
 Der Anwendungscode selbst wird nicht in diesem Repository gepflegt; das Repository wird als
-Flake-Input `mywm` eingebunden und liefert Paket und NixOS-Modul.
+Flake-Input `splice` eingebunden und liefert Paket und NixOS-Modul.
 
-Im Greeter gibt es zwei Sitzungen: **mywm** für den Alltag (nur Warnungen und Fehler in
-`~/.local/state/mywm/compositor.log`) und **mywm (Dev)** zum Entwickeln (gesamte Ausgabe in
-`~/.local/state/mywm/session.log`, dazu alle 5 s Frame-Statistiken pro Monitor).
+Im Greeter gibt es zwei Sitzungen: **splice** für den Alltag (nur Warnungen und Fehler in
+`~/.local/state/splice/compositor.log`) und **splice (Dev)** zum Entwickeln (gesamte Ausgabe in
+`~/.local/state/splice/session.log`, dazu alle 5 s Frame-Statistiken pro Monitor).
 
 ### Eingebaute Shell
 
 Die Desktop-Shell ist in den Compositor integriert. Sie wird über `builtin_shell = true` in
-`dotfiles/mywm/config.toml` eingeschaltet (der Compositor-Standard) und kommt mit dem `mywm`-Input.
+`dotfiles/splice/config.toml` eingeschaltet (der Compositor-Standard) und kommt mit dem `splice`-Input.
 Quickshell ist nicht mehr Teil der Konfiguration.
 
 ### Session
@@ -181,9 +181,9 @@ Zum Desktop gehören außerdem unter anderem:
 
 Xwayland bleibt verfügbar, wenn Anwendungen es benötigen.
 
-Die Ausgabenamen (`main`, `top`, `side`) sind zentral in `modules/monitors.nix` definiert und werden vom Greeter und dem XWayland-Dienst verwendet; die mywm-Konfiguration nennt sie ebenfalls (`[[outputs]]`).
+Die Ausgabenamen (`main`, `top`, `side`) sind zentral in `modules/monitors.nix` definiert und werden vom Greeter und dem XWayland-Dienst verwendet; die splice-Konfiguration nennt sie ebenfalls (`[[outputs]]`).
 
-Die Session selbst (Startskripte, `mywm-session.target`, Portal-Konfiguration) kommt aus dem NixOS-Modul des `mywm`-Flakes; hier wird nur das Keyring-Portal ergänzt. Screen-Sharing läuft über `mywm-portal`: Der Compositor fragt selbst, welcher Monitor oder welches Fenster geteilt wird.
+Die Session selbst (Startskripte, `splice-session.target`, Portal-Konfiguration) kommt aus dem NixOS-Modul des `splice`-Flakes; hier wird nur das Keyring-Portal ergänzt. Screen-Sharing läuft über `splice-portal`: Der Compositor fragt selbst, welcher Monitor oder welches Fenster geteilt wird.
 
 Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für Portal, GTK4, Electron, LibreWolf), GTK- und Qt-Theme sowie `AppleInterfaceStyle = "Dark"` auf dem Mac.
 
@@ -192,7 +192,7 @@ Dark Mode ist systemweit Standard: `color-scheme = prefer-dark` in dconf (für P
 `nix flake check` baut Desktop und VM und prüft Formatierung (`nixfmt`) sowie ungenutzten Code (`deadnix`). Nach Änderungen an `MyWM-Smithay` aktualisiert
 
 ```sh
-scripts/update-mywm-chain --push
+scripts/update-splice-chain --push
 ```
 
 den Flake-Lock (nixos), testet ihn und pusht nur bei Erfolg.
@@ -347,7 +347,7 @@ Die Konfiguration verwendet Nix Flakes.
 
 Neben nixpkgs und Home Manager werden auch die eigenen Desktop-Projekte als Inputs eingebunden.
 
-Dadurch benötigt ein normaler System-Build keine benachbarten Git-Checkouts von `mywm`.
+Dadurch benötigt ein normaler System-Build keine benachbarten Git-Checkouts von `splice`.
 
 Änderungen an diesen Projekten werden erst übernommen, wenn der entsprechende Flake-Input aktualisiert wird.
 

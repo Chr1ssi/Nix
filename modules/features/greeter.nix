@@ -1,23 +1,23 @@
 {
-  # greetd with mywm's own login screen (drawn by `mywm-compositor --greeter` itself), in the look of the lock
+  # greetd with splice's own login screen (drawn by `splice-compositor --greeter` itself), in the look of the lock
   # screen.
   flake.modules.nixos.greeter =
     { pkgs, ... }:
     let
       # The session's own configuration: the login screen uses its monitors, keyboard and input.
-      session = builtins.fromTOML (builtins.readFile ../../dotfiles/mywm/config.toml);
+      session = builtins.fromTOML (builtins.readFile ../../dotfiles/splice/config.toml);
     in
     {
-      # mywm mirrors the current wallpaper and theme colors here (see
-      # programs.mywm.greeterDirectory); the initial wallpaper is only a seed.
+      # splice mirrors the current wallpaper and theme colors here (see
+      # programs.splice.greeterDirectory); the initial wallpaper is only a seed.
       systemd.tmpfiles.rules = [
-        "d /persist/mywm-greeter 0755 chris users -"
-        "C /persist/mywm-greeter/background 0644 chris users - ${../../wallpapers/wallhaven-1q2w63.jpg}"
+        "d /persist/splice-greeter 0755 chris users -"
+        "C /persist/splice-greeter/background 0644 chris users - ${../../wallpapers/wallhaven-1q2w63.jpg}"
       ];
 
       security.pam.services.greetd.enableGnomeKeyring = true;
 
-      programs.mywm.greeter = {
+      programs.splice.greeter = {
         enable = true;
         user = "chris";
         # workspace_outputs: the card goes to the monitor with workspace 1.

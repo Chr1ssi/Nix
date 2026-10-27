@@ -1,5 +1,5 @@
-/* LibreWolf frame: compact, rounded and translucent, so mywm's blurred
- * wallpaper shows through. The colors stay the system (GTK) ones, which mywm
+/* LibreWolf frame: compact, rounded and translucent, so splice's blurred
+ * wallpaper shows through. The colors stay the system (GTK) ones, which splice
  * generates from the wallpaper. */
 
 :root {
@@ -46,7 +46,7 @@ body,
   box-shadow: none !important;
 }
 
-/* mywm tiles the window: no minimize/maximize/close buttons. */
+/* splice tiles the window: no minimize/maximize/close buttons. */
 .titlebar-buttonbox-container,
 .titlebar-spacer {
   display: none !important;

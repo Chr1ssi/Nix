@@ -4,38 +4,38 @@ let
   monitors = config.monitors;
 in
 {
-  flake.modules.nixos.mywm = _: {
-    imports = [ inputs.mywm.nixosModules.default ];
+  flake.modules.nixos.splice = _: {
+    imports = [ inputs.splice.nixosModules.default ];
 
-    home-manager.sharedModules = [ config.flake.modules.homeManager.mywm ];
+    home-manager.sharedModules = [ config.flake.modules.homeManager.splice ];
 
-    programs.mywm = {
+    programs.splice = {
       enable = true;
-      greeterDirectory = "/persist/mywm-greeter";
+      greeterDirectory = "/persist/splice-greeter";
     };
 
-    # The module routes screen sharing to mywm-portal and the rest to GTK; secrets go to the keyring.
-    xdg.portal.config.mywm."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+    # The module routes screen sharing to splice-portal and the rest to GTK; secrets go to the keyring.
+    xdg.portal.config.splice."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
   };
 
   perSystem =
     { pkgs, ... }:
     let
-      mywm = inputs.mywm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      splice = inputs.splice.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
       packages = {
-        inherit mywm;
-        default = mywm;
+        inherit splice;
+        default = splice;
       };
     };
 
-  flake.modules.homeManager.mywm =
+  flake.modules.homeManager.splice =
     { config, pkgs, ... }:
 
     let
       screenshot = pkgs.writeShellApplication {
-        name = "mywm-screenshot";
+        name = "splice-screenshot";
         runtimeInputs = with pkgs; [
           grim
           libnotify
@@ -56,7 +56,7 @@ in
               grim -g "$selection" "$screenshot"
               ;;
             *)
-              echo "Verwendung: mywm-screenshot [full|region]" >&2
+              echo "Verwendung: splice-screenshot [full|region]" >&2
               exit 2
               ;;
           esac
@@ -82,10 +82,10 @@ in
       };
     in
     {
-      # A plain file in the repo, linked out of the store so the settings editor (mywm-settings)
+      # A plain file in the repo, linked out of the store so the settings editor (splice-settings)
       # can write it and the compositor reloads it live.
-      xdg.configFile."mywm/config.toml".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Projects/nixos/dotfiles/mywm/config.toml";
+      xdg.configFile."splice/config.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Projects/nixos/dotfiles/splice/config.toml";
 
       home.packages = [
         screenshot

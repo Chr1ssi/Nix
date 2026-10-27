@@ -6,9 +6,11 @@
 
     let
       calendarDirectory = "${config.xdg.dataHome}/calendars/icloud";
+      # The keyring entries keep `service mywm-calendar` (the old project name): they are what the stored
+      # credentials are found by, so renaming them would hide those.
 
       calendar = pkgs.writeShellApplication {
-        name = "mywm-calendar";
+        name = "splice-calendar";
         runtimeInputs = with pkgs; [
           coreutils
           khal
@@ -119,7 +121,7 @@
               event_date=$(date --date="$event_date" +%d.%m.%Y)
               khal new --calendar "$calendar_name" --location "$location" \
                 "$event_date $start_time" "$event_date $end_time" "$title"
-              if [ -z "''${MYWM_CALENDAR_SKIP_SYNC:-}" ]; then
+              if [ -z "''${SPLICE_CALENDAR_SKIP_SYNC:-}" ]; then
                 vdirsyncer sync calendar_icloud
               fi
               ;;
@@ -127,7 +129,7 @@
               exec vdirsyncer sync calendar_icloud
               ;;
             *)
-              echo "Verwendung: mywm-calendar [app|events [START] [ENDE]|calendars|create KALENDER DATUM START ENDE TITEL [ORT]|sync]" >&2
+              echo "Verwendung: splice-calendar [app|events [START] [ENDE]|calendars|create KALENDER DATUM START ENDE TITEL [ORT]|sync]" >&2
               exit 2
               ;;
           esac
@@ -135,7 +137,7 @@
       };
 
       calendarSetup = pkgs.writeShellApplication {
-        name = "mywm-calendar-setup";
+        name = "splice-calendar-setup";
         runtimeInputs = with pkgs; [
           coreutils
           libsecret
@@ -158,9 +160,9 @@
           fi
 
           printf '%s' "$apple_id" | secret-tool store \
-            --label='mywm iCloud-Kalender Apple-ID' service mywm-calendar kind username
+            --label='splice iCloud-Kalender Apple-ID' service mywm-calendar kind username
           printf '%s' "$app_password" | secret-tool store \
-            --label='mywm iCloud-Kalender Passwort' service mywm-calendar kind password
+            --label='splice iCloud-Kalender Passwort' service mywm-calendar kind password
           unset app_password
 
           vdirsyncer discover calendar_icloud
@@ -249,12 +251,12 @@
         };
       };
 
-      xdg.desktopEntries.mywm-calendar = {
+      xdg.desktopEntries.splice-calendar = {
         name = "Kalender";
         comment = "iCloud-Kalender mit khal";
         icon = "x-office-calendar";
         terminal = false;
-        exec = "${pkgs.foot}/bin/foot --app-id mywm-calendar --title Kalender ${calendar}/bin/mywm-calendar app";
+        exec = "${pkgs.foot}/bin/foot --app-id splice-calendar --title Kalender ${calendar}/bin/splice-calendar app";
         categories = [
           "Office"
           "Calendar"

@@ -5,14 +5,14 @@
   flake.modules.homeManager.terminal =
     { config, pkgs, ... }:
     {
-      # Colors come from the theme mywm renders from the wallpaper.
+      # Colors come from the theme splice renders from the wallpaper.
       programs.foot = {
         enable = pkgs.stdenv.hostPlatform.isLinux;
         settings = {
           main = {
             font = "IosevkaTerm Nerd Font Mono:size=11";
             pad = "25x25";
-            include = "${config.xdg.stateHome}/mywm/foot.ini";
+            include = "${config.xdg.stateHome}/splice/foot.ini";
           };
           colors-dark.alpha = 0.8;
         };

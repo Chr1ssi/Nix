@@ -32,11 +32,11 @@
         };
 
         gtk3.extraCss = ''
-          @import url("file://${config.xdg.stateHome}/mywm/gtk-3.css");
+          @import url("file://${config.xdg.stateHome}/splice/gtk-3.css");
         '';
 
         gtk4.extraCss = ''
-          @import url("file://${config.xdg.stateHome}/mywm/gtk-4.css");
+          @import url("file://${config.xdg.stateHome}/splice/gtk-4.css");
         '';
       };
 

@@ -25,8 +25,8 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
-    # Smithay compositor for mywm.
-    mywm = {
+    # Smithay compositor for splice.
+    splice = {
       url = "github:Chr1ssi/MyWM-Smithay";
       inputs.nixpkgs.follows = "nixpkgs";
     };

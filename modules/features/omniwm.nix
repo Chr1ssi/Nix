@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  # OmniWM on macOS, modeled on mywm: scrolling columns, with the left Option key as Super.
+  # OmniWM on macOS, modeled on splice: scrolling columns, with the left Option key as Super.
   # The right Option key stays free for characters like @ [ ] { } | on the German layout.
   # Keys are matched by their QWERTY position: the German "+" key is "Right Bracket" and
   # the German "-" key is "Slash".
@@ -50,7 +50,7 @@
     {
       programs.omniwm.enable = true;
 
-      # Like mywm: a plain file in the repo, linked out of the store so the OmniWM settings
+      # Like splice: a plain file in the repo, linked out of the store so the OmniWM settings
       # window can write it (OmniWM resolves the link) and OmniWM reloads it live.
       xdg.configFile."omniwm/settings.toml".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix/dotfiles/omniwm/settings.toml";
@@ -58,7 +58,7 @@
       home.packages = [ screenshot ];
 
       # OmniWM cannot launch programs and binds one key per action, so skhd covers
-      # mywm's program_bindings, the screenshots and the second keys of focus and
+      # splice's program_bindings, the screenshots and the second keys of focus and
       # workspace switching (through OmniWM's IPC).
       services.skhd = {
         enable = true;

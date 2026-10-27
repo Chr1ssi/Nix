@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Propagate the mywm flake lock into the nixos flake lock.
+# Propagate the splice flake lock into the nixos flake lock.
 # Each repo's lock is updated and tested; it is only committed (and pushed with
 # --push) if the tests pass. On failure the lock file change is reverted.
 #
-# Usage: scripts/update-mywm-chain [--push]
+# Usage: scripts/update-splice-chain [--push]
 # Expects MyWM-Smithay and nixos to be sibling directories.
 set -euo pipefail
 
@@ -47,4 +47,4 @@ Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
     fi
 }
 
-propagate nixos "Update mywm input" mywm
+propagate nixos "Update splice input" splice

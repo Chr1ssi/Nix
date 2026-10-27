@@ -2,7 +2,7 @@
 
 {
   # Single source of truth for the desktop's output names. Consumed by the XWayland primary-output
-  # service (the mywm config in dotfiles/mywm names them too; the greeter takes its outputs from there).
+  # service (the splice config in dotfiles/splice names them too; the greeter takes its outputs from there).
   options.monitors = lib.mkOption {
     type = lib.types.attrsOf lib.types.str;
     readOnly = true;

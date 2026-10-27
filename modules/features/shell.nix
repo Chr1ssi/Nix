@@ -152,7 +152,7 @@ in
           nfc = "nix flake check ${flake}";
           ngc = "sudo nix-collect-garbage --delete-older-than 7d";
           nup = "${flake}/scripts/update-packages --apply";
-          nmc = "${flake}/scripts/update-mywm-chain --push";
+          nmc = "${flake}/scripts/update-splice-chain --push";
           scu = "systemctl --user";
         };
 

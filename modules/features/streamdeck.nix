@@ -6,7 +6,7 @@
 
     programs.streamdeck-ui = {
       enable = true;
-      # mywm does not process XDG autostart entries. Home Manager
+      # splice does not process XDG autostart entries. Home Manager
       # starts the controller as part of graphical-session.target instead.
       autoStart = false;
     };
@@ -131,12 +131,12 @@
               "10" = streamDeckButton {
                 text = "BEREICH";
                 icon = "screenshot-region";
-                command = "mywm-screenshot region";
+                command = "splice-screenshot region";
               };
               "11" = streamDeckButton {
                 text = "VOLLBILD";
                 icon = "screenshot-full";
-                command = "mywm-screenshot full";
+                command = "splice-screenshot full";
               };
               "12" = emptyStreamDeckButton;
               "13" = emptyStreamDeckButton;

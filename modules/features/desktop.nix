@@ -30,7 +30,7 @@
         noto-fonts-color-emoji
       ];
 
-      # The system font: mywm's shell and settings app, and GTK/Qt apps, ask fontconfig for "Sans Serif".
+      # The system font: splice's shell and settings app, and GTK/Qt apps, ask fontconfig for "Sans Serif".
       fonts.fontconfig.defaultFonts.sansSerif = [ "IosevkaTerm Nerd Font Propo" ];
     };
 
