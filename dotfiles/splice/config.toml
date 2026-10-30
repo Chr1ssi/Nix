@@ -121,6 +121,16 @@ allow_when_locked = true
 dialog = true
 floating = true
 
+# foot und LibreWolf sind per Konfiguration/CSS schon durchsichtig: nicht doppelt abdunkeln.
+[[rules]]
+app_id = "foot"
+opacity = 1.0
+
+# Browser sperren den Bildschirm über das Portal (ohne Fenster): Videos darin brauchen diese Regel.
+[[rules]]
+app_id = "librewolf"
+video = true
+
 [[outputs]]
 name = "HDMI-A-1"
 mode = "2560x1080@60"
@@ -139,6 +149,8 @@ transform = "270"
 
 [effects]
 corner_radius = 10
+# Alle Fenster leicht durchsichtig; Videofenster nie. Eine Regel mit opacity ersetzt den Wert.
+window_opacity = 0.93
 animation_ms = 120
 blur = 4
 shadow = 0
