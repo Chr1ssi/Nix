@@ -32,6 +32,8 @@ variant = ""
 options = ""
 
 [appearance]
+# Cyberdeck: Fasen, Linien und kräftige Farben (weiter aus dem Wallpaper) in Bar, Launcher und Benachrichtigungen.
+style = "cyberdeck"
 gaps_inner = 4
 gaps_outer = 4
 border_width = 3
