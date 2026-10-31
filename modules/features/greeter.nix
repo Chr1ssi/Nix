@@ -28,6 +28,8 @@
             outputs
             workspace_outputs
             ;
+          # The look (cyberdeck or default); the colors come from the synced theme.
+          appearance = { inherit (session.appearance) style; };
         };
         # The cursor of the session (home-manager's pointerCursor), which the greeter user does not have.
         environment = {
