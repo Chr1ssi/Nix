@@ -11,7 +11,7 @@
 workspace_outputs = ["DP-3", "HDMI-A-1", "DP-1"]
 float_dialogs = true
 gaming_output = "DP-3"
-game_app_id_prefixes = ["steam_app_", "gamescope"]
+game_app_id_prefixes = ["steam_app_", "gamescope", "horizon"]
 terminal = ["foot"]
 wallpaper_directory = "/home/chris/Pictures/Wallpapers"
 screenshot_directory = "/home/chris/Pictures/Screenshots"
