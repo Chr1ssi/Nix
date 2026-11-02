@@ -4,7 +4,14 @@
   flake.modules.homeManager.file-manager =
     { pkgs, ... }:
     {
-      home.packages = [ pkgs.nemo ];
+      home.packages = [
+        # nemo-fileroller adds the "Extract Here" / "Extract to…" / "Compress…" context-menu entries.
+        (pkgs.nemo-with-extensions.override {
+          useDefaultExtensions = false;
+          extensions = [ pkgs.nemo-fileroller ];
+        })
+        pkgs.file-roller
+      ];
 
       dconf.settings = {
         "org/nemo/preferences" = {
