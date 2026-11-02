@@ -1,8 +1,5 @@
 { config, inputs, ... }:
 
-let
-  monitors = config.monitors;
-in
 {
   flake.modules.nixos.splice = _: {
     imports = [ inputs.splice.nixosModules.default ];
@@ -68,29 +65,6 @@ in
           notify-send "Screenshot gespeichert" "$screenshot"
         '';
       };
-      xwaylandPrimary = pkgs.writeShellApplication {
-        name = "xwayland-primary-output";
-        runtimeInputs = [
-          pkgs.procps
-          pkgs.xrandr
-        ];
-        text = ''
-          # splice starts Xwayland with the first X11 client and marks the primary output itself; an xrandr
-          # call here would start it at every login. This only serves a splice that starts it right away,
-          # and can go once the on-demand start (branch hw/xwayland-on-demand) is in use.
-          pgrep --exact Xwayland > /dev/null || exit 0
-
-          for _ in {1..50}; do
-            if xrandr --query 2>/dev/null | grep -q '^${monitors.main} connected'; then
-              exec xrandr --output ${monitors.main} --primary
-            fi
-            sleep 0.2
-          done
-
-          echo '${monitors.main} wurde von XWayland nicht rechtzeitig erkannt.' >&2
-          exit 1
-        '';
-      };
     in
     {
       # A plain file in the repo, linked out of the store so the settings editor (splice-settings)
@@ -101,22 +75,6 @@ in
       home.packages = [
         screenshot
       ];
-
-      systemd.user.services = {
-        xwayland-primary-output = {
-          Unit = {
-            Description = "Mark the main output as the primary XWayland output";
-            PartOf = [ "graphical-session.target" ];
-            After = [ "graphical-session.target" ];
-          };
-          Service = {
-            Type = "oneshot";
-            ExecStart = "${xwaylandPrimary}/bin/xwayland-primary-output";
-            RemainAfterExit = true;
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-      };
 
       home.file."Pictures/Wallpapers" = {
         source = ../../wallpapers;
