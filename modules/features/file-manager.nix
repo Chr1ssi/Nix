@@ -11,6 +11,8 @@
           extensions = [ pkgs.nemo-fileroller ];
         })
         pkgs.file-roller
+        # Space-bar quick look: Nemo calls the org.nemo.Preview D-Bus service, which is not a loadable extension.
+        pkgs.nemo-preview
       ];
 
       dconf.settings = {
@@ -29,6 +31,9 @@
           side-pane-view = "places";
           start-with-sidebar = true;
         };
+
+        # "Open in Terminal" runs this; the schema default is gnome-terminal, which is not installed.
+        "org/cinnamon/desktop/applications/terminal".exec = "foot";
 
         "org/gtk/gtk4/settings/file-chooser".show-hidden = true;
       };
