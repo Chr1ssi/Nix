@@ -12,6 +12,10 @@
     {
       home-manager.sharedModules = [ config.flake.modules.homeManager.audio ];
 
+      # PipeWire's x11-bell module connects to $DISPLAY at start, and that connection would start Xwayland at
+      # every login (splice starts it with the first X11 client). The X11 bell means nothing on Wayland.
+      systemd.user.services.pipewire.serviceConfig.UnsetEnvironment = "DISPLAY";
+
       services.pipewire = {
         enable = true;
         alsa.enable = true;
