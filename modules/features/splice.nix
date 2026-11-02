@@ -11,6 +11,9 @@ in
 
     programs.splice = {
       enable = true;
+      # Also the session "splice (Dev)": session log, frame statistics, and the build that
+      # scripts/dev-install in the splice repo puts into ~/.local/state/splice/dev/bin.
+      devSession = true;
       greeterDirectory = "/persist/splice-greeter";
     };
 

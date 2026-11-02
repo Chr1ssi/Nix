@@ -199,11 +199,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793451664,
-        "narHash": "sha256-TVWbRUmClE9/7qSh4Q1ksCLys1ExHVX/Z2mise9qBas=",
+        "lastModified": 1793623818,
+        "narHash": "sha256-4VLuOu1g0ztEk6m0c3YLxCzVz8vjmaUxXgGJn6etn8M=",
         "owner": "Chr1ssi",
         "repo": "Splice-Compositor",
-        "rev": "98934a7a0a2046678e7bf17757a9536f4bf7611b",
+        "rev": "57482ae14c91f960a7e440c200918d20592a9ef4",
         "type": "github"
       },
       "original": {
