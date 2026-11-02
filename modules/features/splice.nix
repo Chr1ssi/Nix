@@ -70,8 +70,16 @@ in
       };
       xwaylandPrimary = pkgs.writeShellApplication {
         name = "xwayland-primary-output";
-        runtimeInputs = [ pkgs.xrandr ];
+        runtimeInputs = [
+          pkgs.procps
+          pkgs.xrandr
+        ];
         text = ''
+          # splice starts Xwayland with the first X11 client and marks the primary output itself; an xrandr
+          # call here would start it at every login. This only serves a splice that starts it right away,
+          # and can go once the on-demand start (branch hw/xwayland-on-demand) is in use.
+          pgrep --exact Xwayland > /dev/null || exit 0
+
           for _ in {1..50}; do
             if xrandr --query 2>/dev/null | grep -q '^${monitors.main} connected'; then
               exec xrandr --output ${monitors.main} --primary
