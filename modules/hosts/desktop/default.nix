@@ -49,6 +49,10 @@
 
         networking.hostName = "ChrisNixOS";
 
+        # onlyoffice-desktopeditors still pulls gtk2 into its FHS env; nixpkgs marks gtk2
+        # broken ahead of its removal. Drop this once onlyoffice stops depending on gtk2.
+        nixpkgs.config.problems.handlers."gtk+".broken = "warn";
+
         home-manager.users.chris =
           { pkgs, ... }:
           {
