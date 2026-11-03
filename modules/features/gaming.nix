@@ -1,17 +1,19 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   flake.modules.nixos.gaming =
     { pkgs, ... }:
     {
       nixpkgs.config.allowUnfree = true;
+      nixpkgs.overlays = [ inputs.millennium.overlays.default ];
 
       programs.steam = {
         enable = true;
         extraCompatPackages = [ pkgs.proton-ge-bin ];
+        # Millennium patches the client to load themes (plain `pkgs.steam` to go back).
         # Proton runs its games on its Wayland driver, so they need no launch option and no X11 window.
         # A game that breaks with it takes `PROTON_ENABLE_WAYLAND=0 %command%`.
-        package = pkgs.steam.override { extraEnv.PROTON_ENABLE_WAYLAND = "1"; };
+        package = pkgs.millennium-steam.override { extraEnv.PROTON_ENABLE_WAYLAND = "1"; };
       };
 
       hardware.graphics.enable32Bit = true;
