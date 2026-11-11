@@ -5,7 +5,29 @@
     { pkgs, ... }:
     {
       nixpkgs.config.allowUnfree = true;
-      nixpkgs.overlays = [ inputs.millennium.overlays.default ];
+      nixpkgs.overlays = [
+        inputs.millennium.overlays.default
+        # The typescript bun-deps hash is a let-binding in millennium.nix, so it
+        # can't be overridden on the package. Upstream's value no longer matches
+        # what the fixed-output build produces; patch the text and call it again.
+        # Drop once Millennium's nix package carries the right hash.
+        (final: prev: {
+          millennium =
+            final.callPackage
+              (builtins.toFile "millennium.nix" (
+                builtins.replaceStrings
+                  [ "sha256-o0wv6vG1YZR9TcgytD9CDf8zBei4Ulhl59Mo9C6C+vs=" ]
+                  [ "sha256-LV7eayBjBDbEX5I/Rt2FbhIErURclDd9hKLt2AN3kfI=" ]
+                  (builtins.readFile "${inputs.millennium}/millennium.nix")
+              ))
+              {
+                millennium-src = inputs.millennium.inputs.millennium-src;
+                inherit (inputs.millennium.inputs.nixpkgs-bun.legacyPackages.${final.stdenv.hostPlatform.system})
+                  bun
+                  ;
+              };
+        })
+      ];
 
       programs.steam = {
         enable = true;
