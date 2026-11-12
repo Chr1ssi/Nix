@@ -2,8 +2,6 @@
 
 {
   flake.modules.nixos.development = {
-    nixpkgs.config.allowUnfree = true;
-
     # Zed extensions download conventional Linux binaries (language servers).
     programs.nix-ld.enable = true;
 

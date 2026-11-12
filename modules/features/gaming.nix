@@ -4,8 +4,6 @@
   flake.modules.nixos.gaming =
     { pkgs, ... }:
     {
-      nixpkgs.config.allowUnfree = true;
-
       programs.steam = {
         enable = true;
         extraCompatPackages = [ pkgs.proton-ge-bin ];

@@ -5,6 +5,7 @@
     { pkgs, ... }:
     {
       nixpkgs.overlays = [ config.flake.overlays.local ];
+      nixpkgs.config.allowUnfree = true;
 
       nix.settings.experimental-features = [
         "nix-command"
