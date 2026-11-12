@@ -26,7 +26,11 @@
             vesktop
           ];
 
-          xdg.configFile."vesktop/settings.json".source = ../../dotfiles/vesktop/settings.json;
+          # Vesktop replaces the link with a file of its own whenever it saves its settings.
+          xdg.configFile."vesktop/settings.json" = {
+            source = ../../dotfiles/vesktop/settings.json;
+            force = true;
+          };
 
           xdg.configFile."vesktop/settings/settings.json" = {
             source = ../../dotfiles/vesktop/vencord-settings.json;
