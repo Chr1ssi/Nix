@@ -30,6 +30,11 @@
         openFirewall = true;
         # Started by the socket on the first connection instead of running all the time.
         startWhenNeeded = true;
+        # Keys only: the port is open to the whole network.
+        settings = {
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+        };
       };
 
       time.timeZone = "Europe/Berlin";
