@@ -20,11 +20,11 @@
           wantedBy = [ "initrd.target" ];
 
           requires = [
-            "dev-disk-by\\x2did-nvme\\x2dLexar_SSD_NM710_1TB_NDC692R002317P2200\\x2dpart6.device"
+            "dev-disk-by\\x2dlabel-NIXROOT.device"
           ];
 
           after = [
-            "dev-disk-by\\x2did-nvme\\x2dLexar_SSD_NM710_1TB_NDC692R002317P2200\\x2dpart6.device"
+            "dev-disk-by\\x2dlabel-NIXROOT.device"
           ];
 
           before = [
@@ -39,7 +39,7 @@
             mkdir -p /btrfs_tmp
 
             mount -t btrfs -o subvolid=5 \
-              /dev/disk/by-id/nvme-Lexar_SSD_NM710_1TB_NDC692R002317P2200-part6 \
+              /dev/disk/by-label/NIXROOT \
               /btrfs_tmp
 
             if [ -e /btrfs_tmp/@root ]; then
