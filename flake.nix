@@ -25,12 +25,6 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
-    # Themes and plugins for the Steam client (not in nixpkgs). Its bun input stays pinned on purpose.
-    millennium = {
-      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Smithay compositor for splice.
     splice = {
       url = "github:Chr1ssi/Splice-Compositor";
