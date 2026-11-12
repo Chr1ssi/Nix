@@ -76,7 +76,6 @@ Als Window-Manager läuft **OmniWM** (`modules/features/omniwm.nix`) mit seinem 
 │   ├── hosts/          # desktop/, vm/, mac.nix – setzen nur Features zusammen
 │   ├── features/       # ein Feature pro Datei (NixOS-, Home-Manager- und Darwin-Teil)
 │   ├── packages/       # Overlay `pkgs.local.*` für ../packages
-│   ├── monitors.nix    # zentrale Output-Namen
 │   └── checks.nix
 │
 ├── packages/
@@ -181,7 +180,7 @@ Zum Desktop gehören außerdem unter anderem:
 
 Xwayland bleibt verfügbar, wenn Anwendungen es benötigen.
 
-Die Ausgabenamen (`main`, `top`, `side`) sind zentral in `modules/monitors.nix` definiert und werden vom Greeter und dem XWayland-Dienst verwendet; die splice-Konfiguration nennt sie ebenfalls (`[[outputs]]`).
+Die Ausgaben stehen in der splice-Konfiguration (`[[outputs]]` in `dotfiles/splice/config.toml`); der Greeter übernimmt sie von dort.
 
 Die Session selbst (Startskripte, `splice-session.target`, Portal-Konfiguration) kommt aus dem NixOS-Modul des `splice`-Flakes; hier wird nur das Keyring-Portal ergänzt. Screen-Sharing läuft über `splice-portal`: Der Compositor fragt selbst, welcher Monitor oder welches Fenster geteilt wird.
 
