@@ -92,7 +92,7 @@ app_id = "librewolf"
 
 [program_bindings.file_manager]
 keys = ["Super+f"]
-command = ["nemo"]
+command = ["cosmic-files"]
 
 [program_bindings.zed_editor]
 keys = ["Super+e"]
