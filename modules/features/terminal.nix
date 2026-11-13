@@ -10,7 +10,7 @@
         enable = pkgs.stdenv.hostPlatform.isLinux;
         settings = {
           main = {
-            font = "IosevkaTerm Nerd Font Mono:size=11";
+            font = "DejaVu Sans Mono:size=11, Symbols Nerd Font Mono:size=11";
             pad = "25x25";
             include = "${config.xdg.stateHome}/splice/foot.ini";
           };

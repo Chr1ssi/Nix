@@ -13,8 +13,8 @@
         };
 
         iconTheme = {
-          name = "Slot-Nord-Dark-Colorize-Icons";
-          package = pkgs.local.slot-nord-dark-colorize-icons;
+          name = "Adwaita";
+          package = pkgs.adwaita-icon-theme;
         };
 
         gtk3.extraConfig = {

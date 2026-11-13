@@ -25,13 +25,18 @@
       systemd.user.settings.Manager.DefaultTimeoutStopSec = "10s";
 
       fonts.packages = with pkgs; [
-        nerd-fonts.iosevka-term
+        dejavu_fonts
+        # Only the icon glyphs (eza, starship, fastfetch); fontconfig falls back to them.
+        nerd-fonts.symbols-only
         noto-fonts
         noto-fonts-color-emoji
       ];
 
       # The system font: splice's shell and settings app, and GTK/Qt apps, ask fontconfig for "Sans Serif".
-      fonts.fontconfig.defaultFonts.sansSerif = [ "IosevkaTerm Nerd Font Propo" ];
+      fonts.fontconfig.defaultFonts = {
+        sansSerif = [ "DejaVu Sans" ];
+        monospace = [ "DejaVu Sans Mono" ];
+      };
     };
 
   flake.modules.homeManager.desktop =
