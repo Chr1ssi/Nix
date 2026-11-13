@@ -7,7 +7,12 @@
       programs.steam = {
         enable = true;
         extraCompatPackages = [ pkgs.proton-ge-bin ];
-        package = pkgs.steam.override { extraEnv.PROTON_ENABLE_WAYLAND = "1"; };
+        package = pkgs.steam.override {
+          extraEnv = {
+            PROTON_ENABLE_WAYLAND = "1";
+            SDL_VIDEODRIVER = "wayland";
+          };
+        };
       };
 
       hardware.graphics.enable32Bit = true;
