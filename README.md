@@ -12,7 +12,8 @@ NixOS läuft produktiv als Hauptsystem auf meinem Desktop und hat das frühere C
 
 ### iCloud-Kalender
 
-Der Desktop synchronisiert iCloud-Kalender alle fünf Minuten mit `vdirsyncer`.
+Der Desktop synchronisiert iCloud-Kalender und -Kontakte alle fünf Minuten mit `vdirsyncer`;
+aus den Kontakten entsteht danach der lokale Kalender „Geburtstage“ (iCloud hat ihn nicht auf dem Server).
 `khal` stellt die Kalender-App bereit; Datum und Uhrzeit in der Bar
 öffnen zusätzlich eine Monats- und Terminübersicht. Nach dem ersten Rebuild wird
 das Konto einmalig eingerichtet:

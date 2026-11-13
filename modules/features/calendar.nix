@@ -6,6 +6,19 @@
 
     let
       calendarDirectory = "${config.xdg.dataHome}/calendars/icloud";
+      # iCloud has no birthday calendar on the server: the iPhone makes its own from the contacts.
+      # `splice-calendar birthdays` does the same from the synced address book, into a local calendar
+      # of its own. (khal's `birthdays` calendars cannot: its parser rejects iCloud's `BDAY;VALUE=date:`.)
+      contactsDirectory = "${config.xdg.dataHome}/contacts/icloud";
+      birthdaysDirectory = "${config.xdg.dataHome}/calendars/geburtstage";
+      secretLookup = kind: [
+        "${pkgs.libsecret}/bin/secret-tool"
+        "lookup"
+        "service"
+        "mywm-calendar"
+        "kind"
+        kind
+      ];
       # The keyring entries keep `service mywm-calendar` (the old project name): they are what the stored
       # credentials are found by, so renaming them would hide those.
 
@@ -111,6 +124,65 @@
           print(json.dumps(sorted(calendars, key=lambda item: item["name"]), ensure_ascii=False))
           PY
               ;;
+            birthdays)
+              exec python3 - ${contactsDirectory} ${birthdaysDirectory} <<'PY'
+          import re
+          import sys
+          from datetime import date, timedelta
+          from pathlib import Path
+
+          contacts, target = Path(sys.argv[1]), Path(sys.argv[2])
+          target.mkdir(parents=True, exist_ok=True)
+          wanted = {}
+          for card in contacts.glob("*/*.vcf"):
+              fields = {}
+              # A line that starts with a space continues the one before.
+              for line in re.sub(r"\r?\n[ \t]", "", card.read_text(errors="replace")).splitlines():
+                  key, _, value = line.partition(":")
+                  # `item1.BDAY;VALUE=date` is `BDAY`.
+                  fields.setdefault(key.split(";")[0].split(".")[-1].upper(), value.strip())
+              # 1985-04-12, 19850412 or, without a year, --04-12; Apple writes 1604 for "no year".
+              match = re.fullmatch(r"(\d{4}|--)-?(\d{2})-?(\d{2})(T.*)?", fields.get("BDAY", ""))
+              # Some cards have an empty FN; N is "family;given;…".
+              family, given = (fields.get("N", "").split(";") + [""])[:2]
+              name = fields.get("FN") or " ".join(part for part in (given, family) if part)
+              if not match or not name:
+                  continue
+              year = 0 if match[1] in ("--", "1604") else int(match[1])
+              try:
+                  # Without a year the series starts in a leap year, so that 29 February exists.
+                  start = date(year or 1904, int(match[2]), int(match[3]))
+              except ValueError:
+                  continue
+              uid = re.sub(r"[^A-Za-z0-9-]", "-", fields.get("UID") or card.stem)
+              lines = [
+                  "BEGIN:VCALENDAR",
+                  "VERSION:2.0",
+                  "PRODID:-//splice-calendar//birthdays//DE",
+                  "BEGIN:VEVENT",
+                  f"UID:birthday-{uid}",
+                  "DTSTAMP:19700101T000000Z",
+                  f"DTSTART;VALUE=DATE:{start:%Y%m%d}",
+                  f"DTEND;VALUE=DATE:{start + timedelta(days=1):%Y%m%d}",
+                  "RRULE:FREQ=YEARLY",
+                  # vCard and iCalendar escape text the same way: the name goes over as it is.
+                  f"SUMMARY:Geburtstag von {name}",
+                  *([f"DESCRIPTION:Jahrgang {year}"] if year else []),
+                  "TRANSP:TRANSPARENT",
+                  "END:VEVENT",
+                  "END:VCALENDAR",
+              ]
+              wanted[f"birthday-{uid}.ics"] = "\r\n".join(lines) + "\r\n"
+          # Only what changed is written: khal reads the calendar again when its files change.
+          for file in target.glob("*.ics"):
+              if file.name not in wanted:
+                  file.unlink()
+          for name, text in wanted.items():
+              file = target / name
+              if not file.exists() or file.read_text(newline="") != text:
+                  file.write_text(text, newline="")
+          PY
+              ;;
             create)
               calendar_name="''${2:?Kalender fehlt}"
               event_date="''${3:?Datum fehlt}"
@@ -129,7 +201,7 @@
               exec vdirsyncer sync calendar_icloud
               ;;
             *)
-              echo "Verwendung: splice-calendar [app|events [START] [ENDE]|calendars|create KALENDER DATUM START ENDE TITEL [ORT]|sync]" >&2
+              echo "Verwendung: splice-calendar [app|events [START] [ENDE]|calendars|birthdays|create KALENDER DATUM START ENDE TITEL [ORT]|sync]" >&2
               exit 2
               ;;
           esac
@@ -167,6 +239,10 @@
 
           vdirsyncer discover calendar_icloud
           vdirsyncer sync calendar_icloud
+          # The address book's folder does not exist yet: let vdirsyncer create it.
+          vdirsyncer discover contacts_icloud <<<y
+          vdirsyncer sync contacts_icloud
+          ${calendar}/bin/splice-calendar birthdays
           systemctl --user start vdirsyncer.service
           echo 'Der iCloud-Kalender ist eingerichtet.'
         '';
@@ -215,14 +291,7 @@
           remote = {
             type = "caldav";
             url = "https://caldav.icloud.com/";
-            passwordCommand = [
-              "${pkgs.libsecret}/bin/secret-tool"
-              "lookup"
-              "service"
-              "mywm-calendar"
-              "kind"
-              "password"
-            ];
+            passwordCommand = secretLookup "password";
           };
           khal = {
             enable = true;
@@ -230,14 +299,7 @@
           };
           vdirsyncer = {
             enable = true;
-            userNameCommand = [
-              "${pkgs.libsecret}/bin/secret-tool"
-              "lookup"
-              "service"
-              "mywm-calendar"
-              "kind"
-              "username"
-            ];
+            userNameCommand = secretLookup "username";
             collections = [
               "from a"
               "from b"
@@ -248,6 +310,44 @@
             ];
             conflictResolution = "remote wins";
           };
+        };
+      };
+
+      accounts.contact = {
+        basePath = "${config.xdg.dataHome}/contacts";
+        accounts.icloud = {
+          local = {
+            path = contactsDirectory;
+            type = "filesystem";
+            fileExt = ".vcf";
+          };
+          remote = {
+            type = "carddav";
+            url = "https://contacts.icloud.com/";
+            passwordCommand = secretLookup "password";
+          };
+          vdirsyncer = {
+            enable = true;
+            userNameCommand = secretLookup "username";
+            collections = [
+              "from a"
+              "from b"
+            ];
+            conflictResolution = "remote wins";
+          };
+        };
+      };
+
+      # Made from the contacts after every sync; khal only reads it.
+      accounts.calendar.accounts.Geburtstage = {
+        local = {
+          path = birthdaysDirectory;
+          type = "filesystem";
+          fileExt = ".ics";
+        };
+        khal = {
+          enable = true;
+          readOnly = true;
         };
       };
 
@@ -272,6 +372,9 @@
         terminal = true;
         noDisplay = true;
       };
+
+      systemd.user.services.vdirsyncer.Service.ExecStartPost =
+        "${calendar}/bin/splice-calendar birthdays";
 
       systemd.user.services.vdirsyncer.Unit = {
         After = [
