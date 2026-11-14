@@ -11,7 +11,7 @@
 workspace_outputs = ["DP-3", "HDMI-A-1", "DP-1"]
 float_dialogs = true
 gaming_output = "DP-3"
-game_app_id_prefixes = ["steam_app_", "gamescope", "horizon", "hoi4"]
+game_app_id_prefixes = ["steam_app_", "gamescope", "horizon", "hoi4", "eu4"]
 terminal = ["foot"]
 wallpaper_directory = "/home/chris/Pictures/Wallpapers"
 screenshot_directory = "/home/chris/Pictures/Screenshots"
@@ -136,6 +136,10 @@ video = true
 # Das Spiel zeichnet in der ersten Größe weiter, die es bekommt: gleich im Vollbild öffnen statt erst als Kachel.
 [[rules]]
 app_id = "hoi4"
+fullscreen = true
+
+[[rules]]
+app_id = "eu4"
 fullscreen = true
 
 [[outputs]]
