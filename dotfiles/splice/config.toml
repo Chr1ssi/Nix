@@ -135,10 +135,6 @@ video = true
 
 # Das Spiel zeichnet in der ersten Größe weiter, die es bekommt: gleich im Vollbild öffnen statt erst als Kachel.
 [[rules]]
-app_id = "hoi4"
-fullscreen = true
-
-[[rules]]
 app_id = "eu4"
 fullscreen = true
 
