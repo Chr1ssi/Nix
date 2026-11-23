@@ -15,6 +15,11 @@ let
       programs.zoxide.enable = true;
       programs.fzf.enable = true;
       programs.bat.enable = true;
+      programs.btop = {
+        enable = true;
+        # Leaves the cells unpainted so the terminal's own (transparent) background shows through.
+        settings.theme_background = false;
+      };
 
       home.packages = with pkgs; [
         fastfetch
@@ -32,7 +37,6 @@ let
           };
         }))
         eza
-        btop
         tree
         file
         which
