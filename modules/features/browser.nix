@@ -169,6 +169,23 @@ in
       # Only for configuring / flashing the mouse and keyboard via WebHID.
       home.packages = [ pkgs.ungoogled-chromium ];
 
+      # Web apps: Chromium app windows (LibreWolf has no app mode). Icons are
+      # the sites' SVG favicons, vendored so a changed favicon can't break builds.
+      xdg.desktopEntries = {
+        butler = {
+          name = "Butler";
+          icon = "${../../dotfiles/webapps/butler.svg}";
+          exec = "${pkgs.ungoogled-chromium}/bin/chromium --app=https://butler.christoph-keil.com";
+          categories = [ "Network" ];
+        };
+        sgj = {
+          name = "SGJ";
+          icon = "${../../dotfiles/webapps/sgj.svg}";
+          exec = "${pkgs.ungoogled-chromium}/bin/chromium --app=https://secretgermanjodel.com";
+          categories = [ "Network" ];
+        };
+      };
+
       xdg.mimeApps = {
         enable = true;
 
